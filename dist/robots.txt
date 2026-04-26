@@ -1,0 +1,15 @@
+# WaveMind Solutions – robots.txt
+# https://wavemindsolutions.in
+
+User-agent: *
+Allow: /
+Disallow: /dashboard/
+Disallow: /login
+Disallow: /register
+Disallow: /forgot-password
+
+# Sitemap
+Sitemap: https://wavemindsolutions.in/sitemap.xml
+
+# Crawl-delay for politeness
+Crawl-delay: 1
