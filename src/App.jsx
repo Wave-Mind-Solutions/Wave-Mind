@@ -10,6 +10,9 @@ import Footer from './components/layout/Footer';
 // Auth guard
 import ProtectedRoute from './components/ProtectedRoute';
 
+// Chatbot Widget
+import ChatbotWidget from './components/ChatbotWidget';
+
 // Loading Fallback Component
 const PageLoader = () => (
   <div className="fixed inset-0 flex items-center justify-center bg-[#050505] z-[9999]">
@@ -156,12 +159,17 @@ function App() {
               } />
               <Route path="/dashboard/admin/projects" element={
                 <ProtectedRoute allowedRoles={['admin']}>
-                  <AdminSubPage title="Active Projects Hub" type="projects" />
+                  <AdminSubPage title="Active Monitoring" type="projects" />
                 </ProtectedRoute>
               } />
               <Route path="/dashboard/admin/team" element={
                 <ProtectedRoute allowedRoles={['admin']}>
-                  <AdminSubPage title="Specialist Team Management" type="team" />
+                  <AdminSubPage title="Specialist Units" type="team" />
+                </ProtectedRoute>
+              } />
+              <Route path="/dashboard/admin/leads" element={
+                <ProtectedRoute allowedRoles={['admin']}>
+                  <AdminSubPage title="Chatbot Leads" type="leads" />
                 </ProtectedRoute>
               } />
               <Route path="/dashboard/admin/reports" element={
@@ -223,6 +231,7 @@ function App() {
         </AnimatePresence>
       </main>
       {!isDashboard && <Footer />}
+      {!isDashboard && <ChatbotWidget />}
     </div>
   );
 }

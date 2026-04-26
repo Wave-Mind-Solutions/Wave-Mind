@@ -56,3 +56,33 @@ export const getClients = async () => {
   const res = await api.get('/admin/clients');
   return res.data;
 };
+
+/** 
+ * Leads (Chatbot) Services 
+ */
+
+/** GET /api/lead - Fetch chatbot leads */
+export const getLeads = async (params = {}) => {
+  const res = await api.get('/lead', { params });
+  return res.data;
+};
+
+/** GET /api/lead/export - Download Excel */
+export const exportLeadsExcel = async () => {
+  // We use the raw axios instance from our api service to handle blobs
+  const res = await api.get('/lead/export', {
+    responseType: 'blob'
+  });
+  
+  // Create a download link for the blob
+  const url = window.URL.createObjectURL(new Blob([res.data]));
+  const link = document.createElement('a');
+  link.href = url;
+  link.setAttribute('download', `leads_export_${new Date().getTime()}.xlsx`);
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  window.URL.revokeObjectURL(url);
+  
+  return true;
+};

@@ -75,41 +75,42 @@ const AdminOverview = () => {
           {[
             { label: 'System Queue', value: loading ? '—' : pendingReqs, icon: List, color: 'from-orange-500 to-amber-500', desc: 'Unassigned Requests' },
             { label: 'Active Streams', value: loading ? '—' : activeCount, icon: Briefcase, color: 'from-blue-600 to-indigo-600', desc: 'Running Projects' },
-            { label: 'Specialist Unit', value: loading ? '—' : developers.length, icon: Users, color: 'from-emerald-500 to-teal-500', desc: 'Verified Talent' },
+            { label: 'Leads Pipeline', value: 'VIEW', icon: Users, color: 'from-indigo-500 to-purple-600', desc: 'Chatbot Leads', link: '/dashboard/admin/leads' },
             { label: 'Growth Vector', value: loading ? '—' : requirements.length, icon: TrendingUp, color: 'from-purple-600 to-pink-600', desc: 'Total Pipeline' },
           ].map((stat, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1 }}
-              whileHover={{ y: -4, transition: { type: "spring", stiffness: 400, damping: 10 } }}
-              className="premium-glass rounded-3xl p-6 border border-gray-100 dark:border-white/10 shadow-xl relative overflow-hidden group"
-            >
-              <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${stat.color} opacity-10 rounded-full blur-[40px] -mr-16 -mt-16 group-hover:opacity-20 transition-all`} />
-              
-              <div className="flex items-center gap-4 mb-6">
-                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${stat.color} flex items-center justify-center text-white shadow-lg group-hover:scale-105 transition-transform`}>
-                  <stat.icon size={22} />
-                </div>
-                <div>
-                  <p className="text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-[0.2em]">{stat.label}</p>
-                  <p className="text-xs font-bold text-gray-400 dark:text-gray-600 mt-0.5">{stat.desc}</p>
-                </div>
-              </div>
-              
-              <div className="flex items-end justify-between">
-                <div>
-                  <p className="text-2xl font-black text-gray-900 dark:text-white tracking-tighter leading-none">{stat.value}</p>
-                </div>
-                <div className="flex flex-col items-end">
-                  <div className={`flex items-center gap-1.5 px-3 py-1 bg-gradient-to-r ${stat.color} bg-opacity-10 dark:bg-opacity-20 rounded-lg text-white font-black text-[10px] uppercase tracking-widest`}>
-                    <TrendingUp size={12} />
-                    <span>Active</span>
+            <Link key={i} to={stat.link || '#'}>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+                whileHover={{ y: -4, transition: { type: "spring", stiffness: 400, damping: 10 } }}
+                className="premium-glass rounded-3xl p-6 border border-gray-100 dark:border-white/10 shadow-xl relative overflow-hidden group cursor-pointer"
+              >
+                <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${stat.color} opacity-10 rounded-full blur-[40px] -mr-16 -mt-16 group-hover:opacity-20 transition-all`} />
+                
+                <div className="flex items-center gap-4 mb-6">
+                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${stat.color} flex items-center justify-center text-white shadow-lg group-hover:scale-105 transition-transform`}>
+                    <stat.icon size={22} />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-[0.2em]">{stat.label}</p>
+                    <p className="text-xs font-bold text-gray-400 dark:text-gray-600 mt-0.5">{stat.desc}</p>
                   </div>
                 </div>
-              </div>
-            </motion.div>
+                
+                <div className="flex items-end justify-between">
+                  <div>
+                    <p className="text-2xl font-black text-gray-900 dark:text-white tracking-tighter leading-none">{stat.value}</p>
+                  </div>
+                  <div className="flex flex-col items-end">
+                    <div className={`flex items-center gap-1.5 px-3 py-1 bg-gradient-to-r ${stat.color} bg-opacity-10 dark:bg-opacity-20 rounded-lg text-white font-black text-[10px] uppercase tracking-widest`}>
+                      <TrendingUp size={12} />
+                      <span>Active</span>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </Link>
           ))}
         </div>
 

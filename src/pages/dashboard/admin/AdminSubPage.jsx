@@ -27,7 +27,7 @@ import {
   FileText
 } from 'lucide-react';
 import DashboardLayout from '../../../components/dashboard/DashboardLayout';
-import { getAllRequirements, getAllProjects, getDevelopers, updateProject, assignTeam, getAllDeliverables } from '../../../services/adminService';
+import { getAllRequirements, getAllProjects, getDevelopers, updateProject, assignTeam, getAllDeliverables, getLeads, exportLeadsExcel } from '../../../services/adminService';
 import toast from 'react-hot-toast';
 
 const TYPE_ICON_MAP = { web: Globe, app: Smartphone, ai: Cpu, designer: Palette };
@@ -60,6 +60,7 @@ const AdminSubPage = ({ title, type }) => {
         else if (type === 'projects' || type === 'reports') res = await getAllProjects();
         else if (type === 'team') res = await getDevelopers();
         else if (type === 'assets') res = await getAllDeliverables();
+        else if (type === 'leads') res = await getLeads();
         setItems(res?.data || []);
 
         if (type === 'projects' || type === 'reports') {
@@ -84,6 +85,7 @@ const AdminSubPage = ({ title, type }) => {
     if (type === 'projects') return item.title?.toLowerCase().includes(term);
     if (type === 'team') return item.fullName?.toLowerCase().includes(term) || item.developerType?.toLowerCase().includes(term);
     if (type === 'assets') return item.fileName?.toLowerCase().includes(term) || item.projectId?.title?.toLowerCase().includes(term) || item.uploadedBy?.fullName?.toLowerCase().includes(term);
+    if (type === 'leads') return item.name?.toLowerCase().includes(term) || item.contact?.toLowerCase().includes(term) || item.requirement?.toLowerCase().includes(term);
     return true;
   });
 
@@ -167,15 +169,32 @@ const AdminSubPage = ({ title, type }) => {
             </h1>
           </div>
 
-          <div className="relative group w-full lg:w-[450px]">
-            <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 transition-colors" size={18} />
-            <input
-              type="text"
-              placeholder={`Scan ${type} stream...`}
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-              className="w-full pl-14 pr-8 py-4 bg-white dark:bg-white/5 rounded-2xl border border-gray-200 dark:border-white/10 outline-none focus:border-blue-500/50 transition-all text-sm font-black text-gray-900 dark:text-white placeholder:text-gray-400 tracking-wide uppercase tracking-[0.1em] shadow-sm"
-            />
+          <div className="relative group w-full lg:w-[450px] flex items-center gap-4">
+            <div className="relative flex-grow">
+              <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 transition-colors" size={18} />
+              <input
+                type="text"
+                placeholder={`Scan ${type} stream...`}
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                className="w-full pl-14 pr-8 py-4 bg-white dark:bg-white/5 rounded-2xl border border-gray-200 dark:border-white/10 outline-none focus:border-blue-500/50 transition-all text-sm font-black text-gray-900 dark:text-white placeholder:text-gray-400 tracking-wide uppercase tracking-[0.1em] shadow-sm"
+              />
+            </div>
+            {type === 'leads' && (
+              <button
+                onClick={async () => {
+                  try {
+                    await exportLeadsExcel();
+                    toast.success('Excel file downloaded! 📥');
+                  } catch (err) {
+                    toast.error('Export failed.');
+                  }
+                }}
+                className="px-6 py-4 bg-emerald-600 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-emerald-500 transition-all flex items-center gap-3 shadow-lg active:scale-95"
+              >
+                <Download size={18} /> Download Excel
+              </button>
+            )}
           </div>
         </div>
 
@@ -489,6 +508,38 @@ const AdminSubPage = ({ title, type }) => {
                       className="px-6 py-4 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-xl hover:shadow-lg transition-all flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.2em] active:scale-95 shadow-md">
                       <Download size={18} /> Pull Asset
                     </a>
+                  </div>
+                </div>
+              );
+
+              // Lead card
+              if (type === 'leads') return (
+                <div 
+                  key={idx} 
+                  className="premium-glass rounded-3xl p-7 border border-gray-100 dark:border-white/10 shadow-xl hover:bg-gray-50 dark:hover:bg-white/5 transition-all flex flex-col gap-8 group relative overflow-hidden"
+                >
+                  <div className="absolute top-0 right-0 w-40 h-40 bg-blue-600/5 rounded-full blur-[60px] -mr-20 -mt-20 group-hover:bg-blue-600/10 transition-all duration-700" />
+                  
+                  <div className="flex items-center justify-between relative z-10">
+                    <div className="w-12 h-12 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-blue-600 dark:text-blue-500 flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
+                      <Users size={22} />
+                    </div>
+                    <span className="px-5 py-2 rounded-2xl text-[9px] font-black uppercase tracking-[0.2em] bg-blue-500/10 text-blue-600 dark:text-blue-500 border border-blue-500/20 shadow-xl">
+                      Lead Entity
+                    </span>
+                  </div>
+
+                  <div className="relative z-10 flex-grow">
+                    <h3 className="text-xl font-black text-gray-900 dark:text-white mb-2 tracking-tighter group-hover:text-blue-600 transition-colors leading-tight">{item.name}</h3>
+                    <p className="text-[10px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-[0.3em] mb-6">Contact: {item.contact}</p>
+                    <p className="text-[11px] text-gray-500 dark:text-gray-400 font-bold uppercase tracking-wider line-clamp-3 leading-relaxed opacity-80">{item.requirement}</p>
+                  </div>
+
+                  <div className="pt-8 border-t border-gray-100 dark:border-white/5 flex items-center justify-between relative z-10">
+                    <div className="flex flex-col">
+                      <span className="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] mb-1">Received On</span>
+                      <span className="text-xs font-black text-gray-900 dark:text-gray-300 uppercase tracking-widest">{new Date(item.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                    </div>
                   </div>
                 </div>
               );

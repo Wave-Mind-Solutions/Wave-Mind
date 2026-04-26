@@ -20,6 +20,7 @@ const timeRoutes = require("./routes/time.routes");
 const exportRoutes = require("./routes/export.routes");
 const feedbackRoutes = require("./routes/feedback.routes");
 const blogRoutes = require("./routes/blog.routes");
+const leadRoutes = require("./routes/lead.routes");
 
 const app = express();
 
@@ -55,6 +56,7 @@ app.use("/api/time", timeRoutes);
 app.use("/api/export", exportRoutes);
 app.use("/api/feedback", feedbackRoutes);
 app.use("/api/blog", blogRoutes);
+app.use("/api/lead", leadRoutes);
 
 // ── 404 Fallback ───────────────────────────────────────────────────────────
 app.use((_req, res) => {
