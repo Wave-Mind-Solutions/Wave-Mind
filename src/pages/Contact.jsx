@@ -207,7 +207,7 @@ const Contact = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="text-4xl md:text-6xl lg:text-7xl font-bold mb-5"
+              className="text-4xl md:text-5xl lg:text-6xl font-bold mb-5"
             >
               <span className="text-gray-900 dark:text-white">
                 Get in
@@ -222,7 +222,7 @@ const Contact = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-base md:text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed"
+              className="text-base text-gray-600 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed"
             >
               Have a project in mind? Let's discuss how we can help you grow and transform your digital presence.
             </motion.p>

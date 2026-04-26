@@ -159,7 +159,7 @@ const Login = () => {
                   {requires2FA ? 'Security Verification' : 'Portal Access'}
                 </span>
               </div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
                 {requires2FA ? 'Enter Security Code' : 'Welcome Back'}
               </h1>
               <p className="text-gray-500 dark:text-gray-400 text-sm">
@@ -188,7 +188,7 @@ const Login = () => {
                   <button
                     type="submit"
                     disabled={loading || twoFactorToken.length !== 6}
-                    className="w-full py-5 px-6 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-[1.4rem] text-white font-bold text-lg hover:shadow-2xl hover:shadow-blue-500/30 active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full py-5 px-6 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-[1.4rem] text-white font-bold text-base hover:shadow-2xl hover:shadow-blue-500/30 active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {loading ? <div className="w-6 h-6 border-3 border-white border-t-transparent rounded-full animate-spin mx-auto" /> : 'Verify & Login'}
                   </button>
@@ -265,7 +265,7 @@ const Login = () => {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-5 px-6 bg-gradient-to-r from-blue-600 to-purple-600 rounded-[1.4rem] text-white font-bold text-lg hover:shadow-[0_0_30px_-5px_rgba(79,70,229,0.6)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-3 group relative overflow-hidden"
+                  className="w-full py-5 px-6 bg-gradient-to-r from-blue-600 to-purple-600 rounded-[1.4rem] text-white font-bold text-base hover:shadow-[0_0_30px_-5px_rgba(79,70,229,0.6)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-3 group relative overflow-hidden"
                 >
                   {loading ? (
                     <div className="w-6 h-6 border-3 border-white border-t-transparent rounded-full animate-spin" />

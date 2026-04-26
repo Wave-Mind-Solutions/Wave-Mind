@@ -133,10 +133,10 @@ const Register = () => {
                 </span>
               </motion.div>
 
-              <h2 className="text-5xl font-bold leading-tight text-gray-900 dark:text-white mb-6">
+              <h2 className="text-4xl font-bold leading-tight text-gray-900 dark:text-white mb-6">
                 Join the <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">Future</span> of Product Building
               </h2>
-              <p className="text-xl text-gray-600 dark:text-gray-400 leading-relaxed">
+              <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
                 WaveMind bridges the gap between vision and reality. Start building with the world's most advanced agency platform.
               </p>
             </div>
@@ -203,8 +203,8 @@ const Register = () => {
                         </div>
                       </div>
                       <div>
-                        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">Create Account</h1>
-                        <p className="text-gray-500 dark:text-gray-400">Join the elite network of creators</p>
+                        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2">Create Account</h1>
+                        <p className="text-gray-500 dark:text-gray-400 text-sm">Join the elite network of creators</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2 p-1 bg-gray-100 dark:bg-white/5 rounded-2xl w-fit">
@@ -336,11 +336,11 @@ const Register = () => {
                       </div>
                     </div>
 
-                    <button
-                      type="submit"
-                      disabled={loading}
-                      className="w-full py-5 px-6 bg-gradient-to-r from-blue-600 to-purple-600 rounded-[1.4rem] text-white font-bold text-lg hover:shadow-[0_0_30px_-5px_rgba(79,70,229,0.6)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-3 group relative overflow-hidden mt-4"
-                    >
+                      <button
+                        type="submit"
+                        disabled={loading}
+                        className="w-full py-5 px-6 bg-gradient-to-r from-blue-600 to-purple-600 rounded-[1.4rem] text-white font-bold text-base hover:shadow-[0_0_30px_-5px_rgba(79,70,229,0.6)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-3 group relative overflow-hidden mt-4"
+                      >
                       {loading ? (
                         <div className="w-6 h-6 border-3 border-white border-t-transparent rounded-full animate-spin" />
                       ) : (

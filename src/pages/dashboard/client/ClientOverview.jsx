@@ -137,18 +137,12 @@ const ClientOverview = () => {
                 Authorized Access Node
               </div>
               <h1
-                
-                
-                
-                className="text-4xl md:text-6xl font-black mb-4 tracking-tighter text-gray-900 dark:text-white leading-none"
+                className="text-3xl md:text-4xl font-black mb-4 tracking-tighter text-gray-900 dark:text-white leading-none"
               >
                 Welcome back, <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">{user?.fullName?.split(' ')[0] || 'there'}</span>! 👋
               </h1>
               <p
-                
-                
-                
-                className="text-gray-500 dark:text-gray-400 text-lg font-bold max-w-xl leading-relaxed uppercase tracking-wide opacity-80"
+                className="text-gray-500 dark:text-gray-400 text-base font-bold max-w-xl leading-relaxed uppercase tracking-wide opacity-80"
               >
                 Monitoring your digital infrastructure and project workstreams in real-time synchronization.
               </p>
@@ -206,7 +200,7 @@ const ClientOverview = () => {
                 </div>
 
                 <div className="relative">
-                  <h3 className="text-5xl font-black text-gray-900 dark:text-white mb-2 tracking-tighter leading-none">
+                  <h3 className="text-3xl font-black text-gray-900 dark:text-white mb-2 tracking-tighter leading-none">
                     {loading ? (
                       <div className="w-16 h-12 bg-gray-100 dark:bg-white/5 animate-pulse rounded-2xl" />
                     ) : (
@@ -229,7 +223,7 @@ const ClientOverview = () => {
               
               <div className="flex items-center justify-between mb-12 relative z-10">
                 <div>
-                  <h3 className="text-3xl font-black text-gray-900 dark:text-white flex items-center gap-4 tracking-tighter">
+                  <h3 className="text-xl font-black text-gray-900 dark:text-white flex items-center gap-4 tracking-tighter">
                     <div className="w-12 h-12 rounded-2xl bg-blue-600/20 flex items-center justify-center">
                       <Briefcase className="w-6 h-6 text-blue-600" />
                     </div>
@@ -276,7 +270,7 @@ const ClientOverview = () => {
                       >
                         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
                           <div className="flex-1">
-                            <h4 className="text-2xl font-black text-gray-900 dark:text-white mb-2 tracking-tight group-hover:text-blue-600 transition-colors">{project.title}</h4>
+                            <h4 className="text-lg font-black text-gray-900 dark:text-white mb-2 tracking-tight group-hover:text-blue-600 transition-colors">{project.title}</h4>
                             <div className="flex flex-wrap items-center gap-6 text-[10px] font-black uppercase tracking-[0.15em] text-gray-400 dark:text-gray-500">
                               <span className="flex items-center gap-2 px-3 py-1 bg-gray-100 dark:bg-white/5 rounded-lg border border-gray-200 dark:border-white/5">
                                 <Users size={14} className="text-blue-600" />
@@ -320,7 +314,7 @@ const ClientOverview = () => {
             <div variants={itemVariants} className="premium-glass rounded-[3.5rem] p-10 md:p-12 shadow-2xl border border-gray-100 dark:border-white/10 relative overflow-hidden">
               <div className="flex items-center justify-between mb-12">
                 <div>
-                  <h3 className="text-3xl font-black text-gray-900 dark:text-white flex items-center gap-4 tracking-tighter">
+                  <h3 className="text-xl font-black text-gray-900 dark:text-white flex items-center gap-4 tracking-tighter">
                     <div className="w-12 h-12 rounded-2xl bg-indigo-600/20 flex items-center justify-center">
                       <FileText className="w-6 h-6 text-indigo-600" />
                     </div>
@@ -372,7 +366,7 @@ const ClientOverview = () => {
                             <FileText size={24} />
                           </div>
                           <div>
-                            <h4 className="font-black text-gray-900 dark:text-white text-lg tracking-tight group-hover:text-indigo-600 transition-colors">{req.title}</h4>
+                            <h4 className="font-black text-gray-900 dark:text-white text-base tracking-tight group-hover:text-indigo-600 transition-colors">{req.title}</h4>
                             <div className="flex items-center gap-6 text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500 mt-1">
                               <span className="flex items-center gap-2">
                                 <Clock size={12} className="text-gray-400" />
@@ -413,7 +407,7 @@ const ClientOverview = () => {
                     <Award size={28} />
                   </div>
                   <div>
-                    <h3 className="text-2xl font-black text-gray-900 dark:text-white tracking-tighter">Portfolio Node</h3>
+                    <h3 className="text-xl font-black text-gray-900 dark:text-white tracking-tighter">Portfolio Node</h3>
                     <p className="text-[10px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-widest mt-1">Asset Distribution</p>
                   </div>
                 </div>
@@ -437,15 +431,15 @@ const ClientOverview = () => {
                   <div className="grid grid-cols-1 gap-5">
                     <div className="flex justify-between items-center p-6 bg-gray-50 dark:bg-white/5 rounded-3xl border border-gray-100 dark:border-white/5 hover:bg-gray-100 dark:hover:bg-white/10 transition-all shadow-sm">
                       <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Active</span>
-                      <span className="text-2xl font-black text-gray-900 dark:text-white tracking-tighter">{activeProjects}</span>
+                      <span className="text-xl font-black text-gray-900 dark:text-white tracking-tighter">{activeProjects}</span>
                     </div>
                     <div className="flex justify-between items-center p-6 bg-gray-50 dark:bg-white/5 rounded-3xl border border-gray-100 dark:border-white/5 hover:bg-gray-100 dark:hover:bg-white/10 transition-all shadow-sm">
                       <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Delivered</span>
-                      <span className="text-2xl font-black text-emerald-600 dark:text-emerald-500 tracking-tighter">{completedProjects}</span>
+                      <span className="text-xl font-black text-emerald-600 dark:text-emerald-500 tracking-tighter">{completedProjects}</span>
                     </div>
                     <div className="flex justify-between items-center p-6 bg-gray-50 dark:bg-white/5 rounded-3xl border border-gray-100 dark:border-white/5 hover:bg-gray-100 dark:hover:bg-white/10 transition-all shadow-sm">
                       <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Global Stake</span>
-                      <span className="text-2xl font-black text-indigo-600 dark:text-indigo-500 tracking-tighter">₹{totalBudget.toLocaleString()}</span>
+                      <span className="text-xl font-black text-indigo-600 dark:text-indigo-500 tracking-tighter">₹{totalBudget.toLocaleString()}</span>
                     </div>
                   </div>
                 </div>
@@ -465,7 +459,7 @@ const ClientOverview = () => {
                 <div className="w-12 h-12 rounded-2xl bg-yellow-500/20 flex items-center justify-center">
                   <Zap className="w-6 h-6 text-yellow-600 dark:text-yellow-500" />
                 </div>
-                <h3 className="text-2xl font-black text-gray-900 dark:text-white tracking-tighter">Command Node</h3>
+                <h3 className="text-xl font-black text-gray-900 dark:text-white tracking-tighter">Command Node</h3>
               </div>
 
               <div className="space-y-4">
@@ -498,7 +492,7 @@ const ClientOverview = () => {
             <div className="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-[3.5rem] p-10 shadow-2xl shadow-indigo-600/20 relative overflow-hidden group">
               <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
               <div className="relative z-10">
-                <h4 className="text-xl font-black text-white tracking-tighter mb-4 flex items-center gap-3">
+                <h4 className="text-lg font-black text-white tracking-tighter mb-4 flex items-center gap-3">
                   <Shield size={24} />
                   Enterprise Secure
                 </h4>
@@ -529,7 +523,7 @@ const ClientOverview = () => {
                 </div>
               </div>
               <div className="text-center md:text-left">
-                <h4 className="text-4xl font-black text-gray-900 dark:text-white mb-4 tracking-tighter group-hover:text-blue-600 transition-colors">{user?.fullName || '…'}</h4>
+                <h4 className="text-2xl font-black text-gray-900 dark:text-white mb-4 tracking-tighter group-hover:text-blue-600 transition-colors">{user?.fullName || '…'}</h4>
                 <div className="flex flex-wrap items-center justify-center md:justify-start gap-4">
                   <span className="px-5 py-2 bg-blue-500/10 text-blue-600 text-[10px] font-black uppercase tracking-[0.2em] rounded-2xl border border-blue-500/20 shadow-lg">Executive Node</span>
                   <span className="px-5 py-2 bg-emerald-500/10 text-emerald-600 text-[10px] font-black uppercase tracking-[0.2em] rounded-2xl border border-emerald-500/20 shadow-lg flex items-center gap-2">
@@ -542,11 +536,11 @@ const ClientOverview = () => {
             <div className="flex flex-wrap items-center justify-center gap-10 lg:gap-20">
               <div>
                 <p className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.3em] mb-3">Linked Uplink</p>
-                <p className="text-xl font-black text-gray-700 dark:text-gray-300 tracking-tight">{user?.email || '…'}</p>
+                <p className="text-lg font-black text-gray-700 dark:text-gray-300 tracking-tight">{user?.email || '…'}</p>
               </div>
               <div>
                 <p className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.3em] mb-3">Signal Contact</p>
-                <p className="text-xl font-black text-gray-700 dark:text-gray-300 tracking-tight">{user?.phone || 'NOT LINKED'}</p>
+                <p className="text-lg font-black text-gray-700 dark:text-gray-300 tracking-tight">{user?.phone || 'NOT LINKED'}</p>
               </div>
             </div>
 

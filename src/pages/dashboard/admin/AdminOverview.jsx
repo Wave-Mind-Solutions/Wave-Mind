@@ -68,10 +68,10 @@ const AdminOverview = () => {
 
   return (
     <DashboardLayout role="admin" title="Admin Control Center">
-      <div className="max-w-[1400px] mx-auto space-y-10 selection:bg-blue-500/30">
+      <div className="max-w-[1400px] mx-auto space-y-6 selection:bg-blue-500/30">
         
         {/* Header Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {[
             { label: 'System Queue', value: loading ? '—' : pendingReqs, icon: List, color: 'from-orange-500 to-amber-500', desc: 'Unassigned Requests' },
             { label: 'Active Streams', value: loading ? '—' : activeCount, icon: Briefcase, color: 'from-blue-600 to-indigo-600', desc: 'Running Projects' },
@@ -83,14 +83,14 @@ const AdminOverview = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
-              whileHover={{ y: -8, transition: { type: "spring", stiffness: 400, damping: 10 } }}
-              className="premium-glass rounded-[2.5rem] p-8 border border-gray-100 dark:border-white/10 shadow-2xl relative overflow-hidden group"
+              whileHover={{ y: -4, transition: { type: "spring", stiffness: 400, damping: 10 } }}
+              className="premium-glass rounded-3xl p-6 border border-gray-100 dark:border-white/10 shadow-xl relative overflow-hidden group"
             >
               <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${stat.color} opacity-10 rounded-full blur-[40px] -mr-16 -mt-16 group-hover:opacity-20 transition-all`} />
               
-              <div className="flex items-center gap-5 mb-8">
-                <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${stat.color} flex items-center justify-center text-white shadow-xl group-hover:scale-110 transition-transform`}>
-                  <stat.icon size={26} />
+              <div className="flex items-center gap-4 mb-6">
+                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${stat.color} flex items-center justify-center text-white shadow-lg group-hover:scale-105 transition-transform`}>
+                  <stat.icon size={22} />
                 </div>
                 <div>
                   <p className="text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-[0.2em]">{stat.label}</p>
@@ -100,7 +100,7 @@ const AdminOverview = () => {
               
               <div className="flex items-end justify-between">
                 <div>
-                  <p className="text-4xl font-black text-gray-900 dark:text-white tracking-tighter leading-none">{stat.value}</p>
+                  <p className="text-2xl font-black text-gray-900 dark:text-white tracking-tighter leading-none">{stat.value}</p>
                 </div>
                 <div className="flex flex-col items-end">
                   <div className={`flex items-center gap-1.5 px-3 py-1 bg-gradient-to-r ${stat.color} bg-opacity-10 dark:bg-opacity-20 rounded-lg text-white font-black text-[10px] uppercase tracking-widest`}>
@@ -113,19 +113,19 @@ const AdminOverview = () => {
           ))}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           
           {/* Requirement Management */}
-          <div className="lg:col-span-12 xl:col-span-7 space-y-8">
+          <div className="lg:col-span-12 xl:col-span-7 space-y-6">
             <div className="flex items-center justify-between mb-2">
               <div>
-                <h2 className="text-2xl font-black text-gray-900 dark:text-white flex items-center gap-3 tracking-tight">
-                  <div className="w-10 h-10 rounded-xl bg-orange-500/20 flex items-center justify-center">
-                    <List size={22} className="text-orange-500" />
+                <h2 className="text-lg font-black text-gray-900 dark:text-white flex items-center gap-3 tracking-tight">
+                  <div className="w-9 h-9 rounded-lg bg-orange-500/20 flex items-center justify-center">
+                    <List size={20} className="text-orange-500" />
                   </div>
                   Client Requirements
                 </h2>
-                <p className="text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-[0.2em] mt-1 ml-13">Pipeline Ingestion</p>
+                <p className="text-[9px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-[0.2em] mt-1 ml-12">Pipeline Ingestion</p>
               </div>
               <Link to="/dashboard/admin/requirements" className="px-5 py-2.5 bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-white font-black text-[10px] uppercase tracking-widest rounded-xl hover:bg-gray-200 dark:hover:bg-white/10 transition-all flex items-center gap-2 group">
                 <Filter size={14} className="group-hover:rotate-12 transition-transform" /> Browse All
@@ -145,21 +145,21 @@ const AdminOverview = () => {
                   animate={{ opacity: 1, x: 0 }} 
                   transition={{ delay: i * 0.1 }}
                   onClick={() => setSelectedRequirement(req)}
-                  className="premium-glass p-8 rounded-[2.5rem] border border-gray-100 dark:border-white/10 shadow-xl hover:bg-gray-50 dark:hover:bg-white/5 transition-all group relative overflow-hidden cursor-pointer"
+                  className="premium-glass p-6 rounded-3xl border border-gray-100 dark:border-white/10 shadow-lg hover:bg-gray-50 dark:hover:bg-white/5 transition-all group relative overflow-hidden cursor-pointer"
                 >
                   <div className="absolute top-0 right-0 w-32 h-32 bg-blue-600/5 rounded-full blur-[40px] -mr-16 -mt-16 group-hover:bg-blue-600/10 transition-all" />
                   
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
-                    <div className="flex items-center gap-6">
+                    <div className="flex items-center gap-4">
                       <div className="relative">
                         <div className="absolute inset-0 bg-blue-600/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
-                        <div className="relative w-16 h-16 rounded-2xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 flex items-center justify-center text-blue-500 dark:text-blue-400 font-black text-xl shadow-inner group-hover:scale-110 transition-transform">
+                        <div className="relative w-12 h-12 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 flex items-center justify-center text-blue-500 dark:text-blue-400 font-black text-lg shadow-inner group-hover:scale-105 transition-transform">
                           {req.clientId?.fullName?.split(' ').map(n => n[0]).join('') || '?'}
                         </div>
                       </div>
                       <div>
                         <div className="flex items-center gap-3 mb-2">
-                          <h4 className="font-black text-gray-900 dark:text-white text-xl tracking-tight group-hover:text-blue-500 transition-colors">{req.title}</h4>
+                          <h4 className="font-black text-gray-900 dark:text-white text-base tracking-tight group-hover:text-blue-500 transition-colors">{req.title}</h4>
                           <span className={`px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest border shadow-lg ${
                             req.priority === 'Extreme' ? 'bg-red-500/10 text-red-500 border-red-500/20' : 
                             req.priority === 'High' ? 'bg-orange-500/10 text-orange-500 border-orange-500/20' : 
@@ -187,9 +187,9 @@ const AdminOverview = () => {
                         <button 
                           onClick={(e) => { e.stopPropagation(); handleConvert(req); }} 
                           disabled={converting === req._id}
-                          className="px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] hover:shadow-[0_0_20px_rgba(37,99,235,0.4)] hover:scale-105 active:scale-95 transition-all flex items-center gap-3 disabled:opacity-60"
+                          className="px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-black text-[9px] uppercase tracking-[0.2em] hover:shadow-lg hover:scale-105 active:scale-95 transition-all flex items-center gap-2 disabled:opacity-60"
                         >
-                          {converting === req._id ? <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <Play size={14} className="fill-white" />}
+                          {converting === req._id ? <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <Play size={12} className="fill-white" />}
                           Initialize
                         </button>
                       )}
@@ -203,30 +203,30 @@ const AdminOverview = () => {
             <div className="pt-10 space-y-8">
               <div className="flex items-center justify-between mb-2">
                 <div>
-                  <h2 className="text-2xl font-black text-gray-900 dark:text-white flex items-center gap-3 tracking-tight">
-                    <div className="w-10 h-10 rounded-xl bg-blue-600/20 flex items-center justify-center">
-                      <Briefcase size={22} className="text-blue-500" />
+                  <h2 className="text-lg font-black text-gray-900 dark:text-white flex items-center gap-3 tracking-tight">
+                    <div className="w-9 h-9 rounded-lg bg-blue-600/20 flex items-center justify-center">
+                      <Briefcase size={20} className="text-blue-500" />
                     </div>
                     Active Monitoring
                   </h2>
-                  <p className="text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-[0.2em] mt-1 ml-13">Runtime Oversight</p>
+                  <p className="text-[9px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-[0.2em] mt-1 ml-12">Runtime Oversight</p>
                 </div>
                 <Link to="/dashboard/admin/projects" className="px-5 py-2.5 bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-white font-black text-[10px] uppercase tracking-widest rounded-xl hover:bg-gray-200 dark:hover:bg-white/10 transition-all flex items-center gap-2 group">
                   <Globe size={14} className="group-hover:rotate-12 transition-transform" /> Global View
                 </Link>
               </div>
 
-              <div className="premium-glass border border-gray-100 dark:border-white/10 rounded-[3rem] shadow-2xl overflow-hidden relative">
+              <div className="premium-glass border border-gray-100 dark:border-white/10 rounded-3xl shadow-xl overflow-hidden relative">
                 <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600/5 rounded-full blur-[100px] -mr-48 -mt-48" />
                 
                 <div className="overflow-x-auto relative z-10">
                   <table className="w-full text-left">
                     <thead>
                       <tr className="border-b border-gray-100 dark:border-white/5 bg-gray-50/50 dark:bg-white/2">
-                        <th className="px-10 py-8 text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]">Project Entity</th>
-                        <th className="px-10 py-8 text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]">Real-time Status</th>
-                        <th className="px-10 py-8 text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]">Timeline</th>
-                        <th className="px-10 py-8 text-[10px] font-black text-gray-500 uppercase tracking-[0.2em] text-right">Ops</th>
+                        <th className="px-8 py-5 text-[9px] font-black text-gray-500 uppercase tracking-[0.2em]">Project Entity</th>
+                        <th className="px-8 py-5 text-[9px] font-black text-gray-500 uppercase tracking-[0.2em]">Real-time Status</th>
+                        <th className="px-8 py-5 text-[9px] font-black text-gray-500 uppercase tracking-[0.2em]">Timeline</th>
+                        <th className="px-8 py-5 text-[9px] font-black text-gray-500 uppercase tracking-[0.2em] text-right">Ops</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100 dark:divide-white/5">
@@ -236,22 +236,22 @@ const AdminOverview = () => {
                         <tr><td colSpan={4} className="px-10 py-20 text-center text-gray-400 font-black uppercase tracking-widest">No Active Workstreams</td></tr>
                       ) : activeProjects.slice(0, 5).map((p) => (
                         <tr key={p._id} onClick={() => setSelectedProject(p)} className="hover:bg-gray-50 dark:hover:bg-white/5 transition-all cursor-pointer group">
-                          <td className="px-10 py-6">
-                            <p className="font-black text-gray-900 dark:text-white text-lg tracking-tight group-hover:text-blue-500 transition-colors">{p.title}</p>
-                            <span className="px-3 py-1 bg-gray-100 dark:bg-white/5 text-gray-400 dark:text-gray-500 rounded-lg text-[9px] font-black uppercase tracking-widest mt-1 inline-block border border-gray-200 dark:border-white/5">{p.clientId?.fullName || 'External Client'}</span>
+                          <td className="px-8 py-4">
+                            <p className="font-black text-gray-900 dark:text-white text-sm tracking-tight group-hover:text-blue-500 transition-colors">{p.title}</p>
+                            <span className="px-2 py-0.5 bg-gray-100 dark:bg-white/5 text-gray-400 dark:text-gray-500 rounded-md text-[8px] font-black uppercase tracking-widest mt-1 inline-block border border-gray-200 dark:border-white/5">{p.clientId?.fullName || 'External Client'}</span>
                           </td>
-                          <td className="px-10 py-6 min-w-[200px]">
-                            <div className="flex items-center justify-between mb-2">
-                              <span className={`px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest ${
+                          <td className="px-8 py-4 min-w-[180px]">
+                            <div className="flex items-center justify-between mb-1.5">
+                              <span className={`px-2 py-0.5 rounded-md text-[8px] font-black uppercase tracking-widest ${
                                 p.status === 'Completed' ? 'bg-emerald-500/10 text-emerald-500' : 
                                 p.status === 'Paused' ? 'bg-red-500/10 text-red-500' : 
                                 'bg-blue-500/10 text-blue-500'
                               }`}>
                                 {p.status}
                               </span>
-                              <span className="text-[10px] font-black text-gray-900 dark:text-white">{p.progress}%</span>
+                              <span className="text-[9px] font-black text-gray-900 dark:text-white">{p.progress}%</span>
                             </div>
-                            <div className="h-1.5 w-full bg-gray-100 dark:bg-white/5 rounded-full overflow-hidden border border-gray-200 dark:border-white/5 shadow-inner">
+                            <div className="h-1 w-full bg-gray-100 dark:bg-white/5 rounded-full overflow-hidden border border-gray-200 dark:border-white/5 shadow-inner">
                               <motion.div 
                                 initial={{ width: 0 }} 
                                 animate={{ width: `${p.progress}%` }} 
@@ -260,15 +260,15 @@ const AdminOverview = () => {
                               />
                             </div>
                           </td>
-                          <td className="px-10 py-6">
-                            <div className="flex items-center gap-2.5 text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">
-                              <Clock size={14} className="text-blue-500" /> {p.deadline ? new Date(p.deadline).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : '∞'}
+                          <td className="px-8 py-4">
+                            <div className="flex items-center gap-2 text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">
+                              <Clock size={12} className="text-blue-500" /> {p.deadline ? new Date(p.deadline).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : '∞'}
                             </div>
                           </td>
-                          <td className="px-10 py-6 text-right">
+                          <td className="px-8 py-4 text-right">
                             <button onClick={(e) => { e.stopPropagation(); setEditingProject({ ...p }); }}
-                              className="w-10 h-10 bg-gray-100 dark:bg-white/5 hover:bg-blue-600 text-gray-400 hover:text-white rounded-xl border border-gray-200 dark:border-white/10 hover:border-blue-500 flex items-center justify-center transition-all group/btn shadow-xl">
-                              <Edit3 size={18} className="group-hover/btn:scale-110 transition-transform" />
+                              className="w-8 h-8 bg-gray-100 dark:bg-white/5 hover:bg-blue-600 text-gray-400 hover:text-white rounded-lg border border-gray-200 dark:border-white/10 hover:border-blue-500 flex items-center justify-center transition-all group/btn shadow-md">
+                              <Edit3 size={16} className="group-hover/btn:scale-110 transition-transform" />
                             </button>
                           </td>
                         </tr>
@@ -281,31 +281,31 @@ const AdminOverview = () => {
           </div>
 
           {/* Right Column */}
-          <div className="lg:col-span-12 xl:col-span-5 space-y-10">
+          <div className="lg:col-span-12 xl:col-span-5 space-y-6">
             {/* Specialist Units */}
-            <div className="premium-glass rounded-[3rem] p-10 shadow-2xl relative overflow-hidden border border-gray-100 dark:border-white/10 group">
+            <div className="premium-glass rounded-3xl p-7 shadow-xl relative overflow-hidden border border-gray-100 dark:border-white/10 group">
               <div className="absolute top-0 right-0 w-80 h-80 bg-blue-600/10 rounded-full blur-[100px] -mr-40 -mt-40 group-hover:bg-blue-600/20 transition-all duration-700" />
               
-              <div className="flex justify-between items-center mb-10 relative z-10">
+              <div className="flex justify-between items-center mb-6 relative z-10">
                 <div>
-                  <h3 className="text-2xl font-black text-gray-900 dark:text-white flex items-center gap-3 tracking-tight"><Users className="text-blue-500" /> Specialist Units</h3>
-                  <p className="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em] mt-1 ml-9">Operational Divisions</p>
+                  <h3 className="text-lg font-black text-gray-900 dark:text-white flex items-center gap-3 tracking-tight"><Users className="text-blue-500" size={20} /> Specialist Units</h3>
+                  <p className="text-[9px] font-black text-gray-500 uppercase tracking-[0.2em] mt-1 ml-8">Operational Divisions</p>
                 </div>
-                <Link to="/dashboard/admin/team" className="px-5 py-2.5 bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl hover:bg-gray-200 dark:hover:bg-white/10 text-gray-600 dark:text-white text-[10px] font-black uppercase tracking-widest transition-all">Hub Access</Link>
+                <Link to="/dashboard/admin/team" className="px-4 py-2 bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg hover:bg-gray-200 dark:hover:bg-white/10 text-gray-600 dark:text-white text-[9px] font-black uppercase tracking-widest transition-all">Hub Access</Link>
               </div>
 
               <div className="grid grid-cols-2 gap-5 relative z-10">
                 {unitStats.map((unit, i) => (
                   <motion.div 
                     key={i} 
-                    whileHover={{ scale: 1.02, y: -5 }}
-                    className="p-6 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] hover:bg-gray-100 dark:hover:bg-white/10 transition-all cursor-pointer group/unit shadow-xl"
+                    whileHover={{ scale: 1.02, y: -2 }}
+                    className="p-5 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl hover:bg-gray-100 dark:hover:bg-white/10 transition-all cursor-pointer group/unit shadow-lg"
                   >
-                    <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${unit.color} flex items-center justify-center mb-6 shadow-2xl group-hover/unit:scale-110 transition-transform`}>
-                      <unit.icon size={26} className="text-white" />
+                    <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${unit.color} flex items-center justify-center mb-4 shadow-xl group-hover/unit:scale-105 transition-transform`}>
+                      <unit.icon size={20} className="text-white" />
                     </div>
-                    <h4 className="font-black text-gray-900 dark:text-white text-lg mb-1 tracking-tight">{unit.role}</h4>
-                    <div className="flex justify-between items-center text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] mt-4">
+                    <h4 className="font-black text-gray-900 dark:text-white text-sm mb-1 tracking-tight">{unit.role}</h4>
+                    <div className="flex justify-between items-center text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] mt-3">
                       <span>Deployment</span>
                       <span className="text-blue-500 dark:text-blue-400 font-black">{unit.count} Units</span>
                     </div>
@@ -315,19 +315,19 @@ const AdminOverview = () => {
             </div>
 
             {/* Quick Comms Link */}
-            <div className="premium-glass p-10 rounded-[3rem] border border-gray-100 dark:border-white/10 shadow-2xl relative overflow-hidden group">
+            <div className="premium-glass p-7 rounded-3xl border border-gray-100 dark:border-white/10 shadow-xl relative overflow-hidden group">
               <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/5 to-purple-600/5 opacity-50" />
               <div className="relative z-10">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-12 h-12 rounded-2xl bg-indigo-500/20 flex items-center justify-center">
-                    <MessageSquare size={24} className="text-indigo-500" />
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 rounded-xl bg-indigo-500/20 flex items-center justify-center">
+                    <MessageSquare size={20} className="text-indigo-500" />
                   </div>
-                  <h3 className="text-2xl font-black text-gray-900 dark:text-white tracking-tight">Direct Chat Hub</h3>
+                  <h3 className="text-lg font-black text-gray-900 dark:text-white tracking-tight">Direct Chat Hub</h3>
                 </div>
-                <p className="text-gray-500 dark:text-gray-400 text-sm font-bold mb-10 leading-relaxed uppercase tracking-wider">Execute high-priority synchronization across all organizational workstreams.</p>
+                <p className="text-gray-500 dark:text-gray-400 text-xs font-bold mb-6 leading-relaxed uppercase tracking-wider">Execute high-priority synchronization across all organizational workstreams.</p>
                 <Link to="/dashboard/admin/chat"
-                  className="w-full py-5 bg-gradient-to-r from-indigo-600 to-blue-600 dark:from-white dark:to-gray-100 text-white dark:text-gray-900 rounded-[2rem] font-black text-xs uppercase tracking-[0.2em] hover:shadow-[0_0_30px_rgba(79,70,229,0.3)] dark:hover:shadow-[0_0_30px_rgba(255,255,255,0.2)] active:scale-95 transition-all flex items-center justify-center gap-3 group">
-                  Activate Sync Hub <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                  className="w-full py-4 bg-gradient-to-r from-indigo-600 to-blue-600 dark:from-white dark:to-gray-100 text-white dark:text-gray-900 rounded-xl font-black text-[10px] uppercase tracking-[0.2em] hover:shadow-lg active:scale-95 transition-all flex items-center justify-center gap-3 group">
+                  Activate Sync Hub <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>
             </div>
@@ -348,7 +348,7 @@ const AdminOverview = () => {
               <div className="relative z-10">
                 <div className="flex justify-between items-center mb-10">
                   <div>
-                    <h3 className="text-2xl font-black text-gray-900 dark:text-white tracking-tight">Oversight Update</h3>
+                    <h3 className="text-xl font-black text-gray-900 dark:text-white tracking-tight">Oversight Update</h3>
                     <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mt-1">Project: {editingProject.title}</p>
                   </div>
                   <button onClick={() => setEditingProject(null)} className="w-10 h-10 hover:bg-gray-100 dark:hover:bg-white/10 rounded-xl text-gray-400 flex items-center justify-center transition-all"><X size={20} /></button>
@@ -406,7 +406,7 @@ const AdminOverview = () => {
                   </div>
                   <div>
                     <span className="px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest bg-gray-100 dark:bg-white/5 text-gray-500 mb-3 inline-block border border-gray-100 dark:border-white/5">Requirement Detail</span>
-                    <h3 className="text-3xl font-black text-gray-900 dark:text-white leading-tight tracking-tight">{selectedRequirement.title}</h3>
+                    <h3 className="text-2xl font-black text-gray-900 dark:text-white leading-tight tracking-tight">{selectedRequirement.title}</h3>
                   </div>
                 </div>
 
@@ -488,7 +488,7 @@ const AdminOverview = () => {
                   </div>
                   <div>
                     <span className="px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest bg-gray-100 dark:bg-white/5 text-gray-500 mb-3 inline-block border border-gray-100 dark:border-white/5">Project Details</span>
-                    <h3 className="text-3xl font-black text-gray-900 dark:text-white leading-tight tracking-tight">{selectedProject.title}</h3>
+                    <h3 className="text-2xl font-black text-gray-900 dark:text-white leading-tight tracking-tight">{selectedProject.title}</h3>
                   </div>
                 </div>
 

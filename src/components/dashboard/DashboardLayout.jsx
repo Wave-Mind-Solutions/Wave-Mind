@@ -66,7 +66,7 @@ const Sidebar = ({ role, isOpen, setIsOpen }) => {
   const sidebarContent = (
     <div className={`flex flex-col h-full bg-white dark:bg-[#1e293b] border-r border-gray-200 dark:border-white/5 transition-colors duration-500`}>
       {/* Logo Section */}
-      <div className="p-6">
+      <div className="p-5">
         <Link to="/" className="flex items-center gap-3 group">
           <motion.div
             whileHover={{ rotate: 180, scale: 1.1 }}
@@ -99,7 +99,7 @@ const Sidebar = ({ role, isOpen, setIsOpen }) => {
       </div>
 
       {/* User Status */}
-      <div className="px-6 py-4">
+      <div className="px-5 py-3">
         <div className="relative group">
           <div className="absolute inset-0 bg-blue-600/5 rounded-2xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
           <div className="relative bg-gray-50 dark:bg-white/5 backdrop-blur-md rounded-2xl p-4 border border-gray-100 dark:border-white/5 hover:border-blue-500/20 transition-all">
@@ -234,7 +234,7 @@ const Header = ({ title, setIsSidebarOpen }) => {
   ];
 
   return (
-    <header className="sticky top-0 z-40 bg-white/80 dark:bg-[#0f172a]/80 backdrop-blur-xl border-b border-gray-200 dark:border-white/5 px-6 md:px-8 py-4 transition-colors duration-500">
+    <header className="sticky top-0 z-40 bg-white/80 dark:bg-[#0f172a]/80 backdrop-blur-xl border-b border-gray-200 dark:border-white/5 px-6 md:px-7 py-3 transition-colors duration-500">
       <div className="flex items-center justify-between max-w-[1400px] mx-auto">
         <div className="flex items-center gap-6">
           <button
@@ -378,7 +378,7 @@ const DashboardLayout = ({ children, role, title }) => {
       <div className="lg:ml-72 min-h-screen flex flex-col relative z-10">
         <Header title={title || 'Matrix Core'} setIsSidebarOpen={setIsSidebarOpen} />
 
-        <main className="flex-1 p-6 md:p-8 lg:p-10">
+        <main className="flex-1 p-4 md:p-6 lg:p-8">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}

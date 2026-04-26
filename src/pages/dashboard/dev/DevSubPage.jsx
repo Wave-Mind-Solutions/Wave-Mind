@@ -122,7 +122,7 @@ const DevSubPage = ({ title, type }) => {
               <div className="w-24 h-24 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-8 border border-white/10 shadow-inner">
                 <AlertCircle size={48} className="text-gray-700" />
               </div>
-              <h3 className="text-2xl font-black text-gray-900 dark:text-white mb-2 tracking-tight">Transmission Null</h3>
+              <h3 className="text-xl font-black text-gray-900 dark:text-white mb-2 tracking-tight">Transmission Null</h3>
               <div className="text-gray-500 font-black uppercase tracking-[0.2em] text-[10px]">No synchronized {type} found in the current cycle</div>
             </div>
           </div>
@@ -143,7 +143,7 @@ const DevSubPage = ({ title, type }) => {
                 </div>
                 
                 <div className="relative z-10">
-                  <h3 className="text-2xl font-black text-gray-900 dark:text-white mb-2 tracking-tight group-hover:text-blue-400 transition-colors">{project.title}</h3>
+                   <h3 className="text-xl font-black text-gray-900 dark:text-white mb-2 tracking-tight group-hover:text-blue-400 transition-colors">{project.title}</h3>
                   <div className="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]">Partner: {project.clientId?.fullName || 'Protocol Restricted'}</div>
                 </div>
                 
@@ -185,7 +185,7 @@ const DevSubPage = ({ title, type }) => {
                 </div>
                 
                 <div className="relative z-10">
-                  <h4 className="text-lg font-black text-gray-900 dark:text-white group-hover:text-blue-400 transition-colors tracking-tight line-clamp-2">{task.title}</h4>
+                   <h4 className="text-base font-black text-gray-900 dark:text-white group-hover:text-blue-400 transition-colors tracking-tight line-clamp-2">{task.title}</h4>
                   <div className="text-[10px] text-gray-500 font-black mt-2 uppercase tracking-[0.2em]">{task.projectId?.title || 'General Routine'}</div>
                 </div>
                 
@@ -238,7 +238,7 @@ const DevSubPage = ({ title, type }) => {
                 </div>
                 
                 <div className="relative z-10">
-                  <h3 className="text-2xl font-black text-white mb-2 truncate tracking-tight group-hover:text-blue-400 transition-colors">{file.fileName}</h3>
+                   <h3 className="text-xl font-black text-white mb-2 truncate tracking-tight group-hover:text-blue-400 transition-colors">{file.fileName}</h3>
                   <div className="text-[10px] font-black text-blue-500 uppercase tracking-[0.2em] flex items-center gap-2">
                     <div className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse" />
                     Project: {file.projectId?.title || 'Core Engine'}
@@ -272,7 +272,7 @@ const DevSubPage = ({ title, type }) => {
               <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/10 rounded-full blur-[80px] -mr-32 -mt-32" />
               
               <div className="flex justify-between items-center mb-10 relative z-10">
-                <h3 className="text-2xl font-black text-white flex items-center gap-4 tracking-tight">
+                 <h3 className="text-xl font-black text-white flex items-center gap-4 tracking-tight">
                   <div className="w-12 h-12 rounded-xl bg-blue-600/20 flex items-center justify-center">
                     <FileUp size={24} className="text-blue-500" />
                   </div>
@@ -285,7 +285,7 @@ const DevSubPage = ({ title, type }) => {
               <div className="space-y-8 relative z-10">
                 <div>
                   <div className="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em] mb-3">Operational Target</div>
-                  <div className="text-lg font-black text-white tracking-tight">{uploadModal.title}</div>
+                   <div className="text-base font-black text-white tracking-tight">{uploadModal.title}</div>
                 </div>
 
                 <div>
@@ -347,7 +347,7 @@ const DevSubPage = ({ title, type }) => {
           >
             <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-[80px] -mr-48 -mt-48" />
             <div className="relative z-10">
-              <h3 className="text-3xl font-black tracking-tight mb-2">New Payload Deployment</h3>
+               <h3 className="text-xl font-black tracking-tight mb-2">New Payload Deployment</h3>
               <div className="text-blue-100 font-bold uppercase tracking-widest opacity-80 max-w-md text-xs">Submit mission critical assets to the primary command nexus.</div>
             </div>
             <button onClick={() => toast('Please select an active operation from your dashboard to dispatch assets.')}
@@ -372,7 +372,7 @@ const DevSubPage = ({ title, type }) => {
                 
                 <div className="flex justify-between items-center mb-12 relative z-10">
                   <div>
-                    <h3 className="text-3xl font-black text-white mb-2 tracking-tight">Mission Briefing</h3>
+                     <h3 className="text-xl font-black text-white mb-2 tracking-tight">Mission Briefing</h3>
                     <div className="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]">Operational Protocol Metadata</div>
                   </div>
                   <button onClick={() => setSelectedProject(null)} className="p-3 bg-white/5 hover:bg-white/10 rounded-2xl text-gray-400 hover:text-white transition-all border border-white/10"><X size={20} /></button>
@@ -381,7 +381,7 @@ const DevSubPage = ({ title, type }) => {
                 <div className="space-y-10 relative z-10">
                   <div>
                     <h4 className="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em] mb-3">Operational Title</h4>
-                    <div className="text-2xl font-black text-white tracking-tight">{selectedProject.title}</div>
+                     <div className="text-lg font-black text-white tracking-tight">{selectedProject.title}</div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-10">
@@ -437,7 +437,7 @@ const DevSubPage = ({ title, type }) => {
                             <div className="flex items-center gap-4">
                               <div className={`w-2.5 h-2.5 rounded-full shadow-lg ${task.status === 'Completed' ? 'bg-emerald-500 shadow-emerald-500/20' : 'bg-blue-500 shadow-blue-500/20'}`} />
                               <div>
-                                <div className={`text-base font-black tracking-tight ${task.status === 'Completed' ? 'text-gray-600 line-through' : 'text-white'}`}>{task.title}</div>
+                                 <div className={`text-sm font-black tracking-tight ${task.status === 'Completed' ? 'text-gray-600 line-through' : 'text-white'}`}>{task.title}</div>
                                 <div className="text-[9px] font-black text-gray-500 uppercase tracking-[0.2em] mt-1">{task.status}</div>
                               </div>
                             </div>
@@ -464,7 +464,7 @@ const DevSubPage = ({ title, type }) => {
                     >
                       <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -mr-16 -mt-16" />
                       <div className="relative z-10">
-                        <h4 className="text-lg font-black tracking-tight mb-1">Final Deployment</h4>
+                         <h4 className="text-base font-black tracking-tight mb-1">Final Deployment</h4>
                         <div className="text-[10px] text-blue-100 font-bold uppercase tracking-widest opacity-80">Submit complete project bundle</div>
                       </div>
                       <button onClick={(e) => { e.stopPropagation(); setUploadModal({ title: 'Final Project Submission', projectId: selectedProject }); }}

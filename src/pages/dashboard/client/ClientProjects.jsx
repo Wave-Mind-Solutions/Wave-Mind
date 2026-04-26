@@ -52,7 +52,7 @@ const ClientProjects = () => {
               <Layout size={12} />
               Project Portfolio
             </div>
-            <h1 className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white tracking-tighter">
+            <h1 className="text-3xl font-black text-gray-900 dark:text-white tracking-tighter">
               Manage Your <span className="text-blue-600 dark:text-blue-500">Workstreams</span>
             </h1>
             <p className="text-gray-500 dark:text-gray-400 text-sm font-bold uppercase tracking-widest max-w-xl opacity-80">
@@ -116,7 +116,7 @@ const ClientProjects = () => {
               <div className="w-24 h-24 bg-gray-100 dark:bg-white/5 rounded-3xl flex items-center justify-center mx-auto mb-8 border border-gray-200 dark:border-white/10 shadow-xl">
                 <Briefcase size={48} className="text-gray-400 dark:text-gray-600" />
               </div>
-              <h3 className="text-3xl font-black text-gray-900 dark:text-white mb-4 tracking-tighter">No Workstreams Identified</h3>
+              <h3 className="text-xl font-black text-gray-900 dark:text-white mb-4 tracking-tighter">No Workstreams Identified</h3>
               <p className="text-gray-500 dark:text-gray-400 font-bold uppercase tracking-[0.2em] text-xs leading-relaxed">
                 Adjust your filtration parameters or initiate a new mission requirement to populate your portfolio.
               </p>
@@ -150,7 +150,7 @@ const ClientProjects = () => {
                   </div>
 
                   <div className="relative z-10 flex-grow">
-                    <h3 className="text-2xl font-black text-gray-900 dark:text-white mb-4 tracking-tighter group-hover:text-blue-600 transition-colors leading-tight">{project.title}</h3>
+                    <h3 className="text-xl font-black text-gray-900 dark:text-white mb-4 tracking-tighter group-hover:text-blue-600 transition-colors leading-tight">{project.title}</h3>
                     <p className="text-sm text-gray-500 dark:text-gray-400 font-medium line-clamp-3 leading-relaxed opacity-80 uppercase tracking-wide text-[11px]">{project.description}</p>
                   </div>
 

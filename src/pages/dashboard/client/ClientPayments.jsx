@@ -33,7 +33,7 @@ const ClientPayments = () => {
               <Shield size={12} />
               Verified Financial Protocol
             </div>
-            <h1 className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white tracking-tighter">
+            <h1 className="text-3xl font-black text-gray-900 dark:text-white tracking-tighter">
               Financial <span className="text-emerald-600 dark:text-emerald-500">Inventory</span>
             </h1>
             <p className="text-gray-500 dark:text-gray-400 text-sm font-bold uppercase tracking-widest max-w-xl opacity-80">
@@ -69,7 +69,7 @@ const ClientPayments = () => {
                 </div>
               </div>
               
-              <h3 className="text-5xl font-black text-gray-900 dark:text-white tracking-tighter leading-none">
+              <h3 className="text-2xl font-black text-gray-900 dark:text-white tracking-tighter leading-none">
                 {loading ? <div className="w-32 h-12 bg-gray-100 dark:bg-white/5 animate-pulse rounded-2xl" /> : card.value}
               </h3>
               
@@ -92,7 +92,7 @@ const ClientPayments = () => {
           
           <div className="p-12 border-b border-gray-100 dark:border-white/10 flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
             <div>
-              <h3 className="text-3xl font-black text-gray-900 dark:text-white flex items-center gap-4 tracking-tighter">
+              <h3 className="text-xl font-black text-gray-900 dark:text-white flex items-center gap-4 tracking-tighter">
                 <div className="w-12 h-12 rounded-2xl bg-blue-600/10 flex items-center justify-center">
                   <CreditCard size={24} className="text-blue-600" />
                 </div>
@@ -124,7 +124,7 @@ const ClientPayments = () => {
                 <div className="w-24 h-24 bg-gray-100 dark:bg-white/5 rounded-[2.5rem] flex items-center justify-center mx-auto mb-8 border border-gray-200 dark:border-white/10 shadow-xl">
                   <CreditCard size={48} className="text-gray-300 dark:text-gray-600" />
                 </div>
-                <h4 className="text-3xl font-black text-gray-900 dark:text-white mb-4 tracking-tighter">No Active Transactions</h4>
+                <h4 className="text-xl font-black text-gray-900 dark:text-white mb-4 tracking-tighter">No Active Transactions</h4>
                 <p className="text-gray-500 dark:text-gray-400 font-bold uppercase tracking-[0.2em] text-xs leading-relaxed max-w-xs mx-auto">
                   Historical settlement data and active ledger entries will be manifested here upon synchronization.
                 </p>
@@ -144,7 +144,7 @@ const ClientPayments = () => {
                       </div>
                     </div>
                     <div>
-                      <h4 className="text-2xl font-black text-gray-900 dark:text-white tracking-tighter group-hover:text-blue-600 transition-colors leading-tight">{p.title}</h4>
+                      <h4 className="text-base font-black text-gray-900 dark:text-white tracking-tighter group-hover:text-blue-600 transition-colors leading-tight">{p.title}</h4>
                       <div className="flex flex-wrap items-center gap-6 mt-3">
                         <span className="px-4 py-1.5 bg-gray-100 dark:bg-white/5 rounded-xl border border-gray-200 dark:border-white/5 text-[9px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-[0.2em] shadow-sm">
                           {p.voucherCount} Secure Token{p.voucherCount !== 1 ? 's' : ''}
@@ -159,7 +159,7 @@ const ClientPayments = () => {
                   <div className="flex flex-col sm:flex-row items-center gap-10 w-full md:w-auto justify-between md:justify-end border-t md:border-t-0 border-gray-100 dark:border-white/5 pt-10 md:pt-0">
                     <div className="text-left md:text-right">
                       <p className="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.3em] mb-2">Entity Value</p>
-                      <p className="text-4xl font-black text-gray-900 dark:text-white tracking-tighter">₹{(p.budget || 0).toLocaleString()}</p>
+                      <p className="text-2xl font-black text-gray-900 dark:text-white tracking-tighter">₹{(p.budget || 0).toLocaleString()}</p>
                     </div>
                     <div className={`px-8 py-3 rounded-2xl text-[9px] font-black uppercase tracking-[0.3em] flex items-center gap-3 shadow-2xl ${
                       p.status === 'Completed' ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-500 border border-emerald-500/20' : 'bg-orange-500/10 text-orange-600 dark:text-orange-500 border border-orange-500/20'

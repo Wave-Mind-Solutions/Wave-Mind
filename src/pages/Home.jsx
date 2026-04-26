@@ -151,6 +151,34 @@ const firstColumn = testimonials.slice(0, 3);
 const secondColumn = testimonials.slice(3, 6);
 const thirdColumn = testimonials.slice(6, 9);
 
+const SpotlightCard = ({ children, className = "" }) => {
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [opacity, setOpacity] = useState(0);
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+  };
+
+  return (
+    <div
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setOpacity(1)}
+      onMouseLeave={() => setOpacity(0)}
+      className={`relative overflow-hidden rounded-[2.5rem] border border-slate-200 dark:border-white/10 bg-white/60 dark:bg-gray-800/30 backdrop-blur-md transition-all duration-500 hover:border-blue-500/50 ${className}`}
+    >
+      <div
+        className="pointer-events-none absolute -inset-px transition duration-300"
+        style={{
+          background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgba(59, 130, 246, 0.1), transparent 40%)`,
+          opacity,
+        }}
+      />
+      {children}
+    </div>
+  );
+};
+
 const TestimonialsColumn = ({ testimonials, duration = 30, className = "" }) => {
   return (
     <div className={`flex flex-col gap-6 ${className}`}>
@@ -241,7 +269,7 @@ const Home = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 dark:from-white dark:via-gray-200 dark:to-white bg-clip-text text-transparent"
+              className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 dark:from-white dark:via-gray-200 dark:to-white bg-clip-text text-transparent"
             >
               Build software that
               <br />
@@ -254,7 +282,7 @@ const Home = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-xl text-gray-600 dark:text-gray-300 mb-10 max-w-2xl mx-auto"
+              className="text-lg text-gray-600 dark:text-gray-300 mb-10 max-w-2xl mx-auto"
             >
               We blend artistic vision with technical precision to build SaaS platforms,
               mobile apps, and enterprise tools that scale effortlessly.
@@ -267,10 +295,10 @@ const Home = () => {
               className="flex flex-col sm:flex-row gap-4 justify-center"
             >
               <Link
-                to="/register"
+                to="/contact"
                 className="group relative px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full text-white font-semibold text-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
               >
-                <span className="relative z-10">Get started free</span>
+                <span className="relative z-10">Get Started</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </Link>
               <Link
@@ -293,10 +321,10 @@ const Home = () => {
                   <div className="flex justify-center mb-3">
                     <stat.icon className="w-8 h-8 text-blue-500" />
                   </div>
-                  <h3 className="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400 bg-clip-text text-transparent">
+                  <h3 className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400 bg-clip-text text-transparent">
                     <CountUpItem end={stat.end} suffix={stat.suffix} decimals={stat.decimals} />
                   </h3>
-                  <p className="text-gray-500 dark:text-gray-400 text-sm font-medium mt-2">{stat.label}</p>
+                  <p className="text-gray-500 dark:text-gray-400 text-xs font-medium mt-2">{stat.label}</p>
                 </div>
               ))}
             </motion.div>
@@ -323,10 +351,10 @@ const Home = () => {
               <Box className="w-4 h-4 text-blue-500" />
               <span className="text-sm font-medium text-blue-600 dark:text-blue-400">Our Services</span>
             </motion.div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
               Everything you need to build faster
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400">
+            <p className="text-lg text-gray-600 dark:text-gray-400">
               End-to-end ecosystem for product development. Design, engineering, and deployment under one roof.
             </p>
           </div>
@@ -339,17 +367,17 @@ const Home = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: i * 0.05 }}
                 viewport={{ once: true }}
-                whileHover={{ y: -8, scale: 1.02 }}
-                className="group relative bg-white/60 dark:bg-gray-800/30 backdrop-blur-md rounded-2xl p-8 border border-gray-200 dark:border-white/5 hover:border-blue-500/50 transition-all duration-500 will-change-transform transform-gpu"
               >
-                <div className={`w-14 h-14 rounded-xl bg-gradient-to-r ${service.gradient} p-3 mb-6 shadow-lg`}>
-                  <service.icon className="w-full h-full text-white" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">{service.title}</h3>
-                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">{service.desc}</p>
-                <div className="absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <ArrowRight className="w-5 h-5 text-blue-500" />
-                </div>
+                <SpotlightCard className="p-8 h-full group will-change-transform transform-gpu">
+                  <div className={`w-14 h-14 rounded-2xl bg-gradient-to-r ${service.gradient} p-3 mb-6 shadow-lg group-hover:scale-110 transition-transform duration-500`}>
+                    <service.icon className="w-full h-full text-white" />
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">{service.title}</h3>
+                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed">{service.desc}</p>
+                  <div className="absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-4 group-hover:translate-x-0">
+                    <ArrowRight className="w-5 h-5 text-blue-500" />
+                  </div>
+                </SpotlightCard>
               </motion.div>
             ))}
           </div>
@@ -370,7 +398,7 @@ const Home = () => {
                 <ZapIcon className="w-4 h-4 text-blue-500" />
                 <span className="text-sm font-medium text-blue-600 dark:text-blue-400">Why Choose Us</span>
               </div>
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+              <h2 className="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
                 Unify your entire product lifecycle
               </h2>
               <p className="text-lg text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
@@ -429,10 +457,10 @@ const Home = () => {
               <Activity className="w-4 h-4 text-blue-500" />
               <span className="text-sm font-medium text-blue-600 dark:text-blue-400">Simple Process</span>
             </motion.div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
               How it works
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400">Four simple steps from idea to deployment.</p>
+            <p className="text-lg text-gray-600 dark:text-gray-400">Four simple steps from idea to deployment.</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
@@ -474,10 +502,10 @@ const Home = () => {
               <Star className="w-4 h-4 text-blue-500" />
               <span className="text-sm font-medium text-blue-600 dark:text-blue-400">Testimonials</span>
             </motion.div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
               Loved by founders worldwide
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400">
+            <p className="text-lg text-gray-600 dark:text-gray-400">
               See what our customers have to say about working with us.
             </p>
           </div>
@@ -504,7 +532,7 @@ const Home = () => {
               <Box className="w-4 h-4 text-blue-500" />
               <span className="text-sm font-medium text-blue-600 dark:text-blue-400">FAQ</span>
             </motion.div>
-            <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+            <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
               Frequently asked questions
             </h2>
           </div>
@@ -562,19 +590,19 @@ const Home = () => {
             <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width=%2260%22%20height=%2260%22%20viewBox=%220%200%2060%2060%22%20xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg%20fill=%22none%22%20fill-rule=%22evenodd%22%3E%3Cg%20fill=%22%23ffffff%22%20fill-opacity=%220.05%22%3E%3Cpath%20d=%22M36%2034v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6%2034v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6%204V0H4v4H0v2h4v4h2V6h4V4H6z%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20" />
 
             <div className="relative z-10">
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
                 Ready to scale your vision?
               </h2>
-              <p className="text-xl text-blue-100 mb-10 max-w-2xl mx-auto">
+              <p className="text-lg text-blue-100 mb-10 max-w-2xl mx-auto">
                 Join visionary companies that use WaveMind to build, collaborate,
                 and ship high-end digital products faster.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
-                  to="/register"
+                  to="/contact"
                   className="group px-8 py-4 bg-white rounded-full text-gray-900 font-semibold text-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
                 >
-                  Get started free
+                  Get Started
                 </Link>
                 <Link
                   to="/contact"

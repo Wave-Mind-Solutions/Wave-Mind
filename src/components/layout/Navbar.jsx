@@ -168,6 +168,7 @@ const Navbar = () => {
                 </div>
               ) : (
                 <div className="hidden md:flex items-center gap-3">
+                  {/* 
                   <Link
                     to="/login"
                     className="text-sm font-bold text-gray-600 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors px-4"
@@ -179,6 +180,13 @@ const Navbar = () => {
                     className="px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm font-black shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 hover:-translate-y-0.5 active:translate-y-0 transition-all"
                   >
                     Build Now
+                  </Link>
+                  */}
+                  <Link
+                    to="/contact"
+                    className="px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm font-black shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 hover:-translate-y-0.5 active:translate-y-0 transition-all"
+                  >
+                    Get Started
                   </Link>
                 </div>
               )}
@@ -255,6 +263,7 @@ const Navbar = () => {
 
                 {!user && (
                   <div className="space-y-4 pt-8 border-t border-gray-100 dark:border-white/5">
+                    {/* 
                     <Link
                       to="/login"
                       onClick={() => setIsOpen(false)}
@@ -262,8 +271,9 @@ const Navbar = () => {
                     >
                       Login
                     </Link>
+                    */}
                     <Link
-                      to="/register"
+                      to="/contact"
                       onClick={() => setIsOpen(false)}
                       className="flex items-center justify-center w-full py-4 rounded-2xl text-lg font-bold text-white bg-gradient-to-r from-blue-600 to-purple-600 shadow-xl"
                     >

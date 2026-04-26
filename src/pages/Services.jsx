@@ -93,6 +93,34 @@ const servicesStats = [
   { value: "24/7", label: "Support Available", icon: Rocket }
 ];
 
+const ServiceSpotlightCard = ({ children, className = "" }) => {
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [opacity, setOpacity] = useState(0);
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+  };
+
+  return (
+    <div
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setOpacity(1)}
+      onMouseLeave={() => setOpacity(0)}
+      className={`relative overflow-hidden rounded-[2.5rem] border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm transition-all duration-300 hover:border-blue-500/50 ${className}`}
+    >
+      <div
+        className="pointer-events-none absolute -inset-px transition duration-300"
+        style={{
+          background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgba(59, 130, 246, 0.1), transparent 40%)`,
+          opacity,
+        }}
+      />
+      {children}
+    </div>
+  );
+};
+
 const Services = () => {
   const { theme } = useTheme();
   const containerRef = useRef(null);
@@ -156,7 +184,7 @@ const Services = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6"
+              className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6"
             >
               <span className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 dark:from-white dark:via-gray-200 dark:to-white bg-clip-text text-transparent">
                 Our
@@ -171,7 +199,7 @@ const Services = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed"
+              className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed"
             >
               Comprehensive technology solutions designed to accelerate growth and transform your digital presence.
             </motion.p>
@@ -238,14 +266,10 @@ const Services = () => {
                 viewport={{ once: true }}
                 onHoverStart={() => setHoveredCard(idx)}
                 onHoverEnd={() => setHoveredCard(null)}
-                className="group relative"
               >
-                {/* Glow Effect on Hover */}
-                <div className={`absolute -inset-0.5 bg-gradient-to-r ${service.gradient} rounded-3xl blur-xl opacity-0 group-hover:opacity-30 transition duration-700`} />
-
-                <div className="relative bg-white dark:bg-gray-800/50 backdrop-blur-sm rounded-3xl p-8 border border-gray-200 dark:border-gray-700 hover:border-transparent transition-all duration-300 h-full flex flex-col">
+                <ServiceSpotlightCard className="p-8 h-full group flex flex-col">
                   {/* Icon */}
-                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${service.iconGradient} flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${service.iconGradient} flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-500`}>
                     <service.icon className="w-8 h-8 text-white" strokeWidth={1.5} />
                   </div>
 
@@ -262,7 +286,7 @@ const Services = () => {
                   {/* Features */}
                   <div className="flex flex-wrap gap-2 mb-6">
                     {service.features.map((feature, i) => (
-                      <span key={i} className={`text-xs px-3 py-1 rounded-full bg-gradient-to-r ${service.gradient}/10 text-gray-700 dark:text-gray-300 border border-${service.color}-200 dark:border-${service.color}-800`}>
+                      <span key={i} className={`text-xs px-3 py-1 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20`}>
                         {feature}
                       </span>
                     ))}
@@ -278,7 +302,7 @@ const Services = () => {
                         transition={{ delay: i * 0.05 }}
                         className="flex items-center gap-3 text-gray-700 dark:text-gray-300 font-medium text-sm"
                       >
-                        <CheckCircle2 className={`w-5 h-5 text-${service.color}-500 shrink-0`} />
+                        <CheckCircle2 className={`w-5 h-5 text-blue-500 shrink-0`} />
                         {cap}
                       </motion.li>
                     ))}
@@ -291,10 +315,10 @@ const Services = () => {
                       className={`inline-flex items-center gap-2 text-sm font-semibold bg-gradient-to-r ${service.gradient} bg-clip-text text-transparent group-hover:gap-3 transition-all`}
                     >
                       Learn More
-                      <ArrowRight className="w-4 h-4" />
+                      <ArrowRight className="w-4 h-4 text-blue-500" />
                     </Link>
                   </div>
-                </div>
+                </ServiceSpotlightCard>
               </motion.div>
             ))}
           </div>
@@ -315,10 +339,10 @@ const Services = () => {
               <Rocket className="w-4 h-4 text-blue-500" />
               <span className="text-sm font-medium text-blue-600 dark:text-blue-400">Our Process</span>
             </motion.div>
-            <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+            <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
               How We Bring Ideas to Life
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 mt-4 max-w-2xl mx-auto">
+            <p className="text-lg text-gray-600 dark:text-gray-400 mt-4 max-w-2xl mx-auto">
               A proven methodology that ensures success at every stage
             </p>
           </div>
@@ -367,10 +391,10 @@ const Services = () => {
               <Code className="w-4 h-4 text-blue-500" />
               <span className="text-sm font-medium text-blue-600 dark:text-blue-400">Tech Stack</span>
             </motion.div>
-            <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+            <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
               Cutting-Edge Technologies
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 mt-4">
+            <p className="text-lg text-gray-600 dark:text-gray-400 mt-4">
               We use the latest tools and frameworks to build modern solutions
             </p>
           </div>

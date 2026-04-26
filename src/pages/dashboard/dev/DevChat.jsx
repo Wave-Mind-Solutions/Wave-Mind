@@ -138,7 +138,7 @@ const DevChat = () => {
                   {initials(activeConv.participant?.fullName)}
                 </div>
                 <div>
-                  <h4 className="font-black text-white text-lg tracking-tight">{activeConv.participant?.fullName}</h4>
+                   <h4 className="font-black text-white text-base tracking-tight">{activeConv.participant?.fullName}</h4>
                   <div className="flex items-center gap-2 mt-0.5">
                     <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
                     <div className="text-[10px] text-gray-500 font-black uppercase tracking-[0.2em]">{activeConv.participant?.role} Node</div>
@@ -161,7 +161,7 @@ const DevChat = () => {
                   <div className="w-20 h-20 bg-white/5 rounded-[2rem] flex items-center justify-center mx-auto mb-6 border border-white/10 shadow-inner">
                     <MessageSquare size={40} className="text-gray-700" />
                   </div>
-                  <h3 className="text-xl font-black text-white mb-2 tracking-tight">Initiate Transmission</h3>
+                   <h3 className="text-xl font-black text-white mb-2 tracking-tight">Initiate Transmission</h3>
                   <div className="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]">Zero data points in current buffer</div>
                 </div>
               ) :
@@ -215,7 +215,7 @@ const DevChat = () => {
                 <MessageSquare size={64} className="text-blue-500/40" />
               </div>
             </div>
-            <h3 className="text-3xl font-black text-white mb-4 tracking-tighter">Neural Link Idle</h3>
+             <h3 className="text-xl font-black text-white mb-4 tracking-tighter">Neural Link Idle</h3>
             <div className="text-[10px] font-black text-gray-500 uppercase tracking-[0.4em] max-w-xs leading-relaxed">Select an active node to establish a high-bandwidth tactical link</div>
           </div>
         )}

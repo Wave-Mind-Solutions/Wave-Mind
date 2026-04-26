@@ -149,7 +149,7 @@ const AdminSubPage = ({ title, type }) => {
 
   return (
     <DashboardLayout role="admin" title={title}>
-      <div className="max-w-[1400px] mx-auto space-y-10 selection:bg-blue-500/30">
+      <div className="max-w-[1400px] mx-auto space-y-6 selection:bg-blue-500/30">
         
         {/* Header & Search */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
@@ -162,27 +162,27 @@ const AdminSubPage = ({ title, type }) => {
               <Layout size={12} />
               Administrative Interface
             </div>
-            <h1 className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white tracking-tighter">
+            <h1 className="text-3xl font-black text-gray-900 dark:text-white tracking-tighter">
               {title} <span className="text-blue-600 dark:text-blue-500">Control</span>
             </h1>
           </div>
 
           <div className="relative group w-full lg:w-[450px]">
-            <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 transition-colors" size={20} />
+            <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 transition-colors" size={18} />
             <input
               type="text"
               placeholder={`Scan ${type} stream...`}
               value={search}
               onChange={e => setSearch(e.target.value)}
-              className="w-full pl-16 pr-8 py-5 bg-white dark:bg-white/5 rounded-3xl border border-gray-200 dark:border-white/10 outline-none focus:border-blue-500/50 transition-all text-sm font-black text-gray-900 dark:text-white placeholder:text-gray-400 tracking-wide uppercase tracking-[0.1em] shadow-sm"
+              className="w-full pl-14 pr-8 py-4 bg-white dark:bg-white/5 rounded-2xl border border-gray-200 dark:border-white/10 outline-none focus:border-blue-500/50 transition-all text-sm font-black text-gray-900 dark:text-white placeholder:text-gray-400 tracking-wide uppercase tracking-[0.1em] shadow-sm"
             />
           </div>
         </div>
 
         {/* Analytics Section for Reports */}
         {type === 'reports' && (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div   className="premium-glass p-8 rounded-[3rem] border border-gray-100 dark:border-white/10 shadow-2xl relative overflow-hidden group">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div   className="premium-glass p-6 rounded-3xl border border-gray-100 dark:border-white/10 shadow-xl relative overflow-hidden group">
               <div className="absolute top-0 right-0 w-32 h-32 bg-blue-600/5 rounded-full blur-[40px] -mr-16 -mt-16" />
               <h4 className="text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-8">Financial Velocity</h4>
               <div className="flex items-end gap-3 h-32 mb-8">
@@ -190,11 +190,11 @@ const AdminSubPage = ({ title, type }) => {
                   <div key={i}    className="flex-1 bg-gradient-to-t from-blue-600 to-indigo-400 rounded-t-xl shadow-lg" />
                 ))}
               </div>
-              <p className="text-4xl font-black text-gray-900 dark:text-white tracking-tighter leading-none">₹{(items.reduce((acc, curr) => acc + (curr.budget || 0), 0)).toLocaleString()}</p>
+              <p className="text-2xl font-black text-gray-900 dark:text-white tracking-tighter leading-none">₹{(items.reduce((acc, curr) => acc + (curr.budget || 0), 0)).toLocaleString()}</p>
               <p className="text-[10px] font-black text-emerald-500 uppercase tracking-widest mt-4 flex items-center gap-2"><TrendingUp size={12}/> +12.4% Influx</p>
             </div>
             
-            <div    className="premium-glass p-8 rounded-[3rem] border border-gray-100 dark:border-white/10 shadow-2xl relative overflow-hidden">
+            <div    className="premium-glass p-6 rounded-3xl border border-gray-100 dark:border-white/10 shadow-xl relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-600/5 rounded-full blur-[40px] -mr-16 -mt-16" />
               <h4 className="text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-8">Workload Distribution</h4>
               <div className="space-y-6">
@@ -216,7 +216,7 @@ const AdminSubPage = ({ title, type }) => {
               </div>
             </div>
 
-            <div    className="premium-glass p-8 rounded-[3rem] border border-gray-100 dark:border-white/10 shadow-2xl relative overflow-hidden group">
+            <div    className="premium-glass p-6 rounded-3xl border border-gray-100 dark:border-white/10 shadow-xl relative overflow-hidden group">
               <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-600/5 rounded-full blur-[40px] -mr-16 -mt-16" />
               <h4 className="text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-8">System Optimization</h4>
               <div className="flex items-center justify-center py-4">
@@ -225,7 +225,7 @@ const AdminSubPage = ({ title, type }) => {
                     <circle cx="64" cy="64" r="58" stroke="currentColor" strokeWidth="10" fill="transparent" className="text-gray-100 dark:text-white/5" />
                     <circle cx="64" cy="64" r="58" stroke="currentColor" strokeWidth="10" fill="transparent" strokeDasharray={364}    className="text-emerald-500" />
                   </svg>
-                  <span className="absolute text-3xl font-black text-gray-900 dark:text-white tracking-tighter">85%</span>
+                   <span className="absolute text-2xl font-black text-gray-900 dark:text-white tracking-tighter">85%</span>
                 </div>
               </div>
               <p className="text-center text-[10px] font-black text-gray-400 uppercase tracking-widest mt-8 flex items-center justify-center gap-2">
@@ -237,26 +237,26 @@ const AdminSubPage = ({ title, type }) => {
 
         {/* Main Content Grid */}
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
             {Array(6).fill(0).map((_, i) => (
-              <div key={i} className="h-80 bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[3.5rem] animate-pulse" />
+              <div key={i} className="h-72 bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-3xl animate-pulse" />
             ))}
           </div>
         ) : filtered.length === 0 ? (
-          <div className="text-center py-32 premium-glass rounded-[4rem] border border-gray-100 dark:border-white/10 shadow-2xl relative overflow-hidden">
+          <div className="text-center py-24 premium-glass rounded-3xl border border-gray-100 dark:border-white/10 shadow-xl relative overflow-hidden">
              <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600/5 rounded-full blur-[100px] -mr-48 -mt-48" />
              <div className="relative z-10 max-w-md mx-auto">
                 <div className="w-24 h-24 bg-gray-100 dark:bg-white/5 rounded-3xl flex items-center justify-center mx-auto mb-8 border border-gray-200 dark:border-white/10 shadow-xl">
                   <Activity size={48} className="text-gray-300 dark:text-gray-700" />
                 </div>
-                <h3 className="text-3xl font-black text-gray-900 dark:text-white mb-4 tracking-tighter uppercase tracking-[0.05em]">Stream Idle</h3>
+                 <h3 className="text-xl font-black text-gray-900 dark:text-white mb-4 tracking-tighter uppercase tracking-[0.05em]">Stream Idle</h3>
                 <p className="text-gray-500 dark:text-gray-400 font-bold uppercase tracking-[0.2em] text-xs leading-relaxed">
                   No operational data detected in the {type} frequency. Initialize a new uplink to populate this node.
                 </p>
              </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
             {filtered.map((item, idx) => {
               // Requirement card
               if (type === 'requirements') return (
@@ -267,12 +267,12 @@ const AdminSubPage = ({ title, type }) => {
                   
                   onClick={() => setSelectedDetail(item)}
                   
-                  className="premium-glass rounded-[3.5rem] p-10 border border-gray-100 dark:border-white/10 shadow-2xl hover:bg-gray-50 dark:hover:bg-white/5 transition-all flex flex-col gap-10 cursor-pointer group relative overflow-hidden"
+                  className="premium-glass rounded-3xl p-7 border border-gray-100 dark:border-white/10 shadow-xl hover:bg-gray-50 dark:hover:bg-white/5 transition-all flex flex-col gap-8 cursor-pointer group relative overflow-hidden"
                 >
                   <div className="absolute top-0 right-0 w-40 h-40 bg-blue-600/5 rounded-full blur-[60px] -mr-20 -mt-20 group-hover:bg-blue-600/10 transition-all duration-700" />
                   
                   <div className="flex items-center justify-between relative z-10">
-                    <div className="w-16 h-16 rounded-2xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-blue-600 dark:text-blue-500 flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform">
+                    <div className="w-12 h-12 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-blue-600 dark:text-blue-500 flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
                       {icon}
                     </div>
                     <span className={`px-5 py-2 rounded-2xl text-[9px] font-black uppercase tracking-[0.2em] shadow-xl border ${reqStatusColor[item.status] || 'bg-gray-100 dark:bg-white/5 text-gray-500 border-gray-200 dark:border-white/10'}`}>
@@ -281,17 +281,17 @@ const AdminSubPage = ({ title, type }) => {
                   </div>
 
                   <div className="relative z-10 flex-grow">
-                    <h3 className="text-2xl font-black text-gray-900 dark:text-white mb-2 tracking-tighter group-hover:text-blue-600 transition-colors line-clamp-1 leading-tight">{item.title}</h3>
+                    <h3 className="text-xl font-black text-gray-900 dark:text-white mb-2 tracking-tighter group-hover:text-blue-600 transition-colors line-clamp-1 leading-tight">{item.title}</h3>
                     <p className="text-[10px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-[0.3em] mb-6">Origin: {item.clientId?.fullName || 'External Entity'}</p>
                     <p className="text-[11px] text-gray-500 dark:text-gray-400 font-bold uppercase tracking-wider line-clamp-3 leading-relaxed mb-6 opacity-80">{item.description}</p>
                   </div>
 
                   <div className="mt-auto space-y-6 relative z-10">
                     <div className="flex flex-wrap gap-3">
-                      <span className="px-5 py-2.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-500 rounded-2xl text-[10px] font-black uppercase tracking-widest border border-emerald-500/20 shadow-xl">
+                      <span className="px-4 py-2 bg-emerald-500/10 text-emerald-600 dark:text-emerald-500 rounded-xl text-[10px] font-black uppercase tracking-widest border border-emerald-500/20 shadow-lg">
                         ₹{(item.budget || 0).toLocaleString()}
                       </span>
-                      <span className={`px-5 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl border ${
+                      <span className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg border ${
                         item.priority === 'Extreme' ? 'bg-red-500/10 text-red-500 border-red-500/20 shadow-red-500/10' : 
                         item.priority === 'High' ? 'bg-orange-500/10 text-orange-500 border-orange-500/20' : 
                         'bg-gray-100 dark:bg-white/5 text-gray-500 border-gray-200 dark:border-white/5'
@@ -325,12 +325,12 @@ const AdminSubPage = ({ title, type }) => {
                   
                   onClick={() => setSelectedDetail(item)}
                   
-                  className="premium-glass rounded-[3.5rem] p-10 border border-gray-100 dark:border-white/10 shadow-2xl hover:bg-gray-50 dark:hover:bg-white/5 transition-all flex flex-col gap-10 cursor-pointer group relative overflow-hidden"
+                  className="premium-glass rounded-3xl p-7 border border-gray-100 dark:border-white/10 shadow-xl hover:bg-gray-50 dark:hover:bg-white/5 transition-all flex flex-col gap-8 cursor-pointer group relative overflow-hidden"
                 >
                   <div className="absolute top-0 right-0 w-40 h-40 bg-indigo-600/5 rounded-full blur-[60px] -mr-20 -mt-20 group-hover:bg-indigo-600/10 transition-all duration-700" />
                   
                   <div className="flex items-center justify-between relative z-10">
-                    <div className="w-16 h-16 rounded-2xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform">
+                    <div className="w-12 h-12 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
                       {icon}
                     </div>
                     <span className="px-5 py-2 rounded-2xl text-[9px] font-black uppercase tracking-[0.2em] shadow-xl border bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20">
@@ -339,7 +339,7 @@ const AdminSubPage = ({ title, type }) => {
                   </div>
 
                   <div className="relative z-10">
-                    <h3 className="text-2xl font-black text-gray-900 dark:text-white mb-4 tracking-tighter group-hover:text-indigo-600 transition-colors line-clamp-1 leading-tight">{item.title}</h3>
+                    <h3 className="text-xl font-black text-gray-900 dark:text-white mb-4 tracking-tighter group-hover:text-indigo-600 transition-colors line-clamp-1 leading-tight">{item.title}</h3>
                     <div className="flex flex-wrap gap-2">
                       {item.assignedTeam?.length > 0 ? (
                         item.assignedTeam.slice(0, 3).map((dev, i) => (
@@ -378,19 +378,19 @@ const AdminSubPage = ({ title, type }) => {
                   <div className="grid grid-cols-3 gap-4 relative z-10 pt-4">
                     <button 
                       onClick={(e) => { e.stopPropagation(); setEditingProject({ ...item }); }}
-                      className="py-5 bg-white dark:bg-white/5 hover:bg-gray-100 dark:hover:bg-white/10 text-gray-900 dark:text-white rounded-[1.8rem] text-[10px] font-black uppercase tracking-widest border border-gray-200 dark:border-white/10 transition-all active:scale-95 shadow-md"
+                      className="py-4 bg-white dark:bg-white/5 hover:bg-gray-100 dark:hover:bg-white/10 text-gray-900 dark:text-white rounded-xl text-[10px] font-black uppercase tracking-widest border border-gray-200 dark:border-white/10 transition-all active:scale-95 shadow-md"
                     >
                       Sync
                     </button>
                     <button 
                       onClick={(e) => { e.stopPropagation(); setAssignModal(item); setSelectedDevs(item.assignedTeam?.map(d => d._id) || []); }}
-                      className="py-5 bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 rounded-[1.8rem] text-[10px] font-black uppercase tracking-widest border border-indigo-500/20 hover:bg-indigo-600 hover:text-white transition-all active:scale-95 flex items-center justify-center gap-2 shadow-md"
+                      className="py-4 bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 rounded-xl text-[10px] font-black uppercase tracking-widest border border-indigo-500/20 hover:bg-indigo-600 hover:text-white transition-all active:scale-95 flex items-center justify-center gap-2 shadow-md"
                     >
                       <UserPlus size={16} /> Team
                     </button>
                     <button 
                       onClick={(e) => { e.stopPropagation(); setTaskModal(item); }}
-                      className="py-5 bg-blue-500/10 text-blue-600 dark:text-blue-500 rounded-[1.8rem] text-[10px] font-black uppercase tracking-widest border border-blue-500/20 hover:bg-blue-600 hover:text-white transition-all active:scale-95 flex items-center justify-center gap-2 shadow-md"
+                      className="py-4 bg-blue-500/10 text-blue-600 dark:text-blue-500 rounded-xl text-[10px] font-black uppercase tracking-widest border border-blue-500/20 hover:bg-blue-600 hover:text-white transition-all active:scale-95 flex items-center justify-center gap-2 shadow-md"
                     >
                       <Zap size={16} /> Task
                     </button>
@@ -408,14 +408,13 @@ const AdminSubPage = ({ title, type }) => {
                      
                      
                     
-                    
-                    className="premium-glass rounded-[3.5rem] p-10 border border-gray-100 dark:border-white/10 shadow-2xl hover:bg-gray-50 dark:hover:bg-white/5 transition-all flex flex-col gap-10 group relative overflow-hidden"
+                    className="premium-glass rounded-3xl p-7 border border-gray-100 dark:border-white/10 shadow-xl hover:bg-gray-50 dark:hover:bg-white/5 transition-all flex flex-col gap-8 group relative overflow-hidden"
                   >
                     <div className="absolute top-0 right-0 w-40 h-40 bg-blue-600/5 rounded-full blur-[60px] -mr-20 -mt-20 group-hover:bg-blue-600/10 transition-all duration-700" />
                     
                     <div className="flex items-center justify-between relative z-10">
-                      <div className={`w-20 h-20 rounded-[2.2rem] ${colorClass} flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform border`}>
-                        <DevIcon size={36} />
+                      <div className={`w-16 h-16 rounded-2xl ${colorClass} flex items-center justify-center shadow-xl group-hover:scale-105 transition-transform border`}>
+                        <DevIcon size={28} />
                       </div>
                       <span className="px-5 py-2.5 rounded-2xl text-[9px] font-black uppercase tracking-[0.2em] bg-emerald-500/10 text-emerald-600 dark:text-emerald-500 border border-emerald-500/20 shadow-xl flex items-center gap-3">
                         <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.5)]" /> Operational Node
@@ -423,7 +422,7 @@ const AdminSubPage = ({ title, type }) => {
                     </div>
 
                     <div className="relative z-10">
-                      <h3 className="text-2xl font-black text-gray-900 dark:text-white mb-2 tracking-tighter group-hover:text-blue-600 transition-colors">{item.fullName}</h3>
+                      <h3 className="text-xl font-black text-gray-900 dark:text-white mb-2 tracking-tighter group-hover:text-blue-600 transition-colors">{item.fullName}</h3>
                       <p className="text-[11px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em]">{item.email}</p>
                     </div>
 
@@ -435,7 +434,7 @@ const AdminSubPage = ({ title, type }) => {
                         <span className="text-[10px] font-black text-gray-900 dark:text-white uppercase tracking-[0.2em]">{item.developerType || 'Specialist'} Infrastructure</span>
                       </div>
                       
-                      <button className="w-full py-6 bg-gradient-to-r from-[#1e293b] to-[#0f172a] dark:from-white dark:to-gray-100 text-white dark:text-gray-900 rounded-[2rem] font-black text-[10px] uppercase tracking-[0.3em] hover:shadow-2xl active:scale-95 transition-all flex items-center justify-center gap-4 group/btn shadow-xl">
+                      <button className="w-full py-4 bg-gradient-to-r from-[#1e293b] to-[#0f172a] dark:from-white dark:to-gray-100 text-white dark:text-gray-900 rounded-xl font-black text-[10px] uppercase tracking-[0.3em] hover:shadow-xl active:scale-95 transition-all flex items-center justify-center gap-4 group/btn shadow-md">
                         Operational Intel <ChevronRight size={18} className="group-hover/btn:translate-x-2 transition-transform" />
                       </button>
                     </div>
@@ -450,14 +449,13 @@ const AdminSubPage = ({ title, type }) => {
                    
                    
                   
-                  
-                  className="premium-glass rounded-[3.5rem] p-10 border border-gray-100 dark:border-white/10 shadow-2xl hover:bg-gray-50 dark:hover:bg-white/5 transition-all flex flex-col gap-10 group relative overflow-hidden"
+                  className="premium-glass rounded-3xl p-7 border border-gray-100 dark:border-white/10 shadow-xl hover:bg-gray-50 dark:hover:bg-white/5 transition-all flex flex-col gap-8 group relative overflow-hidden"
                 >
                   <div className="absolute top-0 right-0 w-40 h-40 bg-indigo-600/5 rounded-full blur-[60px] -mr-20 -mt-20" />
                   
                   <div className="flex items-center justify-between relative z-10">
-                    <div className="w-16 h-16 rounded-2xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform">
-                      <Folder size={28} />
+                    <div className="w-12 h-12 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
+                      <Folder size={22} />
                     </div>
                     <span className="px-5 py-2 rounded-2xl text-[9px] font-black uppercase tracking-[0.2em] bg-gray-100 dark:bg-white/5 text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-white/10 shadow-xl">
                       {item.fileType?.toUpperCase() || 'DATA'} Asset
@@ -465,15 +463,15 @@ const AdminSubPage = ({ title, type }) => {
                   </div>
 
                   <div className="relative z-10 flex-grow">
-                    <h3 className="text-2xl font-black text-gray-900 dark:text-white mb-3 tracking-tighter group-hover:text-indigo-600 transition-colors truncate leading-tight">{item.fileName}</h3>
+                    <h3 className="text-xl font-black text-gray-900 dark:text-white mb-3 tracking-tighter group-hover:text-indigo-600 transition-colors truncate leading-tight">{item.fileName}</h3>
                     <div className="flex items-center gap-4">
                       <div className="w-3 h-3 rounded-full bg-indigo-500 shadow-[0_0_10px_rgba(99,102,241,0.5)]" />
                       <p className="text-[10px] font-black text-indigo-600 dark:text-indigo-400 uppercase tracking-[0.2em] truncate">Vault: {item.projectId?.title || 'System Core'}</p>
                     </div>
                   </div>
 
-                  <div className="relative z-10 p-6 bg-white dark:bg-white/5 rounded-[2.5rem] border border-gray-100 dark:border-white/10 flex items-center gap-5 shadow-sm group-hover:bg-gray-50 dark:group-hover:bg-white/10 transition-colors">
-                    <div className="w-14 h-14 rounded-2xl bg-indigo-600 text-white flex items-center justify-center text-lg font-black shadow-2xl">
+                  <div className="relative z-10 p-5 bg-white dark:bg-white/5 rounded-3xl border border-gray-100 dark:border-white/10 flex items-center gap-4 shadow-sm group-hover:bg-gray-50 dark:group-hover:bg-white/10 transition-colors">
+                    <div className="w-11 h-11 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-base font-black shadow-xl">
                       {item.uploadedBy?.fullName?.split(' ').map(n=>n[0]).join('') || 'U'}
                     </div>
                     <div>
@@ -488,8 +486,8 @@ const AdminSubPage = ({ title, type }) => {
                       <span className="text-xs font-black text-gray-900 dark:text-gray-300 uppercase tracking-widest">{new Date(item.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</span>
                     </div>
                     <a href={item.fileUrl} target="_blank" rel="noreferrer"
-                      className="px-8 py-5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-[1.8rem] hover:shadow-2xl transition-all flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.2em] active:scale-95 shadow-xl">
-                      <Download size={20} /> Pull Asset
+                      className="px-6 py-4 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-xl hover:shadow-lg transition-all flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.2em] active:scale-95 shadow-md">
+                      <Download size={18} /> Pull Asset
                     </a>
                   </div>
                 </div>
@@ -510,7 +508,7 @@ const AdminSubPage = ({ title, type }) => {
                 
                 <div className="flex justify-between items-center mb-12 relative z-10">
                   <div>
-                    <h3 className="text-3xl font-black text-gray-900 dark:text-white tracking-tighter mb-2 uppercase tracking-[0.05em]">Assemble Special Ops Team</h3>
+                    <h3 className="text-xl font-black text-gray-900 dark:text-white tracking-tighter mb-2 uppercase tracking-[0.05em]">Assemble Special Ops Team</h3>
                     <p className="text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-[0.3em]">Project: <span className="text-blue-600 dark:text-blue-400">{assignModal.title}</span></p>
                   </div>
                   <button onClick={() => setAssignModal(null)} className="w-14 h-14 hover:bg-gray-100 dark:hover:bg-white/10 rounded-2xl text-gray-400 flex items-center justify-center transition-all"><X size={28} /></button>
@@ -536,7 +534,7 @@ const AdminSubPage = ({ title, type }) => {
                               <DevIcon size={28} />
                             </div>
                             <div>
-                              <p className="font-black text-gray-900 dark:text-white text-lg tracking-tighter">{dev.fullName}</p>
+                              <p className="font-black text-gray-900 dark:text-white text-base tracking-tighter">{dev.fullName}</p>
                               <p className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.3em] mt-1">{dev.developerType || 'Specialist'} UNIT</p>
                             </div>
                           </div>
@@ -553,7 +551,7 @@ const AdminSubPage = ({ title, type }) => {
                   <div className="pt-10 border-t border-gray-100 dark:border-white/10 flex items-center justify-between gap-10">
                     <div className="flex flex-col">
                       <span className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.3em] mb-2">Team Config</span>
-                      <span className="text-2xl font-black text-gray-900 dark:text-white tracking-tighter">{selectedDevs.length} Units Active</span>
+                      <span className="text-xl font-black text-gray-900 dark:text-white tracking-tighter">{selectedDevs.length} Units Active</span>
                     </div>
                     <button 
                       onClick={handleAssignTeam}
@@ -582,7 +580,7 @@ const AdminSubPage = ({ title, type }) => {
                 <div className="relative z-10">
                   <div className="flex justify-between items-center mb-14">
                     <div>
-                      <h3 className="text-4xl font-black text-gray-900 dark:text-white tracking-tighter uppercase tracking-[0.05em]">{type === 'requirements' ? 'Data Ingestion' : 'Operational'} Intel</h3>
+                      <h3 className="text-2xl font-black text-gray-900 dark:text-white tracking-tighter uppercase tracking-[0.05em]">{type === 'requirements' ? 'Data Ingestion' : 'Operational'} Intel</h3>
                       <p className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.4em] mt-3 ml-0.5">Configuration Manifest • Matrix Node V3</p>
                     </div>
                     <button onClick={() => setSelectedDetail(null)} className="w-16 h-16 hover:bg-gray-100 dark:hover:bg-white/10 rounded-[1.8rem] text-gray-400 flex items-center justify-center transition-all shadow-xl"><X size={32} /></button>
@@ -591,7 +589,7 @@ const AdminSubPage = ({ title, type }) => {
                   <div className="space-y-12">
                     <div>
                       <h4 className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.4em] mb-4">Objective Identifier</h4>
-                      <p className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white tracking-tighter leading-none">{selectedDetail.title}</p>
+                      <p className="text-3xl font-black text-gray-900 dark:text-white tracking-tighter leading-none">{selectedDetail.title}</p>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
@@ -603,7 +601,7 @@ const AdminSubPage = ({ title, type }) => {
                       </div>
                       <div className="p-8 bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-[3rem] shadow-sm">
                         <h4 className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.3em] mb-6">{type === 'requirements' ? 'Allocated Resource' : 'Operational Flux'}</h4>
-                        <p className="text-4xl font-black text-gray-900 dark:text-white tracking-tighter">{type === 'requirements' ? `₹${(selectedDetail.budget || 0).toLocaleString()}` : `${selectedDetail.progress}% Sync`}</p>
+                        <p className="text-2xl font-black text-gray-900 dark:text-white tracking-tighter">{type === 'requirements' ? `₹${(selectedDetail.budget || 0).toLocaleString()}` : `${selectedDetail.progress}% Sync`}</p>
                       </div>
                     </div>
 
@@ -634,7 +632,7 @@ const AdminSubPage = ({ title, type }) => {
                         </div>
                         <div>
                           <h4 className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.4em] mb-2">Entity Source</h4>
-                          <p className="text-2xl font-black text-gray-900 dark:text-white tracking-tighter leading-none">{selectedDetail.clientId?.fullName || 'External Client'}</p>
+                          <p className="text-xl font-black text-gray-900 dark:text-white tracking-tighter leading-none">{selectedDetail.clientId?.fullName || 'External Client'}</p>
                           <p className="text-xs font-black text-gray-400 dark:text-gray-500 mt-2 uppercase tracking-widest">{selectedDetail.clientId?.email || ''}</p>
                         </div>
                       </div>
@@ -662,14 +660,14 @@ const AdminSubPage = ({ title, type }) => {
                 
                 <div className="relative z-10">
                   <div className="flex justify-between items-center mb-12">
-                    <h3 className="text-3xl font-black text-gray-900 dark:text-white tracking-tighter uppercase tracking-[0.05em]">Modify Node</h3>
+                    <h3 className="text-xl font-black text-gray-900 dark:text-white tracking-tighter uppercase tracking-[0.05em]">Modify Node</h3>
                     <button onClick={() => setEditingProject(null)} className="w-14 h-14 hover:bg-gray-100 dark:hover:bg-white/10 rounded-[1.8rem] text-gray-400 flex items-center justify-center transition-all"><X size={28} /></button>
                   </div>
                   <div className="space-y-12">
                     <div>
                       <div className="flex justify-between mb-6">
                         <p className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.4em]">Runtime Progress</p>
-                        <p className="text-3xl font-black text-blue-600 dark:text-blue-500 tracking-tighter">{editingProject.progress}%</p>
+                        <p className="text-xl font-black text-blue-600 dark:text-blue-500 tracking-tighter">{editingProject.progress}%</p>
                       </div>
                       <input type="range" min="0" max="100" value={editingProject.progress}
                         onChange={e => setEditingProject(prev => ({ ...prev, progress: parseInt(e.target.value) }))}
@@ -708,7 +706,7 @@ const AdminSubPage = ({ title, type }) => {
                 <div className="relative z-10">
                   <div className="flex justify-between items-center mb-12">
                     <div>
-                      <h3 className="text-3xl font-black text-gray-900 dark:text-white tracking-tighter uppercase tracking-[0.05em]">Deploy Task Signal</h3>
+                      <h3 className="text-xl font-black text-gray-900 dark:text-white tracking-tighter uppercase tracking-[0.05em]">Deploy Task Signal</h3>
                       <p className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.4em] mt-2">Specialist Unit Ingestion</p>
                     </div>
                     <button onClick={() => setTaskModal(null)} className="w-14 h-14 hover:bg-gray-100 dark:hover:bg-white/10 rounded-[1.8rem] text-gray-400 flex items-center justify-center transition-all shadow-xl"><X size={28} /></button>

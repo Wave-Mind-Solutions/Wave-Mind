@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  font-size: 15px;
+  scroll-behavior: smooth;
+}
+
 @layer base {
   body {
     @apply bg-white dark:bg-[#0f172a] text-slate-900 dark:text-gray-100 font-inter antialiased selection:bg-primary-500/30 dark:selection:bg-primary-500/40 overflow-x-hidden transition-colors duration-700 ease-in-out;
@@ -20,7 +25,7 @@
     @apply bg-transparent;
   }
   ::-webkit-scrollbar-thumb {
-    @apply bg-gray-200 dark:bg-gray-800 rounded-full hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors;
+    @apply bg-blue-500/30 dark:bg-blue-500/20 rounded-full hover:bg-blue-500/50 dark:hover:bg-blue-500/40 transition-all duration-300;
   }
 }
 
@@ -30,7 +35,11 @@
   }
   
   .saas-card {
-    @apply bg-white dark:bg-[#0f121d] rounded-[2rem] border border-slate-100/80 dark:border-white/5 shadow-[0_4px_20px_rgba(0,0,0,0.02)] dark:shadow-[0_10px_40px_rgba(0,0,0,0.3)] hover:shadow-[0_30px_60px_rgba(0,0,0,0.08)] dark:hover:shadow-[0_30px_60px_rgba(0,0,0,0.5)] hover:-translate-y-2 transition-all duration-500 ease-out;
+    @apply bg-white dark:bg-[#0f121d] rounded-[2.5rem] border border-slate-100/80 dark:border-white/5 shadow-[0_4px_20px_rgba(0,0,0,0.02)] dark:shadow-[0_10px_40px_rgba(0,0,0,0.3)] hover:shadow-[0_30px_60px_rgba(0,0,0,0.08)] dark:hover:shadow-[0_30px_60px_rgba(0,0,0,0.5)] hover:-translate-y-2 transition-all duration-500 ease-out;
+  }
+
+  .premium-border {
+    @apply border border-slate-200/60 dark:border-white/10 backdrop-blur-md;
   }
 
   .text-gradient {
@@ -39,16 +48,16 @@
   
   .bg-mesh {
     background-image: 
-      radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.05) 0, transparent 50%), 
-      radial-gradient(at 100% 0%, rgba(139, 92, 246, 0.05) 0, transparent 50%),
-      radial-gradient(at 50% 100%, rgba(59, 130, 246, 0.03) 0, transparent 50%);
+      radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.08) 0, transparent 50%), 
+      radial-gradient(at 100% 0%, rgba(139, 92, 246, 0.08) 0, transparent 50%),
+      radial-gradient(at 50% 100%, rgba(59, 130, 246, 0.05) 0, transparent 50%);
   }
 
   .dark .bg-mesh {
     background-image: 
-      radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.1) 0, transparent 50%), 
-      radial-gradient(at 100% 0%, rgba(139, 92, 246, 0.1) 0, transparent 50%),
-      radial-gradient(at 50% 100%, rgba(59, 130, 246, 0.05) 0, transparent 50%);
+      radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.15) 0, transparent 50%), 
+      radial-gradient(at 100% 0%, rgba(139, 92, 246, 0.15) 0, transparent 50%),
+      radial-gradient(at 50% 100%, rgba(59, 130, 246, 0.1) 0, transparent 50%);
   }
 
   .btn-primary {
@@ -108,9 +117,6 @@
   animation-delay: 4s;
 }
 
-html {
-  scroll-behavior: smooth;
-}
 
 html.dark {
   color-scheme: dark;

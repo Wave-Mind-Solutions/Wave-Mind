@@ -206,7 +206,7 @@ const SubmitRequirement = () => {
                       <Sparkles className="w-7 h-7 text-white" />
                     </div>
                     <div>
-                      <h2 className="text-3xl font-black text-gray-900 dark:text-white tracking-tight">
+                      <h2 className="text-2xl font-black text-gray-900 dark:text-white tracking-tight">
                         Share Your <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">Vision</span>
                       </h2>
                       <p className="text-gray-500 dark:text-gray-400 mt-1 font-medium">Tell us about your project and we'll help bring it to life</p>
@@ -466,7 +466,7 @@ const SubmitRequirement = () => {
                     <Zap className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-black text-xl tracking-tight text-white">AI Assistant</h3>
+                    <h3 className="font-black text-lg tracking-tight text-white">AI Assistant</h3>
                     <p className="text-[10px] font-bold text-blue-400 uppercase tracking-widest">Advanced Analysis</p>
                   </div>
                 </div>
@@ -499,7 +499,7 @@ const SubmitRequirement = () => {
                           <DollarSign className="w-3 h-3" />
                           Budget Estimate
                         </div>
-                        <p className="text-2xl font-bold bg-gradient-to-r from-primary-400 to-indigo-300 bg-clip-text text-transparent">
+                        <p className="text-xl font-bold bg-gradient-to-r from-primary-400 to-indigo-300 bg-clip-text text-transparent">
                           {aiSuggestions.suggestedBudgetRange}
                         </p>
                       </div>
@@ -628,7 +628,7 @@ const SubmitRequirement = () => {
                 </div>
                 <div>
                   <p className="text-[10px] text-purple-500 font-black uppercase tracking-[0.2em]">Trusted globally</p>
-                  <p className="text-2xl font-black text-gray-900 dark:text-white tracking-tight">500+ Clients</p>
+                  <p className="text-xl font-black text-gray-900 dark:text-white tracking-tight">500+ Clients</p>
                   <p className="text-[10px] font-bold text-gray-500 dark:text-gray-400 mt-0.5 uppercase tracking-widest">Across 25+ countries</p>
                 </div>
               </div>
@@ -655,7 +655,7 @@ const SubmitRequirement = () => {
               </div>
             </div>
             <div>
-              <h4 className="text-3xl font-black text-gray-900 dark:text-white mb-2 tracking-tight">{user?.fullName || 'Client User'}</h4>
+              <h4 className="text-2xl font-black text-gray-900 dark:text-white mb-2 tracking-tight">{user?.fullName || 'Client User'}</h4>
               <div className="flex flex-wrap items-center gap-3">
                 <span className="px-4 py-1.5 bg-blue-500/10 text-blue-500 text-[10px] font-black uppercase tracking-[0.2em] rounded-xl border border-blue-500/20 shadow-sm">Premium Client</span>
                 <span className="px-4 py-1.5 bg-emerald-500/10 text-emerald-500 text-[10px] font-black uppercase tracking-[0.2em] rounded-xl border border-emerald-500/20 shadow-sm">Verified Account</span>

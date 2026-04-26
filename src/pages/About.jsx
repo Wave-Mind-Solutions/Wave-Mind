@@ -49,6 +49,34 @@ const missionVision = [
   }
 ];
 
+const AboutSpotlightCard = ({ children, className = "" }) => {
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [opacity, setOpacity] = useState(0);
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+  };
+
+  return (
+    <div
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setOpacity(1)}
+      onMouseLeave={() => setOpacity(0)}
+      className={`relative overflow-hidden rounded-3xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm transition-all duration-300 hover:border-blue-500/50 ${className}`}
+    >
+      <div
+        className="pointer-events-none absolute -inset-px transition duration-300"
+        style={{
+          background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgba(59, 130, 246, 0.1), transparent 40%)`,
+          opacity,
+        }}
+      />
+      {children}
+    </div>
+  );
+};
+
 const About = () => {
   const { theme } = useTheme();
   const containerRef = useRef(null);
@@ -113,7 +141,7 @@ const About = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6"
+              className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6"
             >
               <span className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 dark:from-white dark:via-gray-200 dark:to-white bg-clip-text text-transparent">
                 About
@@ -128,7 +156,7 @@ const About = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed"
+              className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed"
             >
               A technology company empowering businesses through creative digital solutions.
             </motion.p>
@@ -173,7 +201,7 @@ const About = () => {
                   <stat.icon className="w-8 h-8 text-white" />
                 </div>
                 <motion.div
-                  className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400 bg-clip-text text-transparent"
+                  className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400 bg-clip-text text-transparent"
                 >
                   {stat.value}{stat.suffix}
                 </motion.div>
@@ -202,10 +230,10 @@ const About = () => {
                   <div className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${item.gradient} flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
                     <item.icon className="w-8 h-8 text-white" />
                   </div>
-                  <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+                  <h2 className="text-2xl font-bold mb-4 bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
                     {item.title}
                   </h2>
-                  <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
+                  <p className="text-gray-600 dark:text-gray-300 text-base leading-relaxed">
                     {item.description}
                   </p>
                   <div className="mt-6 flex items-center gap-2 text-blue-600 dark:text-blue-400 font-semibold">
@@ -232,7 +260,7 @@ const About = () => {
               <Rocket className="w-4 h-4 text-blue-500" />
               <span className="text-sm font-medium text-blue-600 dark:text-blue-400">Our Journey</span>
             </motion.div>
-            <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+            <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
               The WaveMind Story
             </h2>
           </div>
@@ -285,10 +313,10 @@ const About = () => {
               <Heart className="w-4 h-4 text-blue-500" />
               <span className="text-sm font-medium text-blue-600 dark:text-blue-400">Core Values</span>
             </motion.div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
               Principles That Guide Us
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
               The values that shape our culture and drive our success.
             </p>
           </div>
@@ -301,17 +329,14 @@ const About = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: idx * 0.05 }}
                 viewport={{ once: true }}
-                whileHover={{ y: -8 }}
-                className="group relative"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                <div className="relative bg-white dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 p-8 rounded-2xl hover:border-blue-500/50 transition-all duration-300">
-                  <div className={`w-14 h-14 rounded-xl ${val.bg} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                    <val.icon className={`w-7 h-7 bg-gradient-to-r ${val.color} bg-clip-text text-transparent`} />
+                <AboutSpotlightCard className="p-8 h-full group">
+                  <div className={`w-14 h-14 rounded-xl bg-gradient-to-r ${val.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
+                    <val.icon className="w-7 h-7 text-white" />
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">{val.title}</h3>
                   <p className="text-gray-600 dark:text-gray-400 leading-relaxed">{val.desc}</p>
-                </div>
+                </AboutSpotlightCard>
               </motion.div>
             ))}
           </div>
