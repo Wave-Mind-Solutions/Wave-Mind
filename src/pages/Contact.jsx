@@ -130,13 +130,13 @@ const SocialLink = memo(({ social, index }) => (
 const Contact = () => {
   const containerRef = useRef(null);
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    company: '',
-    service: 'Web Development',
-    message: ''
+    First_Name: '',
+    Last_Name: '',
+    Email: '',
+    Phone: '',
+    Company: '',
+    Service: 'Web Development',
+    Message: ''
   });
 
   const [state, handleSubmit] = useForm("xjgjqqnv");
