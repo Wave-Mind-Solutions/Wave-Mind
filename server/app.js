@@ -6,6 +6,8 @@
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
+const compression = require("compression");
+const helmet = require("helmet");
 const { errorHandler } = require("./middleware/errorHandler");
 const activityLogger = require("./middleware/activityLogger");
 
@@ -25,14 +27,17 @@ const leadRoutes = require("./routes/lead.routes");
 const app = express();
 
 // ── Global Middleware ──────────────────────────────────────────────────────
+app.use(helmet()); // Security headers
+app.use(compression()); // Gzip/Brotli compression
+
 app.use(
   cors({
     origin: process.env.CLIENT_URL || "http://localhost:5173",
     credentials: true,
   })
 );
-app.use(express.json({ limit: "20mb" }));
-app.use(express.urlencoded({ extended: true, limit: "20mb" }));
+app.use(express.json({ limit: "5mb" })); // Reduced limit for better performance
+app.use(express.urlencoded({ extended: true, limit: "5mb" }));
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));

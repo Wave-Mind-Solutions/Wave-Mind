@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useInView } from 'framer-motion';
+import { motion, AnimatePresence, useInView, useMotionValue, useTransform, animate } from 'framer-motion';
 import {
   ArrowRight, Code, Smartphone, Cloud, Cpu, Layout, Monitor,
   CheckCircle, ChevronDown, Star, Play, Users, Zap, Shield,
@@ -55,29 +55,28 @@ const processSteps = [
   { no: 4, title: "Delivery & Scale", desc: "Watch your product come to life and soar.", icon: Rocket }
 ];
 
-const CountUpItem = ({ end, suffix = "", prefix = "", duration = 2000, decimals = 0 }) => {
-  const [count, setCount] = useState(0);
+const CountUpItem = ({ end, suffix = "", prefix = "", duration = 2, decimals = 0 }) => {
+  const count = useMotionValue(0);
+  const rounded = useTransform(count, (latest) => {
+    return prefix + latest.toFixed(decimals) + suffix;
+  });
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "0px 0px -50px 0px" });
 
   useEffect(() => {
     if (isInView) {
-      let startTime;
-      const animateCount = (timestamp) => {
-        if (!startTime) startTime = timestamp;
-        const progress = Math.min((timestamp - startTime) / duration, 1);
-        const easeProgress = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
-        setCount(end * easeProgress);
-        if (progress < 1) requestAnimationFrame(animateCount);
-      };
-      requestAnimationFrame(animateCount);
+      const controls = animate(count, end, {
+        duration: duration,
+        ease: "easeOut",
+      });
+      return controls.stop;
     }
-  }, [isInView, end, duration]);
+  }, [isInView, end, duration, count]);
 
   return (
-    <span ref={ref} className="tabular-nums">
-      {prefix}{count.toFixed(decimals)}{suffix}
-    </span>
+    <motion.span ref={ref} className="tabular-nums">
+      {rounded}
+    </motion.span>
   );
 };
 

@@ -11,7 +11,7 @@ import Footer from './components/layout/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
 
 // Chatbot Widget
-import ChatbotWidget from './components/ChatbotWidget';
+const ChatbotWidget = lazy(() => import('./components/ChatbotWidget'));
 
 // Loading Fallback Component
 const PageLoader = () => (
@@ -231,7 +231,11 @@ function App() {
         </AnimatePresence>
       </main>
       {!isDashboard && <Footer />}
-      {!isDashboard && <ChatbotWidget />}
+      {!isDashboard && (
+        <Suspense fallback={null}>
+          <ChatbotWidget />
+        </Suspense>
+      )}
     </div>
   );
 }
