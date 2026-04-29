@@ -1,1 +1,0 @@
-import{b as a}from"./index-D4nTUMee.js";const s=async()=>(await a.get("/chat/conversations")).data,t=async(s,t)=>(await a.post("/chat/messages",{receiverId:s,content:t})).data,e=async(s,t={})=>(await a.get(`/chat/messages/${s}`,{params:t})).data;export{e as a,s as g,t as s};

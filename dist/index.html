@@ -1,54 +1,91 @@
 <!doctype html>
 <html lang="en" class="scroll-smooth">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
 
-    <!-- Primary Meta Tags (default — overridden per page by react-helmet-async) -->
-    <title>WaveMind Solutions | Software Development & IT Services India</title>
-    <meta name="description" content="WaveMind Solutions is a premium software development agency in India. We build SaaS platforms, mobile apps, AI integrations, and enterprise tools that scale." />
-    <meta name="keywords" content="software development India, web development company, mobile app development, AI solutions, SaaS development, IT services Kolkata, React development, Node.js, cloud infrastructure" />
-    <meta name="author" content="WaveMind Solutions" />
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
 
-    <!-- Canonical -->
-    <link rel="canonical" href="https://wavemindsolutions.in/" />
+  <!-- Primary Meta Tags (default — overridden per page by react-helmet-async) -->
+  <title>WaveMind Solutions | Software Development & IT Services India</title>
+  <meta name="description"
+    content="WaveMind Solutions is a premium software development agency in India. We build SaaS platforms, mobile apps, AI integrations, and enterprise tools that scale." />
+  <meta name="keywords"
+    content="software development India, web development company, mobile app development, AI solutions, SaaS development, IT services Kolkata, React development, Node.js, cloud infrastructure" />
+  <meta name="author" content="WaveMind Solutions" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 
-    <!-- Favicon & App Icons -->
-    <link rel="icon" type="image/png" href="/logo.png" />
-    <link rel="apple-touch-icon" href="/logo.png" />
-    <meta name="theme-color" content="#2563eb" />
+  <!-- Canonical -->
+  <link rel="canonical" href="https://wavemindsolutions.in/" />
 
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://wavemindsolutions.in/" />
-    <meta property="og:title" content="WaveMind Solutions | Software Development & IT Services India" />
-    <meta property="og:description" content="Premium software development agency building SaaS platforms, mobile apps, AI integrations, and enterprise tools for startups and businesses worldwide." />
-    <meta property="og:image" content="https://wavemindsolutions.in/logo.png" />
-    <meta property="og:site_name" content="WaveMind Solutions" />
-    <meta property="og:locale" content="en_IN" />
+  <!-- Favicon & App Icons -->
+  <link rel="icon" type="image/png" href="/logo.png" />
+  <link rel="apple-touch-icon" href="/logo.png" />
+  <meta name="theme-color" content="#2563eb" />
 
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:url" content="https://wavemindsolutions.in/" />
-    <meta name="twitter:title" content="WaveMind Solutions | Software Development & IT Services India" />
-    <meta name="twitter:description" content="Premium software development agency building SaaS platforms, mobile apps, AI integrations, and enterprise tools." />
-    <meta name="twitter:image" content="https://wavemindsolutions.in/logo.png" />
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://wavemindsolutions.in/" />
+  <meta property="og:title" content="WaveMind Solutions | Software Development & IT Services India" />
+  <meta property="og:description"
+    content="Premium software development agency building SaaS platforms, mobile apps, AI integrations, and enterprise tools for startups and businesses worldwide." />
+  <meta property="og:image" content="https://wavemindsolutions.in/logo.png" />
+  <meta property="og:site_name" content="WaveMind Solutions" />
+  <meta property="og:locale" content="en_IN" />
 
-    <!-- Geo Tags for Local SEO -->
-    <meta name="geo.region" content="IN-WB" />
-    <meta name="geo.placename" content="Kolkata" />
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://wavemindsolutions.in/" />
+  <meta name="twitter:title" content="WaveMind Solutions | Software Development & IT Services India" />
+  <meta name="twitter:description"
+    content="Premium software development agency building SaaS platforms, mobile apps, AI integrations, and enterprise tools." />
+  <meta name="twitter:image" content="https://wavemindsolutions.in/logo.png" />
 
-    <!-- DNS Prefetch & Preconnect for Performance -->
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <!-- Geo Tags for Local SEO -->
+  <meta name="geo.region" content="IN-WB" />
+  <meta name="geo.placename" content="Kolkata" />
 
-    <!-- JSON-LD Organization Schema (site-wide fallback) -->
-    <script type="application/ld+json">
+  <!-- DNS Prefetch & Preconnect for Performance -->
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!--
+    Non-blocking font load: media="print" loads the CSS without blocking render.
+    onload switches it to media="all" so it applies once downloaded.
+    Trimmed to only weights that Inter actually uses in this project (400, 500, 600, 700).
+    Poppins removed — it was loaded but never used by Tailwind classes in the codebase.
+    Estimated saving: ~60KB blocking CSS removed from critical path.
+  -->
+  <link
+    rel="preload"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    as="style"
+    onload="this.onload=null;this.rel='stylesheet'"
+  />
+  <noscript>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    />
+  </noscript>
+
+  <!-- Google Search Console Verification (replace content value with your actual GSC verification code) -->
+  <meta name="google-site-verification" content="cU-9Dg7QQVdwRaJQUU0LNwp0CwlIy6xzJINg9f_rFdM" />
+
+
+  <!-- Google Analytics 4 (replace G-XXXXXXXXXX with your actual GA4 Measurement ID) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HC7NVVT43W"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-HC7NVVT43W');
+  </script>
+
+  <!-- JSON-LD Organization Schema (site-wide fallback) -->
+  <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Organization",
@@ -75,21 +112,76 @@
       ]
     }
     </script>
-    <script type="module" crossorigin src="/assets/index-D4nTUMee.js"></script>
-    <link rel="modulepreload" crossorigin href="/assets/router-CFDJUde-.js">
-    <link rel="modulepreload" crossorigin href="/assets/motion-By1oQ19K.js">
-    <link rel="modulepreload" crossorigin href="/assets/icons-BKrceXd7.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-BSoTWrd_.css">
-  </head>
-  <body class="bg-white text-gray-900 font-inter antialiased">
-    <!-- Noscript fallback for SEO crawlers -->
-    <noscript>
-      <div style="padding:2rem;text-align:center;font-family:sans-serif">
-        <h1>WaveMind Solutions</h1>
-        <p>Premium software development, mobile apps, AI solutions, and cloud infrastructure services from India.</p>
-        <p>Please enable JavaScript to use this application.</p>
-      </div>
-    </noscript>
-    <div id="root"></div>
-  </body>
+
+  <!-- JSON-LD LocalBusiness Schema (for local SEO and Google Maps ranking) -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "@id": "https://wavemindsolutions.in/#localbusiness",
+      "name": "WaveMind Solutions",
+      "image": "https://wavemindsolutions.in/logo.png",
+      "url": "https://wavemindsolutions.in",
+      "telephone": "+918282843434",
+      "email": "info@wavemindsolutions.in",
+      "description": "Web development, CRM, ERP, automation, and SEO services for Indian startups and MSMEs. Based in Kolkata, serving clients pan-India.",
+      "priceRange": "₹₹",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "13, Kalupara Lane",
+        "addressLocality": "Kolkata",
+        "addressRegion": "West Bengal",
+        "postalCode": "700029",
+        "addressCountry": "IN"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 22.5186,
+        "longitude": 88.3653
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+        "opens": "09:00",
+        "closes": "19:00"
+      },
+      "areaServed": [
+        { "@type": "City", "name": "Kolkata" },
+        { "@type": "Country", "name": "India" }
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Digital Services",
+        "itemListElement": [
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Web Development" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "SEO Services" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "CRM Development" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "ERP Solutions" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Business Automation" } }
+        ]
+      },
+      "sameAs": [
+        "https://www.linkedin.com/company/wavemind-solutions/",
+        "https://www.instagram.com/wavemindsolutions",
+        "https://www.facebook.com/wavemindsolutions"
+      ]
+    }
+    </script>
+  <script type="module" crossorigin src="/assets/index-Ciwkswj4.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/vendor-C_IbkUdy.js">
+  <link rel="stylesheet" crossorigin href="/assets/index-BuIp4ro4.css">
+</head>
+
+<body class="bg-white text-gray-900 font-inter antialiased">
+  <!-- Noscript fallback for SEO crawlers -->
+  <noscript>
+    <div style="padding:2rem;text-align:center;font-family:sans-serif">
+      <h1>WaveMind Solutions</h1>
+      <p>Premium software development, mobile apps, AI solutions, and cloud infrastructure services from India.</p>
+      <p>Please enable JavaScript to use this application.</p>
+    </div>
+  </noscript>
+  <div id="root"></div>
+</body>
+
 </html>
