@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useCallback, useEffect, useRef, memo } from 'react';
 import { motion, AnimatePresence, useInView, useMotionValue, useTransform, animate } from 'framer-motion';
 import {
   ArrowRight, Code, Smartphone, Cloud, Cpu, Layout, Monitor,
@@ -150,14 +150,15 @@ const firstColumn = testimonials.slice(0, 3);
 const secondColumn = testimonials.slice(3, 6);
 const thirdColumn = testimonials.slice(6, 9);
 
-const SpotlightCard = ({ children, className = "" }) => {
+// Memoised so it never re-renders when parent state (openFaq) changes
+const SpotlightCard = memo(({ children, className = '' }) => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [opacity, setOpacity] = useState(0);
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = useCallback((e) => {
     const rect = e.currentTarget.getBoundingClientRect();
     setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-  };
+  }, []);
 
   return (
     <div
@@ -176,44 +177,43 @@ const SpotlightCard = ({ children, className = "" }) => {
       {children}
     </div>
   );
-};
+});
 
-const TestimonialsColumn = ({ testimonials, duration = 30, className = "" }) => {
-  return (
-    <div className={`flex flex-col gap-6 ${className}`}>
-      <motion.div
-        animate={{ y: ["0%", "-100%"] }}
-        transition={{ duration, repeat: Infinity, ease: "linear" }}
-        className="flex flex-col gap-6 will-change-transform transform-gpu"
-      >
-        {[...testimonials, ...testimonials].map((testimonial, idx) => (
-          <div
-            key={idx}
-            className="bg-white/80 dark:bg-gray-800/40 backdrop-blur-md p-6 rounded-2xl shadow-lg border border-gray-100/50 dark:border-white/5 hover:border-blue-500/30 transition-all duration-500 will-change-transform"
-          >
-            <div className="flex gap-1 mb-4">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-              ))}
-            </div>
-            <p className="text-gray-700 dark:text-gray-300 mb-4 leading-relaxed">"{testimonial.text}"</p>
-            <div className="flex items-center gap-3">
-              <img src={testimonial.image} alt={testimonial.name} className="w-10 h-10 rounded-full object-cover" loading="lazy" decoding="async" />
-              <div>
-                <p className="font-semibold text-gray-900 dark:text-white">{testimonial.name}</p>
-                <p className="text-sm text-gray-500 dark:text-gray-400">{testimonial.role}</p>
-              </div>
+// Memoised — only re-renders if testimonials array reference changes (it never does)
+const TestimonialsColumn = memo(({ testimonials, duration = 30, className = '' }) => (
+  <div className={`flex flex-col gap-6 ${className}`}>
+    <motion.div
+      animate={{ y: ['0%', '-50%'] }}
+      transition={{ duration, repeat: Infinity, ease: 'linear' }}
+      className="flex flex-col gap-6 will-change-transform transform-gpu"
+    >
+      {[...testimonials, ...testimonials].map((testimonial, idx) => (
+        <div
+          key={idx}
+          className="bg-white/80 dark:bg-gray-800/40 backdrop-blur-md p-6 rounded-2xl shadow-lg border border-gray-100/50 dark:border-white/5 hover:border-blue-500/30 transition-all duration-500"
+        >
+          <div className="flex gap-1 mb-4">
+            {[...Array(5)].map((_, i) => (
+              <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+            ))}
+          </div>
+          <p className="text-gray-700 dark:text-gray-300 mb-4 leading-relaxed">"{testimonial.text}"</p>
+          <div className="flex items-center gap-3">
+            <img src={testimonial.image} alt={testimonial.name} width={40} height={40} className="w-10 h-10 rounded-full object-cover" loading="lazy" decoding="async" />
+            <div>
+              <p className="font-semibold text-gray-900 dark:text-white">{testimonial.name}</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">{testimonial.role}</p>
             </div>
           </div>
-        ))}
-      </motion.div>
-    </div>
-  );
-};
+        </div>
+      ))}
+    </motion.div>
+  </div>
+));
 
 const Home = () => {
   const [openFaq, setOpenFaq] = useState(null);
-  const { theme } = useTheme();
+  const toggleFaq = useCallback((i) => setOpenFaq(prev => prev === i ? null : i), []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 transition-colors duration-700 overflow-x-hidden">
@@ -245,10 +245,10 @@ const Home = () => {
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
 
-        {/* Animated Orbs for Extra Depth */}
-        <div className="absolute top-20 left-10 w-72 h-72 bg-purple-400/10 dark:bg-purple-600/10 rounded-full blur-[80px] will-change-transform transform-gpu animate-blob" />
-        <div className="absolute top-40 right-10 w-72 h-72 bg-yellow-400/10 dark:bg-yellow-600/10 rounded-full blur-[80px] will-change-transform transform-gpu animate-blob animation-delay-2000" />
-        <div className="absolute bottom-20 left-1/2 w-72 h-72 bg-pink-400/10 dark:bg-pink-600/10 rounded-full blur-[80px] will-change-transform transform-gpu animate-blob animation-delay-4000" />
+        {/* Decorative blobs — CSS-only, no JS, GPU-composited, layout isolated */}
+        <div aria-hidden="true" className="absolute top-20 left-10 w-72 h-72 bg-purple-400/10 dark:bg-purple-600/10 rounded-full blur-[80px] animate-blob" style={{ contain: 'strict' }} />
+        <div aria-hidden="true" className="absolute top-40 right-10 w-72 h-72 bg-yellow-400/10 dark:bg-yellow-600/10 rounded-full blur-[80px] animate-blob animation-delay-2000" style={{ contain: 'strict' }} />
+        <div aria-hidden="true" className="absolute bottom-20 left-1/2 w-72 h-72 bg-pink-400/10 dark:bg-pink-600/10 rounded-full blur-[80px] animate-blob animation-delay-4000" style={{ contain: 'strict' }} />
 
         <div className="container mx-auto px-6 py-12 relative z-10">
           <div className="max-w-5xl mx-auto text-center">

@@ -20,7 +20,8 @@ const servicesList = [
     gradient: "from-blue-500 to-cyan-500",
     iconGradient: "from-blue-600 to-cyan-600",
     color: "blue",
-    features: ["Next.js/React", "Node.js/Python", "GraphQL/REST", "SSR/SSG"]
+    features: ["Next.js/React", "Node.js/Python", "GraphQL/REST", "SSR/SSG"],
+    path: "/web-development"
   },
   {
     icon: Smartphone,
@@ -30,7 +31,8 @@ const servicesList = [
     gradient: "from-purple-500 to-pink-500",
     iconGradient: "from-purple-600 to-pink-600",
     color: "purple",
-    features: ["Push Notifications", "Offline Sync", "Biometric Auth", "App Store Deployment"]
+    features: ["Push Notifications", "Offline Sync", "Biometric Auth", "App Store Deployment"],
+    path: "/services"
   },
   {
     icon: Database,
@@ -40,7 +42,8 @@ const servicesList = [
     gradient: "from-indigo-500 to-blue-500",
     iconGradient: "from-indigo-600 to-blue-600",
     color: "indigo",
-    features: ["Microservices", "API Integration", "Data Migration", "24/7 Support"]
+    features: ["Microservices", "API Integration", "Data Migration", "24/7 Support"],
+    path: "/crm-development"
   },
   {
     icon: Cloud,
@@ -50,7 +53,8 @@ const servicesList = [
     gradient: "from-cyan-500 to-teal-500",
     iconGradient: "from-cyan-600 to-teal-600",
     color: "cyan",
-    features: ["AWS/Azure/GCP", "Kubernetes", "Terraform", "Monitoring & Logging"]
+    features: ["AWS/Azure/GCP", "Kubernetes", "Terraform", "Monitoring & Logging"],
+    path: "/services"
   },
   {
     icon: Cpu,
@@ -60,7 +64,8 @@ const servicesList = [
     gradient: "from-pink-500 to-rose-500",
     iconGradient: "from-pink-600 to-rose-600",
     color: "pink",
-    features: ["TensorFlow/PyTorch", "LLM Integration", "Data Visualization", "Real-time Analytics"]
+    features: ["TensorFlow/PyTorch", "LLM Integration", "Data Visualization", "Real-time Analytics"],
+    path: "/automation"
   },
   {
     icon: Palette,
@@ -70,7 +75,8 @@ const servicesList = [
     gradient: "from-orange-500 to-amber-500",
     iconGradient: "from-orange-600 to-amber-600",
     color: "orange",
-    features: ["Market Research", "Conversion Optimization", "Analytics Setup", "Growth Hacking"]
+    features: ["Market Research", "Conversion Optimization", "Analytics Setup", "Growth Hacking"],
+    path: "/seo-services"
   }
 ];
 
@@ -311,7 +317,7 @@ const Services = () => {
                   {/* Learn More Link */}
                   <div className="mt-6 pt-4">
                     <Link
-                      to="/contact"
+                      to={service.path || '/contact'}
                       className={`inline-flex items-center gap-2 text-sm font-semibold bg-gradient-to-r ${service.gradient} bg-clip-text text-transparent group-hover:gap-3 transition-all`}
                     >
                       Learn More
