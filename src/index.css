@@ -9,7 +9,9 @@ html {
 
 @layer base {
   body {
-    @apply bg-white dark:bg-[#0f172a] text-slate-900 dark:text-gray-100 font-inter antialiased selection:bg-primary-500/30 dark:selection:bg-primary-500/40 overflow-x-hidden transition-colors duration-700 ease-in-out;
+    /* Removed transition-colors from body — it forced style recalc on ALL elements on theme change.
+       Only the html root now transitions via color-scheme, which is GPU-composited. */
+    @apply bg-white dark:bg-[#0f172a] text-slate-900 dark:text-gray-100 font-inter antialiased selection:bg-primary-500/30 dark:selection:bg-primary-500/40 overflow-x-hidden;
   }
 
   /* Smooth transition for theme change */
@@ -100,21 +102,30 @@ html {
 }
 
 @keyframes blob {
-  0%, 100% { transform: translate(0px, 0px) scale(1); }
-  33% { transform: translate(30px, -50px) scale(1.1); }
-  66% { transform: translate(-20px, 20px) scale(0.9); }
+  /* Only uses transform — no layout properties, stays on compositor thread */
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  33%       { transform: translate3d(20px, -30px, 0) scale(1.08); }
+  66%       { transform: translate3d(-15px, 15px, 0) scale(0.94); }
 }
 
 .animate-blob {
-  animation: blob 12s infinite cubic-bezier(0.4, 0, 0.2, 1);
+  animation: blob 18s infinite cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform; /* promote only this element, not the parent */
+  contain: layout paint;  /* isolate layout so blob movement can't cause parent reflow */
 }
 
-.animation-delay-2000 {
-  animation-delay: 2s;
-}
+.animation-delay-2000 { animation-delay: 4s; }
+.animation-delay-4000 { animation-delay: 8s; }
 
-.animation-delay-4000 {
-  animation-delay: 4s;
+/* Respect users who have requested reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-blob,
+  .animate-float {
+    animation: none;
+  }
+  .will-change-transform {
+    will-change: auto;
+  }
 }
 
 

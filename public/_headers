@@ -1,0 +1,36 @@
+# Hostinger / Nginx static hosting cache rules
+# These headers are applied to all files served from the /public folder.
+
+# ── Hashed JS/CSS bundles (Vite appends content hash to filename)
+# Safe to cache for 1 year — if the file changes, the hash changes
+/assets/js/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/css/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/img/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# ── HTML entry point — must revalidate so deploys are picked up immediately
+/*.html
+  Cache-Control: no-cache, no-store, must-revalidate
+  Pragma: no-cache
+
+# ── Sitemap and robots — revalidate often (changes with new pages)
+/sitemap.xml
+  Cache-Control: public, max-age=86400
+
+/robots.txt
+  Cache-Control: public, max-age=86400
+
+# ── Security headers (applied globally)
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  X-XSS-Protection: 1; mode=block
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()

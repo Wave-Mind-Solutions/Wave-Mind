@@ -52,6 +52,13 @@ const Register = lazy(() => import('./pages/Register'));
 const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
 const VerifyOTP = lazy(() => import('./pages/VerifyOTP'));
 
+// Lazy Loaded Service Sub-Pages
+const WebDevelopment = lazy(() => import('./pages/services/WebDevelopment'));
+const SEOServices = lazy(() => import('./pages/services/SEOServices'));
+const CRMDevelopment = lazy(() => import('./pages/services/CRMDevelopment'));
+const ERPSolutions = lazy(() => import('./pages/services/ERPSolutions'));
+const Automation = lazy(() => import('./pages/services/Automation'));
+
 // Lazy Loaded Client Dashboard
 const ClientOverview = lazy(() => import('./pages/dashboard/client/ClientOverview'));
 const SubmitRequirement = lazy(() => import('./pages/dashboard/client/SubmitRequirement'));
@@ -112,6 +119,13 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/verify-otp" element={<VerifyOTP />} />
+
+              {/* ── Service Sub-Pages (SEO Landing Pages) ── */}
+              <Route path="/web-development" element={<WebDevelopment />} />
+              <Route path="/seo-services" element={<SEOServices />} />
+              <Route path="/crm-development" element={<CRMDevelopment />} />
+              <Route path="/erp-solutions" element={<ERPSolutions />} />
+              <Route path="/automation" element={<Automation />} />
 
               <Route path="/dashboard" element={
                 <ProtectedRoute allowedRoles={['client', 'admin', 'developer']}>
