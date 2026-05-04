@@ -218,9 +218,9 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 transition-colors duration-700 overflow-x-hidden">
       <SEOHead
-        title="Software Development & IT Services"
-        description="WaveMind Solutions builds SaaS platforms, mobile apps, AI integrations & enterprise tools. 150+ projects delivered with 99.9% uptime. Get started free today."
-        keywords="software development India, web development company Kolkata, mobile app development, SaaS platform development, AI solutions India, React development, Node.js agency, cloud infrastructure, IT services"
+        title="Best Web Development Company in Kolkata | Software Services"
+        description="WaveMind Solutions is the best web development company in Kolkata. We build high-end SaaS platforms, mobile apps, AI integrations & enterprise tools. 150+ projects delivered. Get a free consultation today."
+        keywords="web development company Kolkata, software development company India, web design and development Kolkata, custom software development, SaaS development company India, mobile app development Kolkata, AI development services India, React development company, startup tech solutions India, enterprise software development, affordable web development Kolkata, full stack development services, IT services company Kolkata"
         canonicalPath="/"
         structuredData={[homePageSchema, faqSchema, websiteSchema]}
       />
