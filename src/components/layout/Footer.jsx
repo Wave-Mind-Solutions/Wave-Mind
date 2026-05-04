@@ -15,7 +15,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16">
 
           {/* Brand */}
-          <div className="md:col-span-4 space-y-8">
+          <div className="md:col-span-3 space-y-8">
             <Link to="/" className="flex items-center gap-3 group">
               <div className="relative">
                 <div className="absolute inset-0 bg-blue-600/20 rounded-xl blur-lg group-hover:blur-xl transition-all duration-500" />
@@ -73,11 +73,22 @@ const Footer = () => {
                   </Link>
                 </li>
               ))}
+              <li>
+                <a
+                  href="https://wave-mind-careers.vercel.app/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 text-sm font-bold flex items-center gap-2 group"
+                >
+                  <span className="w-1 h-1 bg-gray-300 dark:bg-gray-700 rounded-full group-hover:w-3 group-hover:bg-blue-500 transition-all" />
+                  Careers
+                </a>
+              </li>
             </ul>
           </div>
 
           {/* Services */}
-          <div className="md:col-span-3 space-y-6">
+          <div className="md:col-span-2 space-y-6">
             <h4 className="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-widest border-l-2 border-purple-500 pl-2">
               Capabilities
             </h4>
@@ -94,6 +105,27 @@ const Footer = () => {
                 </li>
               ))}
             </ul>
+          </div>
+
+          {/* Careers Section */}
+          <div className="md:col-span-2 space-y-6">
+            <h4 className="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-widest border-l-2 border-indigo-500 pl-2">
+              Careers
+            </h4>
+            <div className="space-y-4">
+              <p className="text-[11px] text-gray-500 dark:text-gray-400 leading-relaxed font-bold uppercase tracking-widest">
+                Join our mission to craft the future.
+              </p>
+              <a
+                href="https://wave-mind-careers.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-500/10 hover:bg-indigo-500 text-indigo-600 dark:text-indigo-400 hover:text-white text-[10px] font-bold rounded-xl transition-all group border border-indigo-500/20 uppercase tracking-widest"
+              >
+                Join Us
+                <Sparkles size={14} className="group-hover:rotate-12 transition-transform" />
+              </a>
+            </div>
           </div>
 
           {/* Trust Section */}
