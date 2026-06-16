@@ -5,13 +5,15 @@ import {
   AlertCircle, Zap, TrendingUp, Shield, Sparkles,
   Layers, Target, Clock, ArrowRight, Lightbulb,
   DollarSign, Code, Briefcase, Star, Award,
-  User, Mail, Phone, Edit3
+  User, Mail, Phone, Edit3, Brain, Users, Rocket,
+  BarChart2, RefreshCw, BadgeCheck, Flame
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import DashboardLayout from '../../../components/dashboard/DashboardLayout';
 import ProfileEditModal from '../../../components/dashboard/ProfileEditModal';
 import { useAuth } from '../../../context/AuthContext';
 import { submitRequirement } from '../../../services/clientService';
+import { analyzeProjectWithGemini } from '../../../services/geminiService';
 import toast from 'react-hot-toast';
 
 const SubmitRequirement = () => {
@@ -46,26 +48,34 @@ const SubmitRequirement = () => {
     }
   }, [user]);
 
-  const handleAiAnalysis = () => {
-    if (!formData.description) {
-      toast.error('Please describe your project first for AI analysis.');
+  const handleAiAnalysis = async () => {
+    if (!formData.description || formData.description.trim().length < 20) {
+      toast.error('Please provide a detailed project description (at least 20 characters) for AI analysis.');
       return;
     }
     setAiAnalyzing(true);
-    // Simulate AI analysis
-    setTimeout(() => {
-      setAiSuggestions({
-        techStack: ['React 18', 'Node.js', 'MongoDB', 'TailwindCSS', 'Cloudinary'],
-        recommendedApproach: 'Microservices Architecture with REST API + JWT Authentication',
-        estimatedComplexity: 'Medium-High',
-        suggestedBudgetRange: '₹80,000 - ₹1,20,000',
-        timeEstimate: '4-6 weeks',
-        riskFactors: ['Third-party integrations', 'Payment gateway setup'],
-        optimizationTips: ['Implement caching for better performance', 'Use CDN for media assets']
+    setAiSuggestions(null);
+    const loadingToast = toast.loading('🤖 WaveMind AI is analyzing your project...');
+    try {
+      const result = await analyzeProjectWithGemini({
+        description: formData.description,
+        title: formData.title,
+        budget: formData.budget,
+        priority: formData.priority,
+        techStack: formData.techStack,
       });
+      setAiSuggestions(result);
+      toast.dismiss(loadingToast);
+      toast.success('✨ AI analysis complete! Scroll the panel to explore all insights.');
+    } catch (err) {
+      toast.dismiss(loadingToast);
+      const msg = err.message.includes('VITE_GEMINI_API_KEY')
+        ? 'Gemini API key not configured. Add VITE_GEMINI_API_KEY to your .env file.'
+        : err.message || 'AI analysis failed. Please try again.';
+      toast.error(msg);
+    } finally {
       setAiAnalyzing(false);
-      toast.success('AI analysis complete! Check the suggestions panel.');
-    }, 2500);
+    }
   };
 
   const addTech = (e) => {
@@ -461,102 +471,316 @@ const SubmitRequirement = () => {
               <div className="absolute bottom-0 left-0 w-32 h-32 bg-purple-600/10 rounded-full blur-[60px]" />
 
               <div className="relative z-10">
+                {/* Header */}
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 flex items-center justify-center shadow-lg">
-                    <Zap className="w-6 h-6 text-white" />
+                  <div className="relative">
+                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 flex items-center justify-center shadow-lg">
+                      <Brain className="w-6 h-6 text-white" />
+                    </div>
+                    {aiAnalyzing && (
+                      <span className="absolute -top-1 -right-1 w-3 h-3 bg-blue-400 rounded-full animate-pulse" />
+                    )}
                   </div>
                   <div>
                     <h3 className="font-black text-lg tracking-tight text-white">AI Assistant</h3>
-                    <p className="text-[10px] font-bold text-blue-400 uppercase tracking-widest">Advanced Analysis</p>
+                    <p className="text-[10px] font-bold text-blue-400 uppercase tracking-widest">Powered by Gemini</p>
                   </div>
+                  {aiSuggestions && (
+                    <button
+                      onClick={() => { setAiSuggestions(null); handleAiAnalysis(); }}
+                      title="Re-analyze"
+                      className="ml-auto w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center hover:bg-white/20 transition-all"
+                    >
+                      <RefreshCw className="w-4 h-4" />
+                    </button>
+                  )}
                 </div>
 
                 <AnimatePresence mode="wait">
-                  {aiSuggestions ? (
-                    <div
-                      key="suggestions"
-                      
-                      
-                      
-                      className="space-y-5"
+                  {/* ── Analyzing State ── */}
+                  {aiAnalyzing && (
+                    <motion.div
+                      key="analyzing"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="text-center py-10"
                     >
+                      <div className="relative w-20 h-20 mx-auto mb-5">
+                        <motion.div
+                          animate={{ rotate: 360 }}
+                          transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
+                          className="absolute inset-0 rounded-full border-4 border-blue-500/20 border-t-blue-500"
+                        />
+                        <motion.div
+                          animate={{ rotate: -360 }}
+                          transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
+                          className="absolute inset-2 rounded-full border-4 border-indigo-500/20 border-t-indigo-400"
+                        />
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <Brain className="w-7 h-7 text-blue-400" />
+                        </div>
+                      </div>
+                      <p className="text-white font-bold text-sm mb-1">Gemini is thinking...</p>
+                      <p className="text-gray-400 text-xs">Analyzing your project in real-time</p>
+                      <div className="flex justify-center gap-1 mt-4">
+                        {['Scope','Budget','Stack','Timeline'].map((label, i) => (
+                          <motion.span
+                            key={label}
+                            initial={{ opacity: 0.3 }}
+                            animate={{ opacity: [0.3, 1, 0.3] }}
+                            transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.3 }}
+                            className="text-[10px] px-2 py-1 bg-blue-500/10 border border-blue-500/20 rounded-lg text-blue-400 font-bold"
+                          >
+                            {label}
+                          </motion.span>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {/* ── Results State ── */}
+                  {!aiAnalyzing && aiSuggestions && (
+                    <motion.div
+                      key="suggestions"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0 }}
+                      className="space-y-5 max-h-[520px] overflow-y-auto pr-1 custom-scrollbar"
+                    >
+                      {/* Project Type Badge */}
+                      <div className="flex items-center gap-2">
+                        <span className="px-3 py-1.5 bg-blue-500/20 text-blue-300 text-[10px] font-black uppercase tracking-widest rounded-xl border border-blue-500/20">
+                          {aiSuggestions.projectType || 'Software Project'}
+                        </span>
+                        <span className="px-3 py-1.5 bg-purple-500/20 text-purple-300 text-[10px] font-black uppercase tracking-widest rounded-xl border border-purple-500/20">
+                          {aiSuggestions.complexityLevel}
+                        </span>
+                      </div>
+
+                      {/* Complexity Score */}
                       <div>
-                        <div className="flex items-center gap-2 text-xs font-bold text-primary-400 uppercase tracking-wider mb-3">
-                          <Lightbulb className="w-3 h-3" />
+                        <div className="flex items-center justify-between text-xs font-bold mb-2">
+                          <span className="text-gray-400 uppercase tracking-widest">Complexity</span>
+                          <span className="text-white">{aiSuggestions.complexityScore}/10</span>
+                        </div>
+                        <div className="w-full bg-white/10 rounded-full h-2 overflow-hidden">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: `${(aiSuggestions.complexityScore / 10) * 100}%` }}
+                            transition={{ duration: 1, ease: 'easeOut' }}
+                            className={`h-full rounded-full ${
+                              aiSuggestions.complexityScore <= 3 ? 'bg-gradient-to-r from-green-500 to-emerald-400' :
+                              aiSuggestions.complexityScore <= 6 ? 'bg-gradient-to-r from-yellow-500 to-amber-400' :
+                              'bg-gradient-to-r from-red-500 to-orange-400'
+                            }`}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Budget Estimate */}
+                      <div className="p-4 bg-white/5 rounded-2xl border border-white/10">
+                        <div className="flex items-center gap-2 text-xs font-bold text-green-400 uppercase tracking-wider mb-2">
+                          <IndianRupee className="w-3 h-3" />
+                          Budget Estimate
+                        </div>
+                        <p className="text-lg font-black bg-gradient-to-r from-green-400 to-emerald-300 bg-clip-text text-transparent">
+                          {aiSuggestions.suggestedBudgetRange}
+                        </p>
+                        {aiSuggestions.budgetFeedback && aiSuggestions.budgetFeedback !== 'Not specified' && (
+                          <p className="text-xs text-gray-400 mt-1 leading-relaxed">{aiSuggestions.budgetFeedback}</p>
+                        )}
+                      </div>
+
+                      {/* Time Estimate */}
+                      <div className="flex items-center gap-4">
+                        <div className="flex-1 p-3 bg-white/5 rounded-2xl border border-white/10">
+                          <div className="flex items-center gap-1.5 text-[10px] font-bold text-blue-400 uppercase tracking-wider mb-1.5">
+                            <Clock className="w-3 h-3" />
+                            Timeline
+                          </div>
+                          <p className="text-sm font-bold text-white">{aiSuggestions.timeEstimate}</p>
+                        </div>
+                        <div className="flex-1 p-3 bg-white/5 rounded-2xl border border-white/10">
+                          <div className="flex items-center gap-1.5 text-[10px] font-bold text-amber-400 uppercase tracking-wider mb-1.5">
+                            <BarChart2 className="w-3 h-3" />
+                            Success Score
+                          </div>
+                          <p className="text-sm font-bold text-white">{aiSuggestions.successScore}/10</p>
+                        </div>
+                      </div>
+
+                      {/* Recommended Tech Stack */}
+                      <div>
+                        <div className="flex items-center gap-2 text-xs font-bold text-blue-400 uppercase tracking-wider mb-3">
+                          <Code className="w-3 h-3" />
                           Recommended Stack
                         </div>
                         <div className="flex flex-wrap gap-2">
                           {aiSuggestions.techStack.map(t => (
-                            <span key={t} className="px-3 py-1.5 bg-white/10 rounded-lg text-xs font-medium border border-white/5">
+                            <span key={t} className="px-3 py-1.5 bg-blue-500/10 rounded-xl text-xs font-bold border border-blue-500/20 text-blue-300">
                               {t}
                             </span>
                           ))}
                         </div>
                       </div>
 
-                      <div>
-                        <div className="flex items-center gap-2 text-xs font-bold text-primary-400 uppercase tracking-wider mb-2">
-                          <DollarSign className="w-3 h-3" />
-                          Budget Estimate
+                      {/* Architecture Approach */}
+                      {aiSuggestions.recommendedApproach && (
+                        <div className="p-3 bg-indigo-500/10 rounded-2xl border border-indigo-500/20">
+                          <div className="flex items-center gap-1.5 text-[10px] font-bold text-indigo-400 uppercase tracking-wider mb-2">
+                            <Layers className="w-3 h-3" />
+                            Architecture
+                          </div>
+                          <p className="text-xs text-gray-300 leading-relaxed">{aiSuggestions.recommendedApproach}</p>
                         </div>
-                        <p className="text-xl font-bold bg-gradient-to-r from-primary-400 to-indigo-300 bg-clip-text text-transparent">
-                          {aiSuggestions.suggestedBudgetRange}
-                        </p>
-                      </div>
+                      )}
 
-                      <div>
-                        <div className="flex items-center gap-2 text-xs font-bold text-primary-400 uppercase tracking-wider mb-2">
-                          <Clock className="w-3 h-3" />
-                          Time Estimate
+                      {/* Team Required */}
+                      {aiSuggestions.teamRequired?.length > 0 && (
+                        <div>
+                          <div className="flex items-center gap-2 text-xs font-bold text-purple-400 uppercase tracking-wider mb-3">
+                            <Users className="w-3 h-3" />
+                            Team Required
+                          </div>
+                          <div className="flex flex-wrap gap-2">
+                            {aiSuggestions.teamRequired.map(role => (
+                              <span key={role} className="px-3 py-1.5 bg-purple-500/10 rounded-xl text-xs font-bold border border-purple-500/20 text-purple-300">
+                                {role}
+                              </span>
+                            ))}
+                          </div>
                         </div>
-                        <p className="text-sm font-semibold">{aiSuggestions.timeEstimate}</p>
-                      </div>
+                      )}
 
-                      <div>
-                        <div className="flex items-center gap-2 text-xs font-bold text-yellow-400 uppercase tracking-wider mb-2">
-                          <AlertCircle className="w-3 h-3" />
-                          Risk Factors
+                      {/* Core MVP Features */}
+                      {aiSuggestions.coreFeatures?.length > 0 && (
+                        <div>
+                          <div className="flex items-center gap-2 text-xs font-bold text-emerald-400 uppercase tracking-wider mb-2">
+                            <BadgeCheck className="w-3 h-3" />
+                            MVP Features
+                          </div>
+                          <ul className="space-y-1.5">
+                            {aiSuggestions.coreFeatures.map(f => (
+                              <li key={f} className="flex items-start gap-2 text-xs text-gray-300">
+                                <CheckCircle className="w-3 h-3 text-emerald-400 mt-0.5 shrink-0" />
+                                {f}
+                              </li>
+                            ))}
+                          </ul>
                         </div>
-                        <ul className="text-xs text-gray-300 space-y-1">
-                          {aiSuggestions.riskFactors.map(risk => (
-                            <li key={risk} className="flex items-center gap-2">
-                              <span className="w-1 h-1 bg-yellow-400 rounded-full" />
-                              {risk}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
+                      )}
 
+                      {/* AI Opportunities */}
+                      {aiSuggestions.aiOpportunities?.length > 0 && (
+                        <div>
+                          <div className="flex items-center gap-2 text-xs font-bold text-pink-400 uppercase tracking-wider mb-2">
+                            <Sparkles className="w-3 h-3" />
+                            AI Opportunities
+                          </div>
+                          <ul className="space-y-1.5">
+                            {aiSuggestions.aiOpportunities.map(a => (
+                              <li key={a} className="flex items-start gap-2 text-xs text-gray-300">
+                                <Rocket className="w-3 h-3 text-pink-400 mt-0.5 shrink-0" />
+                                {a}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
+                      {/* Risk Factors */}
+                      {aiSuggestions.riskFactors?.length > 0 && (
+                        <div>
+                          <div className="flex items-center gap-2 text-xs font-bold text-yellow-400 uppercase tracking-wider mb-2">
+                            <AlertCircle className="w-3 h-3" />
+                            Risk Factors
+                          </div>
+                          <ul className="space-y-1.5">
+                            {aiSuggestions.riskFactors.map(risk => (
+                              <li key={risk} className="flex items-start gap-2 text-xs text-gray-300">
+                                <Flame className="w-3 h-3 text-yellow-400 mt-0.5 shrink-0" />
+                                {risk}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
+                      {/* Optimization Tips */}
+                      {aiSuggestions.optimizationTips?.length > 0 && (
+                        <div>
+                          <div className="flex items-center gap-2 text-xs font-bold text-cyan-400 uppercase tracking-wider mb-2">
+                            <Zap className="w-3 h-3" />
+                            Optimization Tips
+                          </div>
+                          <ul className="space-y-1.5">
+                            {aiSuggestions.optimizationTips.map(tip => (
+                              <li key={tip} className="flex items-start gap-2 text-xs text-gray-300">
+                                <ArrowRight className="w-3 h-3 text-cyan-400 mt-0.5 shrink-0" />
+                                {tip}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
+                      {/* Final Recommendation */}
+                      {aiSuggestions.recommendation && (
+                        <div className="p-4 bg-gradient-to-br from-blue-600/20 to-indigo-600/10 rounded-2xl border border-blue-500/20">
+                          <div className="flex items-center gap-2 text-xs font-bold text-blue-400 uppercase tracking-wider mb-2">
+                            <Lightbulb className="w-3 h-3" />
+                            WaveMind Recommendation
+                          </div>
+                          <p className="text-xs text-gray-200 leading-relaxed">{aiSuggestions.recommendation}</p>
+                        </div>
+                      )}
+
+                      {/* Apply Stack Button */}
                       <button
-                        
-                        
                         onClick={() => {
                           const newTechStack = [...new Set([...formData.techStack, ...aiSuggestions.techStack])];
                           setFormData(prev => ({ ...prev, techStack: newTechStack }));
-                          toast.success(`${aiSuggestions.techStack.length} technologies added to your stack!`);
+                          toast.success(`${aiSuggestions.techStack.length} technologies applied to your stack!`);
                         }}
-                        className="w-full mt-4 py-3 bg-white/10 backdrop-blur-sm rounded-xl text-sm font-bold hover:bg-white/20 transition-all flex items-center justify-center gap-2"
+                        className="w-full py-3 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl text-sm font-black hover:opacity-90 transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-600/20"
                       >
                         <CheckCircle className="w-4 h-4" />
-                        Apply All Suggestions
+                        Apply Recommended Stack
                       </button>
-                    </div>
-                  ) : (
-                    <div
+                    </motion.div>
+                  )}
+
+                  {/* ── Empty / Idle State ── */}
+                  {!aiAnalyzing && !aiSuggestions && (
+                    <motion.div
                       key="placeholder"
-                      
-                      
-                      
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
                       className="text-center py-8"
                     >
-                      <div className="w-20 h-20 mx-auto mb-4 bg-white/5 rounded-full flex items-center justify-center">
-                        <Cpu className="w-10 h-10 text-gray-500" />
-                      </div>
-                      <p className="text-gray-400 text-sm mb-2">Ready for AI insights?</p>
-                      <p className="text-xs text-gray-500">
-                        Describe your project above and click "AI Analyze" for intelligent recommendations
+                      <motion.div
+                        animate={{ y: [0, -8, 0] }}
+                        transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+                        className="w-20 h-20 mx-auto mb-4 bg-white/5 rounded-full flex items-center justify-center border border-white/10"
+                      >
+                        <Brain className="w-10 h-10 text-blue-500/60" />
+                      </motion.div>
+                      <p className="text-gray-300 text-sm font-bold mb-2">Ready for AI insights?</p>
+                      <p className="text-xs text-gray-500 leading-relaxed">
+                        Describe your project and click{' '}
+                        <span className="text-blue-400 font-bold">"AI Insights"</span>{' '}
+                        for real-time Gemini-powered recommendations
                       </p>
-                    </div>
+                      <div className="mt-5 flex flex-wrap justify-center gap-2">
+                        {['Tech Stack','Budget','Timeline','Risks','AI Ideas'].map(tag => (
+                          <span key={tag} className="px-2 py-1 bg-white/5 border border-white/10 rounded-lg text-[10px] font-bold text-gray-500 uppercase tracking-wider">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </motion.div>
                   )}
                 </AnimatePresence>
               </div>
