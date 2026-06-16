@@ -52,19 +52,17 @@ const register = async (req, res) => {
     otpExpires,
   });
 
-  // Send OTP Email
-  try {
-    console.log(`\n📧 OTP for ${user.email}: ${rawOtp}\n`);
-    await emailService.sendOTPEmail(user.email, rawOtp);
-  } catch (err) {
-    console.error("OTP Email Error:", err);
-  }
-
   res.status(201).json({
     success: true,
     message: "Registration successful. Please verify your email with the OTP sent.",
     email: user.email,
   });
+
+  // Send OTP Email asynchronously in the background
+  console.log(`\n📧 OTP for ${user.email}: ${rawOtp}\n`);
+  emailService.sendOTPEmail(user.email, rawOtp)
+    .then(() => console.log("OTP email sent successfully"))
+    .catch((err) => console.error("OTP Email Error:", err));
 };
 
 // ── POST /api/auth/verify-otp ──────────────────────────────────────────────
