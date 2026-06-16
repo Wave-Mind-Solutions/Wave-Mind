@@ -1,1 +1,0 @@
-import{a}from"./vendor-C_IbkUdy.js";const t="undefined/activity",e=()=>({headers:{Authorization:`Bearer ${localStorage.getItem("token")}`}}),r=async(r={})=>(await a.get(t,{...e(),params:r})).data,o=async(r,o={})=>(await a.get(`${t}/project/${r}`,{...e(),params:o})).data;export{r as a,o as g};

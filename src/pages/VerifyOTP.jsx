@@ -14,7 +14,7 @@ const VerifyOTP = () => {
   
   const navigate = useNavigate();
   const location = useLocation();
-  const { login: setAuthData } = useAuth();
+  const { saveSession } = useAuth();
   
   const email = location.state?.email || localStorage.getItem('verify_email');
 
@@ -79,7 +79,7 @@ const VerifyOTP = () => {
 
         // Auto-login after verification
         setTimeout(() => {
-          setAuthData(res.data.token, res.data.user);
+          saveSession(res.data.token, res.data.user);
           navigate(ROLE_HOME[res.data.user.role] || '/dashboard/client');
         }, 1500);
       }
