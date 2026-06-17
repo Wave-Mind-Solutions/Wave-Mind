@@ -1,27 +1,13 @@
 /**
- * Nodemailer transporter configuration
+ * Resend Email API Configuration
+ * Replace Nodemailer with Resend for reliable email delivery on Render
  */
-const nodemailer = require("nodemailer");
+const { Resend } = require("resend");
 
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: Number(process.env.SMTP_PORT) || 587,
-  secure: false, // use TLS
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
-  },
-  connectionTimeout: 10 * 60 * 1000, // 10 minutes
-  socketTimeout: 10 * 60 * 1000,     // 10 minutes
-  pool: {
-    maxConnections: 5,
-    maxMessages: 100,
-    rateDelta: 1000,
-    rateLimit: 5,
-  },
-  tls: {
-    rejectUnauthorized: false, // Allow self-signed certs (Gmail compatibility)
-  },
-});
+if (!process.env.RESEND_API_KEY) {
+  console.warn("⚠️ Warning: RESEND_API_KEY not set in environment variables");
+}
 
-module.exports = transporter;
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+module.exports = resend;
