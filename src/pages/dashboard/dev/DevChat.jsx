@@ -6,6 +6,8 @@ import { useState, useEffect, useRef } from 'react';
 import { MessageSquare, Send, Search } from 'lucide-react';
 import DashboardLayout from '../../../components/dashboard/DashboardLayout';
 import { getConversations, getMessages, sendMessage } from '../../../services/chatService';
+import { getMyProjects } from '../../../services/devService';
+import { getAdmins } from '../../../services/authService';
 import { useAuth } from '../../../context/AuthContext';
 import socket from '../../../services/SocketService';
 import toast from 'react-hot-toast';
@@ -13,6 +15,8 @@ import toast from 'react-hot-toast';
 const DevChat = () => {
   const { user } = useAuth();
   const [conversations, setConversations] = useState([]);
+  const [admins, setAdmins] = useState([]);
+  const [clients, setClients] = useState([]);
   const [activeConv, setActiveConv] = useState(null);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
@@ -22,8 +26,22 @@ const DevChat = () => {
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
-    getConversations()
-      .then(res => setConversations(res.data || []))
+    Promise.all([getConversations(), getAdmins(), getMyProjects()])
+      .then(([convRes, adminRes, projRes]) => {
+        setConversations(convRes.data || []);
+        setAdmins(adminRes.data || []);
+        
+        // Extract unique clients from projects
+        const clientMap = {};
+        if (projRes.data) {
+          projRes.data.forEach(p => {
+            if (p.clientId && p.clientId._id) {
+              clientMap[p.clientId._id] = p.clientId;
+            }
+          });
+        }
+        setClients(Object.values(clientMap));
+      })
       .catch(console.error)
       .finally(() => setLoadingConvs(false));
   }, []);
@@ -31,12 +49,21 @@ const DevChat = () => {
   useEffect(() => {
     if (!activeConv) return;
     setLoadingMsgs(true);
-    socket.emit('join_conversation', { conversationId: activeConv.conversationId });
-    getMessages(activeConv.conversationId)
-      .then(res => setMessages(res.data || []))
-      .catch(console.error)
-      .finally(() => setLoadingMsgs(false));
-    return () => socket.emit('leave_conversation', { conversationId: activeConv.conversationId });
+    if (activeConv.conversationId) {
+      socket.emit('join_conversation', { conversationId: activeConv.conversationId });
+      getMessages(activeConv.conversationId)
+        .then(res => setMessages(res.data || []))
+        .catch(console.error)
+        .finally(() => setLoadingMsgs(false));
+    } else {
+      setMessages([]);
+      setLoadingMsgs(false);
+    }
+    return () => {
+      if (activeConv?.conversationId) {
+        socket.emit('leave_conversation', { conversationId: activeConv.conversationId });
+      }
+    };
   }, [activeConv]);
 
   useEffect(() => {
@@ -64,6 +91,12 @@ const DevChat = () => {
       const res = await sendMessage(activeConv.participant?._id, input.trim());
       setMessages(prev => [...prev, res.data]);
       setInput('');
+      // Update activeConv with the conversationId returned in the message response if it was a new conversation
+      if (!activeConv.conversationId && res.data?.conversationId) {
+        setActiveConv(prev => ({ ...prev, conversationId: res.data.conversationId }));
+      }
+      // Refresh conversations list
+      getConversations().then(r => setConversations(r.data || []));
     } catch { toast.error('Transmission Failed.'); }
     finally { setSending(false); }
   };
@@ -88,44 +121,133 @@ const DevChat = () => {
           
           <div className="flex-grow overflow-y-auto p-4 space-y-3 custom-scrollbar">
             {loadingConvs ? Array(4).fill(0).map((_, i) => <div key={i} className="h-20 bg-white/5 border border-white/5 rounded-2xl animate-pulse" />) :
-             conversations.length === 0 ? (
+             conversations.length === 0 && (admins.length > 0 || clients.length > 0) ? (
+               <div className="space-y-6">
+                 {admins.length > 0 && (
+                   <div className="space-y-2">
+                     <p className="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em] mb-2 px-2">Support Administrators</p>
+                     {admins.map((adm, i) => (
+                       <button 
+                         key={`adm-${i}`} 
+                         onClick={() => setActiveConv({ participant: adm })}
+                         className="w-full p-5 rounded-[2rem] flex items-center gap-4 cursor-pointer hover:bg-white/[0.03] transition-all text-left border border-transparent">
+                         <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-black text-lg shrink-0 shadow-2xl border border-white/10">
+                           {initials(adm.fullName)}
+                         </div>
+                         <div className="flex-1 min-w-0">
+                           <h4 className="font-black text-white text-sm tracking-tight truncate">{adm.fullName}</h4>
+                           <span className="text-[9px] text-emerald-400 font-black uppercase tracking-widest flex items-center gap-1.5 mt-1">
+                             <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" /> Available
+                           </span>
+                         </div>
+                       </button>
+                     ))}
+                   </div>
+                 )}
+                 {clients.length > 0 && (
+                   <div className="space-y-2">
+                     <p className="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em] mb-2 px-2">Project Clients</p>
+                     {clients.map((cl, i) => (
+                       <button 
+                         key={`cl-${i}`} 
+                         onClick={() => setActiveConv({ participant: cl })}
+                         className="w-full p-5 rounded-[2rem] flex items-center gap-4 cursor-pointer hover:bg-white/[0.03] transition-all text-left border border-transparent">
+                         <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center text-white font-black text-lg shrink-0 shadow-2xl border border-white/10">
+                           {initials(cl.fullName)}
+                         </div>
+                         <div className="flex-1 min-w-0">
+                           <h4 className="font-black text-white text-sm tracking-tight truncate">{cl.fullName}</h4>
+                           <span className="text-[9px] text-blue-400 font-black uppercase tracking-widest flex items-center gap-1.5 mt-1">
+                             Client Entity
+                           </span>
+                         </div>
+                       </button>
+                     ))}
+                   </div>
+                 )}
+               </div>
+             ) : conversations.length === 0 ? (
                <div className="text-center py-12 px-6">
                  <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4 border border-white/10">
                    <MessageSquare className="text-gray-700" size={24} />
                  </div>
                  <div className="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]">Silence in the void</div>
                </div>
-             ) :
-             conversations.map((conv, i) => (
-              <button 
-                key={i} 
-                
-                
-                onClick={() => setActiveConv(conv)}
-                className={`w-full p-5 rounded-[2rem] flex items-center gap-4 cursor-pointer transition-all text-left border relative overflow-hidden group ${activeConv?.conversationId === conv.conversationId ? 'bg-blue-600/10 border-blue-500/30 shadow-2xl shadow-blue-600/10' : 'bg-transparent border-transparent hover:bg-white/[0.03]'}`}>
-                {activeConv?.conversationId === conv.conversationId && <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.5)]" />}
-                
-                <div className="relative">
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-black text-lg shrink-0 shadow-2xl border border-white/10">
-                    {initials(conv.participant?.fullName)}
-                  </div>
-                  <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full border-2 border-[#1e293b] shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
-                </div>
+             ) : (
+               <>
+                 {conversations.map((conv, i) => (
+                   <button 
+                     key={i} 
+                     onClick={() => setActiveConv(conv)}
+                     className={`w-full p-5 rounded-[2rem] flex items-center gap-4 cursor-pointer transition-all text-left border relative overflow-hidden group ${activeConv?.conversationId === conv.conversationId ? 'bg-blue-600/10 border-blue-500/30 shadow-2xl shadow-blue-600/10' : 'bg-transparent border-transparent hover:bg-white/[0.03]'}`}>
+                     {activeConv?.conversationId === conv.conversationId && <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.5)]" />}
+                     
+                     <div className="relative">
+                       <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-black text-lg shrink-0 shadow-2xl border border-white/10">
+                         {initials(conv.participant?.fullName)}
+                       </div>
+                       <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full border-2 border-[#1e293b] shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
+                     </div>
 
-                <div className="flex-1 min-w-0">
-                  <h4 className="font-black text-white text-sm tracking-tight truncate group-hover:text-blue-400 transition-colors">{conv.participant?.fullName}</h4>
-                  <div className="flex items-center gap-2 mt-1">
-                    <span className="text-[9px] text-gray-500 font-black uppercase tracking-widest truncate">{conv.participant?.role}</span>
-                  </div>
-                </div>
-                
-                {conv.unreadCount > 0 && (
-                  <span className="shrink-0 w-6 h-6 bg-blue-600 text-white text-[10px] font-black rounded-lg flex items-center justify-center shadow-lg shadow-blue-600/20 animate-pulse border border-blue-400/30">
-                    {conv.unreadCount}
-                  </span>
-                )}
-              </button>
-            ))}
+                     <div className="flex-1 min-w-0">
+                       <h4 className="font-black text-white text-sm tracking-tight truncate group-hover:text-blue-400 transition-colors">{conv.participant?.fullName}</h4>
+                       <div className="flex items-center gap-2 mt-1">
+                         <span className="text-[9px] text-gray-500 font-black uppercase tracking-widest truncate">{conv.participant?.role}</span>
+                       </div>
+                     </div>
+                     
+                     {conv.unreadCount > 0 && (
+                       <span className="shrink-0 w-6 h-6 bg-blue-600 text-white text-[10px] font-black rounded-lg flex items-center justify-center shadow-lg shadow-blue-600/20 animate-pulse border border-blue-400/30">
+                         {conv.unreadCount}
+                       </span>
+                     )}
+                   </button>
+                 ))}
+
+                 {/* Available Contacts section (Initiate Link) */}
+                 {(() => {
+                   const existingConvUserIds = conversations.map(c => c.participant?._id);
+                   const availableAdmins = admins.filter(a => !existingConvUserIds.includes(a._id));
+                   const availableClients = clients.filter(c => !existingConvUserIds.includes(c._id));
+
+                   if (availableAdmins.length === 0 && availableClients.length === 0) return null;
+
+                   return (
+                     <div className="pt-6 border-t border-white/5 mt-6 space-y-3">
+                       <p className="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em] mb-2 px-2">Initialize Link</p>
+                       {availableAdmins.map((adm, i) => (
+                         <button 
+                           key={`avail-adm-${i}`} 
+                           onClick={() => setActiveConv({ participant: adm })}
+                           className="w-full p-4 rounded-2xl flex items-center gap-4 cursor-pointer hover:bg-white/[0.03] transition-all text-left border border-transparent group">
+                           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-black text-sm shrink-0 border border-white/10">
+                             {initials(adm.fullName)}
+                           </div>
+                           <div className="flex-grow min-w-0">
+                             <h5 className="font-black text-white text-xs truncate group-hover:text-blue-400 transition-colors">{adm.fullName}</h5>
+                             <p className="text-[8px] text-gray-600 font-bold uppercase tracking-widest mt-0.5">Admin Support</p>
+                           </div>
+                         </button>
+                       ))}
+                       {availableClients.map((cl, i) => (
+                         <button 
+                           key={`avail-cl-${i}`} 
+                           onClick={() => setActiveConv({ participant: cl })}
+                           className="w-full p-4 rounded-2xl flex items-center gap-4 cursor-pointer hover:bg-white/[0.03] transition-all text-left border border-transparent group">
+                           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center text-white font-black text-sm shrink-0 border border-white/10">
+                             {initials(cl.fullName)}
+                           </div>
+                           <div className="flex-grow min-w-0">
+                             <h5 className="font-black text-white text-xs truncate group-hover:text-blue-400 transition-colors">{cl.fullName}</h5>
+                             <p className="text-[8px] text-gray-600 font-bold uppercase tracking-widest mt-0.5">Project Client</p>
+                           </div>
+                         </button>
+                       ))}
+                     </div>
+                   );
+                 })()}
+               </>
+             )}
           </div>
         </div>
 

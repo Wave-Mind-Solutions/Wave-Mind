@@ -616,7 +616,7 @@ const Home = () => {
         </div>
       </section >
 
-      <style>{`
+      <style jsx>{`
         .animate-blob {
           animation: blob 12s infinite cubic-bezier(0.4, 0, 0.2, 1);
         }

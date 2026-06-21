@@ -51,6 +51,7 @@ const Login = lazy(() => import('./pages/Login'));
 const Register = lazy(() => import('./pages/Register'));
 const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
 const VerifyOTP = lazy(() => import('./pages/VerifyOTP'));
+const ResetPassword = lazy(() => import('./pages/ResetPassword'));
 
 // Lazy Loaded Service Sub-Pages
 const WebDevelopment = lazy(() => import('./pages/services/WebDevelopment'));
@@ -76,6 +77,7 @@ const AuditLog = lazy(() => import('./pages/dashboard/admin/AuditLog'));
 const DevOverview = lazy(() => import('./pages/dashboard/dev/DevOverview'));
 const DevSubPage = lazy(() => import('./pages/dashboard/dev/DevSubPage'));
 const DevChat = lazy(() => import('./pages/dashboard/dev/DevChat'));
+const DevClientRequests = lazy(() => import('./pages/dashboard/dev/DevClientRequests'));
 
 // Shared Dashboard Pages
 const NotificationSettings = lazy(() => import('./pages/dashboard/shared/NotificationSettings'));
@@ -119,6 +121,7 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/verify-otp" element={<VerifyOTP />} />
+              <Route path="/reset-password/:token" element={<ResetPassword />} />
 
               {/* ── Service Sub-Pages (SEO Landing Pages) ── */}
               <Route path="/web-development" element={<WebDevelopment />} />
@@ -196,6 +199,11 @@ function App() {
                   <AdminSubPage title="Project Assets & Repository" type="assets" />
                 </ProtectedRoute>
               } />
+              <Route path="/dashboard/admin/time" element={
+                <ProtectedRoute allowedRoles={['admin']}>
+                  <AdminSubPage title="Time Sheets & Hour Approval" type="time" />
+                </ProtectedRoute>
+              } />
               <Route path="/dashboard/admin/chat" element={
                 <ProtectedRoute allowedRoles={['admin']}>
                   <AdminChat />
@@ -223,6 +231,11 @@ function App() {
                   <DevSubPage title="Active Task Management" type="tasks" />
                 </ProtectedRoute>
               } />
+              <Route path="/dashboard/dev/time" element={
+                <ProtectedRoute allowedRoles={['developer']}>
+                  <DevSubPage title="Operational Hour Registry" type="time" />
+                </ProtectedRoute>
+              } />
               <Route path="/dashboard/dev/chat" element={
                 <ProtectedRoute allowedRoles={['developer']}>
                   <DevChat />
@@ -231,6 +244,11 @@ function App() {
               <Route path="/dashboard/dev/tools" element={
                 <ProtectedRoute allowedRoles={['developer']}>
                   <DevSubPage title="Developer Tools Repository" type="tools" />
+                </ProtectedRoute>
+              } />
+              <Route path="/dashboard/dev/client-requests" element={
+                <ProtectedRoute allowedRoles={['developer']}>
+                  <DevClientRequests />
                 </ProtectedRoute>
               } />
 

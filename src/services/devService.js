@@ -43,3 +43,21 @@ export const getMyProjects = async () => {
   const res = await api.get('/dev/projects');
   return res.data;
 };
+
+/**
+ * GET /api/dev/client-requests
+ * Returns enriched list of { project, requirement } objects for projects assigned to the developer.
+ */
+export const getClientRequests = async () => {
+  const res = await api.get('/dev/client-requests');
+  return res.data;
+};
+
+/**
+ * GET /api/dev/stats
+ * Returns aggregated stats: task counts by status, hours this week, overdue count, etc.
+ */
+export const getDashboardStats = async () => {
+  const res = await api.get('/dev/stats');
+  return res.data;
+};

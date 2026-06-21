@@ -26,7 +26,8 @@ import {
   Search,
   Star,
   Activity,
-  Clock
+  Clock,
+  Inbox
 } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext';
 
@@ -51,6 +52,7 @@ const Sidebar = ({ role, isOpen, setIsOpen }) => {
     { name: 'Client Requirements', path: '/dashboard/admin/requirements', icon: List, gradient: 'from-amber-500 to-yellow-500', description: 'Review submissions' },
     { name: 'Active Monitoring', path: '/dashboard/admin/projects', icon: Briefcase, gradient: 'from-lime-500 to-green-500', description: 'Track progress' },
     { name: 'Specialist Units', path: '/dashboard/admin/team', icon: Users, gradient: 'from-cyan-500 to-blue-500', description: 'Team management' },
+    { name: 'Time Sheets', path: '/dashboard/admin/time', icon: Clock, gradient: 'from-amber-500 to-orange-500', description: 'Review time logs' },
     { name: 'Asset Repository', path: '/dashboard/admin/assets', icon: Upload, gradient: 'from-pink-500 to-rose-500', description: 'Digital assets' },
     { name: 'Direct Chat', path: '/dashboard/admin/chat', icon: MessageSquare, gradient: 'from-sky-500 to-indigo-500', description: 'Team chat' },
   ];
@@ -58,6 +60,9 @@ const Sidebar = ({ role, isOpen, setIsOpen }) => {
   const devLinks = [
     { name: 'Dashboard', path: '/dashboard/dev', icon: Layout, gradient: 'from-violet-500 to-purple-500', description: 'Task overview' },
     { name: 'Assigned Projects', path: '/dashboard/dev/projects', icon: Briefcase, gradient: 'from-fuchsia-500 to-pink-500', description: 'My tasks' },
+    { name: 'Active Tasks', path: '/dashboard/dev/tasks', icon: List, gradient: 'from-emerald-500 to-teal-500', description: 'Manage task signals' },
+    { name: 'Client Requests', path: '/dashboard/dev/client-requests', icon: Inbox, gradient: 'from-amber-500 to-orange-500', description: 'Client request pipeline' },
+    { name: 'Time Logs', path: '/dashboard/dev/time', icon: Clock, gradient: 'from-amber-500 to-yellow-500', description: 'Log hours' },
     { name: 'Deliverables Repository', path: '/dashboard/dev/tools', icon: Upload, gradient: 'from-rose-500 to-red-500', description: 'Submit work' },
     { name: 'Direct Messages', path: '/dashboard/dev/chat', icon: MessageSquare, gradient: 'from-blue-500 to-indigo-500', description: 'Team chat' },
   ];

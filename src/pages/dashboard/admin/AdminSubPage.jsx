@@ -28,6 +28,7 @@ import {
 } from 'lucide-react';
 import DashboardLayout from '../../../components/dashboard/DashboardLayout';
 import { getAllRequirements, getAllProjects, getDevelopers, updateProject, assignTeam, getAllDeliverables, getLeads, exportLeadsExcel } from '../../../services/adminService';
+import { getAllTimeEntries, approveTimeEntry } from '../../../services/timeService';
 import toast from 'react-hot-toast';
 
 const TYPE_ICON_MAP = { web: Globe, app: Smartphone, ai: Cpu, designer: Palette };
@@ -51,6 +52,16 @@ const AdminSubPage = ({ title, type }) => {
   const [selectedDevs, setSelectedDevs] = useState([]);
   const [btnLoading, setBtnLoading] = useState(false);
 
+  const handleApproveTime = async (id, status) => {
+    try {
+      await approveTimeEntry(id, status);
+      setItems(prev => prev.map(item => item._id === id ? { ...item, status } : item));
+      toast.success(`Time log marked as "${status}"`);
+    } catch (err) {
+      toast.error('Failed to update time log status.');
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -61,6 +72,7 @@ const AdminSubPage = ({ title, type }) => {
         else if (type === 'team') res = await getDevelopers();
         else if (type === 'assets') res = await getAllDeliverables();
         else if (type === 'leads') res = await getLeads();
+        else if (type === 'time') res = await getAllTimeEntries();
         setItems(res?.data || []);
 
         if (type === 'projects' || type === 'reports') {
@@ -86,6 +98,7 @@ const AdminSubPage = ({ title, type }) => {
     if (type === 'team') return item.fullName?.toLowerCase().includes(term) || item.developerType?.toLowerCase().includes(term);
     if (type === 'assets') return item.fileName?.toLowerCase().includes(term) || item.projectId?.title?.toLowerCase().includes(term) || item.uploadedBy?.fullName?.toLowerCase().includes(term);
     if (type === 'leads') return item.name?.toLowerCase().includes(term) || item.contact?.toLowerCase().includes(term) || item.requirement?.toLowerCase().includes(term);
+    if (type === 'time') return item.userId?.fullName?.toLowerCase().includes(term) || item.taskId?.title?.toLowerCase().includes(term) || item.projectId?.title?.toLowerCase().includes(term) || item.description?.toLowerCase().includes(term);
     return true;
   });
 
@@ -540,6 +553,75 @@ const AdminSubPage = ({ title, type }) => {
                       <span className="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] mb-1">Received On</span>
                       <span className="text-xs font-black text-gray-900 dark:text-gray-300 uppercase tracking-widest">{new Date(item.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</span>
                     </div>
+                  </div>
+                </div>
+              );
+
+              // Time Entry card
+              if (type === 'time') return (
+                <div 
+                  key={idx} 
+                  className="premium-glass rounded-3xl p-7 border border-gray-100 dark:border-white/10 shadow-xl hover:bg-gray-50 dark:hover:bg-white/5 transition-all flex flex-col gap-6 relative overflow-hidden group"
+                >
+                  <div className="absolute top-0 right-0 w-40 h-40 bg-emerald-600/5 rounded-full blur-[60px] -mr-20 -mt-20 group-hover:bg-emerald-600/10 transition-all duration-700" />
+                  
+                  <div className="flex items-center justify-between relative z-10">
+                    <div className="w-12 h-12 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-emerald-600 dark:text-emerald-500 flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
+                      <Clock size={22} />
+                    </div>
+                    <span className={`px-5 py-2.5 rounded-2xl text-[9px] font-black uppercase tracking-[0.2em] shadow-xl border ${
+                      item.status === 'Approved' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 
+                      item.status === 'Rejected' ? 'bg-rose-500/10 text-rose-400 border-rose-500/20' : 
+                      'bg-yellow-500/10 text-yellow-400 border-yellow-500/20'
+                    }`}>
+                      {item.status}
+                    </span>
+                  </div>
+
+                  <div className="relative z-10 flex-grow">
+                    <h3 className="text-xl font-black text-gray-900 dark:text-white mb-2 tracking-tighter group-hover:text-emerald-600 transition-colors leading-tight truncate">{item.taskId?.title || 'System Task'}</h3>
+                    <p className="text-[10px] font-black text-indigo-600 dark:text-indigo-400 uppercase tracking-[0.3em] mb-4 truncate">Project: {item.projectId?.title || 'Core Nexus'}</p>
+                    <p className="text-[11px] text-gray-500 dark:text-gray-400 font-bold uppercase tracking-wider line-clamp-3 leading-relaxed mb-4 opacity-80">{item.description}</p>
+                  </div>
+
+                  <div className="relative z-10 p-5 bg-white dark:bg-white/5 rounded-3xl border border-gray-100 dark:border-white/10 flex items-center justify-between shadow-sm">
+                    <div className="flex items-center gap-4">
+                      <div className="w-11 h-11 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-base font-black shadow-xl">
+                        {item.userId?.fullName?.split(' ').map(n=>n[0]).join('') || 'DV'}
+                      </div>
+                      <div>
+                        <p className="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.3em] mb-1">Developer</p>
+                        <p className="text-sm font-black text-gray-900 dark:text-white tracking-tight">{item.userId?.fullName || 'Specialist Unit'}</p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.3em] mb-1">Hours Logged</p>
+                      <p className="text-base font-black text-emerald-500 tracking-tight">{item.hours} hrs</p>
+                    </div>
+                  </div>
+
+                  <div className="pt-6 border-t border-gray-100 dark:border-white/5 flex items-center justify-between relative z-10 mt-auto">
+                    <div className="flex flex-col">
+                      <span className="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] mb-1">Log Date</span>
+                      <span className="text-xs font-black text-gray-900 dark:text-gray-300 uppercase tracking-widest">{new Date(item.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                    </div>
+
+                    {item.status === 'Pending' && (
+                      <div className="flex gap-2">
+                        <button 
+                          onClick={() => handleApproveTime(item._id, 'Approved')}
+                          className="px-4 py-2 bg-emerald-600 text-white rounded-xl text-[9px] font-black uppercase tracking-widest hover:bg-emerald-500 transition-all active:scale-95 shadow-md"
+                        >
+                          Approve
+                        </button>
+                        <button 
+                          onClick={() => handleApproveTime(item._id, 'Rejected')}
+                          className="px-4 py-2 bg-rose-600 text-white rounded-xl text-[9px] font-black uppercase tracking-widest hover:bg-rose-500 transition-all active:scale-95 shadow-md"
+                        >
+                          Reject
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               );

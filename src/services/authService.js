@@ -21,6 +21,12 @@ export const forgotPassword = async (email) => {
   return res.data;
 };
 
+/** POST /api/auth/reset-password/:token */
+export const resetPassword = async (token, password) => {
+  const res = await api.post(`/auth/reset-password/${token}`, { password });
+  return res.data;
+};
+
 /** GET /api/auth/profile */
 export const getProfile = async () => {
   const res = await api.get('/auth/profile');

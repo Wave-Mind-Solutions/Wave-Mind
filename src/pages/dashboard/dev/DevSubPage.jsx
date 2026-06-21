@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 // Removed framer-motion
-import { Briefcase, Terminal, Cpu, ChevronRight, Search, Clock, CheckCircle2, AlertCircle, Code, Upload, X, FileUp, IndianRupee, Globe, Smartphone, Palette } from 'lucide-react';
+import { Briefcase, Terminal, Cpu, ChevronRight, Search, Clock, CheckCircle2, AlertCircle, Code, Upload, X, FileUp, IndianRupee, Globe, Smartphone, Palette, Download, Image as ImageIcon, FileText, Filter } from 'lucide-react';
 import DashboardLayout from '../../../components/dashboard/DashboardLayout';
 import { getMyTasks, updateTaskStatus, uploadDeliverable, getMyDeliverables, getMyProjects } from '../../../services/devService';
+import { logTime, getMyTimeEntries } from '../../../services/timeService';
 import toast from 'react-hot-toast';
 
 const DevSubPage = ({ title, type }) => {
@@ -11,12 +12,20 @@ const DevSubPage = ({ title, type }) => {
   const [deliverables, setDeliverables] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
+  const [deliverableTypeFilter, setDeliverableTypeFilter] = useState('all');
   const [uploadModal, setUploadModal] = useState(null); // task object
   const [selectedProject, setSelectedProject] = useState(null);
   const [uploadFile, setUploadFile] = useState(null);
   const [fileType, setFileType] = useState('code');
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploading, setUploading] = useState(false);
+
+  // Time logging state
+  const [timeModal, setTimeModal] = useState(null); // task object
+  const [logHours, setLogHours] = useState('');
+  const [logDescription, setLogDescription] = useState('');
+  const [loggingTime, setLoggingTime] = useState(false);
+  const [selectedTaskId, setSelectedTaskId] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,6 +41,10 @@ const DevSubPage = ({ title, type }) => {
         } else if (type === 'tools') {
           const res = await getMyDeliverables();
           setDeliverables(res.data || []);
+        } else if (type === 'time') {
+          const [timeRes, taskRes] = await Promise.all([getMyTimeEntries(), getMyTasks()]);
+          setItems(timeRes.data || []);
+          setTasks(taskRes.data || []);
         }
       } catch (err) {
         console.error(err);
@@ -41,6 +54,59 @@ const DevSubPage = ({ title, type }) => {
     };
     fetchData();
   }, [type]);
+
+  const handleLogTime = async () => {
+    if (!logHours || isNaN(logHours) || Number(logHours) <= 0) {
+      toast.error('Please enter a valid number of hours.');
+      return;
+    }
+    if (!logDescription.trim()) {
+      toast.error('Please describe what you did.');
+      return;
+    }
+    
+    let targetTask = null;
+    if (timeModal?._isGlobal) {
+      if (!selectedTaskId) {
+        toast.error('Please select a task.');
+        return;
+      }
+      targetTask = tasks.find(t => t._id === selectedTaskId);
+    } else {
+      targetTask = timeModal;
+    }
+
+    if (!targetTask) {
+      toast.error('Task details not found.');
+      return;
+    }
+
+    setLoggingTime(true);
+    try {
+      await logTime({
+        taskId: targetTask._id,
+        hours: Number(logHours),
+        description: logDescription.trim(),
+        date: new Date(),
+        billable: true
+      });
+      toast.success('Hours logged successfully! ⏳');
+      setTimeModal(null);
+      setLogHours('');
+      setLogDescription('');
+      setSelectedTaskId('');
+      
+      // Refresh time entries if we are on the time page
+      if (type === 'time') {
+        const timeRes = await getMyTimeEntries();
+        setItems(timeRes.data || []);
+      }
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to log hours.');
+    } finally {
+      setLoggingTime(false);
+    }
+  };
 
   const handleStatusChange = async (taskId, status) => {
     try {
@@ -77,11 +143,26 @@ const DevSubPage = ({ title, type }) => {
     }
   };
 
-  const filtered = (type === 'projects' || type === 'tasks' ? items : deliverables).filter(item => {
+  const filtered = (type === 'projects' || type === 'tasks' || type === 'time' ? items : deliverables).filter(item => {
     const term = search.toLowerCase();
     if (type === 'projects' || type === 'tasks') return item.title?.toLowerCase().includes(term) || item.projectId?.title?.toLowerCase().includes(term);
-    return item.fileName?.toLowerCase().includes(term);
+    if (type === 'time') return item.description?.toLowerCase().includes(term) || item.taskId?.title?.toLowerCase().includes(term) || item.projectId?.title?.toLowerCase().includes(term);
+    // Deliverables: apply both search and type filter
+    const matchesSearch = item.fileName?.toLowerCase().includes(term) || item.projectId?.title?.toLowerCase().includes(term) || item.fileType?.toLowerCase().includes(term);
+    const matchesType = deliverableTypeFilter === 'all' || item.fileType === deliverableTypeFilter;
+    return matchesSearch && matchesType;
   });
+
+  const fileTypeIcon = (ft) => {
+    if (ft === 'code') return <Code size={28} className="text-blue-400" />;
+    if (ft === 'design') return <ImageIcon size={28} className="text-purple-400" />;
+    return <FileText size={28} className="text-emerald-400" />;
+  };
+  const fileTypeBg = (ft) => {
+    if (ft === 'code') return 'bg-blue-500/10 border-blue-500/20';
+    if (ft === 'design') return 'bg-purple-500/10 border-purple-500/20';
+    return 'bg-emerald-500/10 border-emerald-500/20';
+  };
 
   const statusColor = { 
     'Planning': 'text-blue-400 bg-blue-500/10 border-blue-500/20', 
@@ -95,17 +176,28 @@ const DevSubPage = ({ title, type }) => {
       <div className="space-y-10 animate-fadeIn">
         
         {/* Search bar */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-8 px-2">
-          <div className="relative group w-full md:w-[450px]">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 px-2 flex-wrap">
+          <div className="relative group w-full md:w-[400px]">
             <div className="absolute inset-0 bg-blue-600/5 rounded-2xl blur-lg opacity-0 group-focus-within:opacity-100 transition-opacity" />
-            <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-blue-500 transition-colors" size={18} />
-            <input type="text" placeholder={`Scan for ${type}...`}
+            <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-blue-500 transition-colors" size={16} />
+            <input type="text" placeholder={`Search ${type}...`}
               value={search} onChange={e => setSearch(e.target.value)}
-              className="w-full pl-14 pr-6 py-5 bg-white/5 rounded-2xl border border-white/10 text-white placeholder-gray-600 outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/30 transition-all text-sm font-medium backdrop-blur-xl relative z-10"
+              className="w-full pl-12 pr-5 py-4 bg-white/5 rounded-2xl border border-white/10 text-white placeholder-gray-600 outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/30 transition-all text-sm font-medium backdrop-blur-xl relative z-10"
             />
           </div>
-          <div className="px-6 py-3 bg-blue-600/10 text-blue-600 dark:text-blue-400 rounded-xl font-black text-[10px] uppercase tracking-[0.2em] border border-blue-500/20 shadow-lg">
-            Active Nodes: {filtered.length}
+          {/* Type filter for deliverables */}
+          {type === 'tools' && (
+            <div className="flex items-center gap-1 bg-white/5 border border-white/10 rounded-xl p-1">
+              {[{ id: 'all', label: 'All' }, { id: 'code', label: 'Code' }, { id: 'design', label: 'Design' }, { id: 'report', label: 'Report' }].map(tab => (
+                <button key={tab.id} onClick={() => setDeliverableTypeFilter(tab.id)}
+                  className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all ${
+                    deliverableTypeFilter === tab.id ? 'bg-blue-600 text-white shadow-lg' : 'text-gray-500 hover:text-gray-300'
+                  }`}>{tab.label}</button>
+              ))}
+            </div>
+          )}
+          <div className="px-5 py-2.5 bg-blue-600/10 text-blue-400 rounded-xl font-black text-[9px] uppercase tracking-[0.2em] border border-blue-500/20">
+            {filtered.length} {type}
           </div>
         </div>
 
@@ -196,19 +288,24 @@ const DevSubPage = ({ title, type }) => {
                   </div>
                 </div>
                 
-                <div className="grid grid-cols-2 gap-4 mt-auto relative z-10">
+                <div className="flex gap-2 mt-auto relative z-10">
                   <select 
                     value={task.status} 
                     onChange={(e) => handleStatusChange(task._id, e.target.value)}
-                    className="bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-[10px] font-black text-gray-400 outline-none uppercase tracking-[0.2em] focus:border-blue-500/50 transition-all appearance-none cursor-pointer"
+                    className="flex-1 bg-white/5 border border-white/10 rounded-xl px-3 py-3.5 text-[10px] font-black text-gray-400 outline-none uppercase tracking-[0.2em] focus:border-blue-500/50 transition-all appearance-none cursor-pointer text-center"
                   >
                     {['Not Started', 'In Progress', 'Completed', 'On Hold'].map(s => <option key={s} value={s} className="bg-[#0f172a] text-white">{s}</option>)}
                   </select>
                   <button 
-                    
-                    
+                    onClick={() => setTimeModal(task)}
+                    className="w-12 h-12 bg-emerald-600 text-white rounded-xl flex items-center justify-center shadow-xl shadow-emerald-600/20 hover:shadow-emerald-600/40 transition-all border border-emerald-500/50 shrink-0"
+                    title="Log Time"
+                  >
+                    <Clock size={16} />
+                  </button>
+                  <button 
                     onClick={() => setUploadModal(task)}
-                    className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-[10px] font-black uppercase tracking-[0.2em] flex items-center justify-center gap-3 shadow-xl shadow-blue-600/20 transition-all border border-blue-500/50"
+                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-[10px] font-black uppercase tracking-[0.2em] flex items-center justify-center gap-2 shadow-xl shadow-blue-600/20 transition-all border border-blue-500/50 shrink-0 px-2"
                   >
                     <Upload size={16} /> Dispatch
                   </button>
@@ -216,52 +313,137 @@ const DevSubPage = ({ title, type }) => {
               </div>
             ))}
           </div>
+        ) : type === 'time' ? (
+          // Time Entries View
+          <div className="space-y-8">
+            <div className="premium-glass border border-white/10 rounded-[2.5rem] shadow-2xl overflow-hidden relative">
+              <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-600/5 rounded-full blur-[100px] -mr-48 -mt-48" />
+              <table className="w-full text-left relative z-10">
+                <thead>
+                  <tr className="border-b border-white/5">
+                    <th className="px-10 py-6 text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]">Operational Task</th>
+                    <th className="px-10 py-6 text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]">Project</th>
+                    <th className="px-10 py-6 text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]">Duration</th>
+                    <th className="px-10 py-6 text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]">Briefing</th>
+                    <th className="px-10 py-6 text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]">Timestamp</th>
+                    <th className="px-10 py-6 text-[10px] font-black text-gray-500 uppercase tracking-[0.2em] text-right">Synchronization Status</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-white/5">
+                  {filtered.map((entry) => (
+                    <tr key={entry._id} className="hover:bg-white/[0.03] transition-colors group">
+                      <td className="px-10 py-8">
+                        <span className="text-base font-black text-white tracking-tight">{entry.taskId?.title || 'Unknown Routine'}</span>
+                      </td>
+                      <td className="px-10 py-8">
+                        <span className="text-xs font-black text-indigo-500 uppercase tracking-[0.2em]">{entry.projectId?.title || 'Core Nexus'}</span>
+                      </td>
+                      <td className="px-10 py-8">
+                        <span className="text-sm font-black text-emerald-400">{entry.hours} hrs</span>
+                      </td>
+                      <td className="px-10 py-8">
+                        <span className="text-xs text-gray-400 font-medium tracking-wide">{entry.description}</span>
+                      </td>
+                      <td className="px-10 py-8">
+                        <span className="text-xs font-black text-gray-500 uppercase tracking-widest bg-white/5 px-3 py-1.5 rounded-lg border border-white/5">
+                          {new Date(entry.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                        </span>
+                      </td>
+                      <td className="px-10 py-8 text-right">
+                        <span className={`px-4 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest border shadow-lg ${
+                          entry.status === 'Approved' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' :
+                          entry.status === 'Rejected' ? 'bg-rose-500/10 text-rose-400 border-rose-500/20' :
+                          'bg-yellow-500/10 text-yellow-400 border-yellow-500/20'
+                        }`}>
+                          {entry.status}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            
+            {/* Log New Hours CTA at the bottom */}
+            <div 
+              className="bg-gradient-to-r from-emerald-600 to-teal-700 rounded-[2.5rem] p-12 text-white flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl shadow-emerald-600/20 relative overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-[80px] -mr-48 -mt-48" />
+              <div className="relative z-10">
+                 <h3 className="text-xl font-black tracking-tight mb-2">Initialize Chrono-Log</h3>
+                <div className="text-emerald-100 font-bold uppercase tracking-widest opacity-80 max-w-md text-xs">Record additional developmental segments to the database node.</div>
+              </div>
+              <button onClick={() => setTimeModal({ _isGlobal: true, title: 'Global Chrono-Log Entry' })}
+                className="relative z-10 px-10 py-5 bg-white text-emerald-600 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] shadow-2xl hover:bg-emerald-50 transition-all flex items-center gap-4 group">
+                <Clock size={18} className="group-hover:rotate-12 transition-transform" /> Log New Hours
+              </button>
+            </div>
+          </div>
         ) : (
           // Deliverables (tools type)
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-            {filtered.map((file, idx) => (
-              <div key={file._id}   
-                
-                className="premium-glass rounded-[3rem] p-10 border border-white/10 shadow-2xl flex flex-col gap-8 group relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-600/5 rounded-full blur-[40px] -mr-16 -mt-16 group-hover:bg-blue-600/10 transition-all" />
-                
-                <div className="flex items-center justify-between relative z-10">
-                  <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 text-blue-500 flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform duration-500">
-                    <Code size={28} />
-                  </div>
-                  <div className="flex items-center gap-3 px-4 py-2 bg-white/5 rounded-xl border border-white/10 shadow-lg">
-                    <div className="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center text-[10px] font-black border border-white/10">
-                      {file.uploadedBy?.fullName?.split(' ').map(n=>n[0]).join('') || 'U'}
+          <>
+            {/* Stats strip for deliverables */}
+            {deliverables.length > 0 && (
+              <div className="grid grid-cols-3 gap-4">
+                {[{ label: 'Code', type: 'code', color: 'text-blue-400 bg-blue-500/10 border-blue-500/20', icon: Code },
+                  { label: 'Design', type: 'design', color: 'text-purple-400 bg-purple-500/10 border-purple-500/20', icon: ImageIcon },
+                  { label: 'Reports', type: 'report', color: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20', icon: FileText },
+                ].map(s => (
+                  <button key={s.type} onClick={() => setDeliverableTypeFilter(deliverableTypeFilter === s.type ? 'all' : s.type)}
+                    className={`premium-glass rounded-2xl p-4 border ${deliverableTypeFilter === s.type ? s.color : 'border-white/10'} flex items-center gap-3 hover:border-white/20 transition-all`}>
+                    <div className={`w-10 h-10 rounded-xl ${deliverableTypeFilter === s.type ? s.color.split(' ')[1] : 'bg-white/5'} flex items-center justify-center border ${s.color.split(' ')[2]} shrink-0`}>
+                      <s.icon size={18} className={s.color.split(' ')[0]} />
                     </div>
-                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">{file.uploadedBy?.fullName || 'Matrix System'}</span>
-                  </div>
-                </div>
-                
-                <div className="relative z-10">
-                   <h3 className="text-xl font-black text-white mb-2 truncate tracking-tight group-hover:text-blue-400 transition-colors">{file.fileName}</h3>
-                  <div className="text-[10px] font-black text-blue-500 uppercase tracking-[0.2em] flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse" />
-                    Project: {file.projectId?.title || 'Core Engine'}
-                  </div>
-                </div>
-                
-                <div className="pt-6 border-t border-white/5 flex items-center justify-between relative z-10">
-                  <div className="flex flex-col">
-                    <span className="text-[10px] font-black text-gray-600 uppercase tracking-[0.2em] mb-1">Asset Metadata</span>
-                    <span className="text-[10px] text-gray-400 font-black uppercase tracking-widest">{file.fileType} • {new Date(file.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</span>
-                  </div>
-                  <a 
-                    
-                    
-                    href={file.fileUrl} target="_blank" rel="noreferrer"
-                    className="w-14 h-14 bg-white/5 border border-white/10 text-blue-500 rounded-2xl hover:bg-blue-600 hover:text-white transition-all shadow-xl flex items-center justify-center group-hover:shadow-blue-600/20"
-                  >
-                    <Terminal size={22} />
-                  </a>
-                </div>
+                    <div className="text-left">
+                      <div className={`text-xs font-black ${deliverableTypeFilter === s.type ? s.color.split(' ')[0] : 'text-gray-400'}`}>{deliverables.filter(d => d.fileType === s.type).length}</div>
+                      <div className="text-[8px] font-black text-gray-600 uppercase tracking-widest">{s.label}</div>
+                    </div>
+                  </button>
+                ))}
               </div>
-            ))}
-          </div>
+            )}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {filtered.map((file) => (
+                <div key={file._id} className="premium-glass rounded-3xl p-7 border border-white/10 shadow-2xl flex flex-col gap-5 group relative overflow-hidden hover:border-white/20 transition-all hover:-translate-y-0.5">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-blue-600/5 rounded-full blur-[40px] -mr-16 -mt-16 group-hover:bg-blue-600/10 transition-all" />
+                  
+                  <div className="flex items-center justify-between relative z-10">
+                    <div className={`w-14 h-14 rounded-2xl border flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform duration-500 ${fileTypeBg(file.fileType)}`}>
+                      {fileTypeIcon(file.fileType)}
+                    </div>
+                    <div className={`px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest border ${fileTypeBg(file.fileType)}`}>
+                      {file.fileType}
+                    </div>
+                  </div>
+                  
+                  <div className="relative z-10">
+                    <h3 className="text-base font-black text-white mb-1 truncate tracking-tight group-hover:text-blue-400 transition-colors">{file.fileName}</h3>
+                    <div className="text-[10px] font-black text-blue-400 uppercase tracking-[0.2em]">
+                      {file.projectId?.title || 'No Project'}
+                    </div>
+                    {file.taskId?.title && (
+                      <div className="text-[9px] text-gray-600 mt-0.5">Task: {file.taskId.title}</div>
+                    )}
+                  </div>
+                  
+                  <div className="pt-4 border-t border-white/5 flex items-center justify-between relative z-10">
+                    <div>
+                      <div className="text-[9px] font-black text-gray-600 uppercase tracking-widest mb-0.5">Uploaded</div>
+                      <div className="text-[10px] text-gray-400 font-medium">{new Date(file.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</div>
+                    </div>
+                    <div className="flex gap-2">
+                      <a href={file.fileUrl} target="_blank" rel="noreferrer"
+                        className="flex items-center gap-2 px-4 py-2.5 bg-blue-600/10 hover:bg-blue-600 text-blue-400 hover:text-white border border-blue-500/20 hover:border-blue-500 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all"
+                        title="View / Download File"
+                      >
+                        <Download size={14} /> Download
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
         )}
 
         {uploadModal && (
@@ -481,6 +663,81 @@ const DevSubPage = ({ title, type }) => {
         
 
       </div>
+
+      {timeModal && (
+        <div className="fixed inset-0 z-[110] flex items-center justify-center p-6">
+           <div onClick={() => { setTimeModal(null); setLogHours(''); setLogDescription(''); setSelectedTaskId(''); }} className="absolute inset-0 bg-gray-900/40 backdrop-blur-sm" />
+           <div className="premium-glass w-full max-w-lg rounded-[3rem] p-12 md:p-16 shadow-2xl relative z-10 border border-white/10 overflow-hidden">
+             <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-600/10 rounded-full blur-[80px] -mr-32 -mt-32" />
+             
+             <div className="flex justify-between items-center mb-10 relative z-10">
+               <h3 className="text-xl font-black text-white flex items-center gap-4 tracking-tight">
+                 <div className="w-12 h-12 rounded-xl bg-emerald-600/20 flex items-center justify-center">
+                   <Clock className="text-emerald-500 w-6 h-6" />
+                 </div>
+                 Log Hours
+               </h3>
+               <button onClick={() => { setTimeModal(null); setLogHours(''); setLogDescription(''); setSelectedTaskId(''); }} className="p-3 bg-white/5 hover:bg-white/10 rounded-2xl text-gray-400 hover:text-white transition-all border border-white/10"><X size={20} /></button>
+             </div>
+
+             <div className="space-y-8 relative z-10">
+               {timeModal._isGlobal ? (
+                 <div>
+                   <label className="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em] mb-3 block">Operational Target (Task)</label>
+                   <div className="relative">
+                     <select 
+                       value={selectedTaskId} 
+                       onChange={e => setSelectedTaskId(e.target.value)}
+                       className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white text-sm outline-none focus:border-emerald-500 transition-colors appearance-none cursor-pointer"
+                     >
+                       <option value="" className="bg-[#0f172a] text-gray-500">Select active task...</option>
+                       {tasks.map(t => (
+                         <option key={t._id} value={t._id} className="bg-[#0f172a] text-white">
+                           {t.title} ({t.projectId?.title || 'No Project'})
+                         </option>
+                       ))}
+                     </select>
+                   </div>
+                 </div>
+               ) : (
+                 <div>
+                   <div className="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em] mb-3">Operational Target</div>
+                   <div className="text-base font-black text-white tracking-tight">{timeModal.title}</div>
+                 </div>
+               )}
+
+               <div>
+                 <label className="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em] mb-3 block">Hours Logged</label>
+                 <input 
+                   type="number" 
+                   step="0.25" 
+                   min="0"
+                   placeholder="e.g. 2.5" 
+                   value={logHours} 
+                   onChange={e => setLogHours(e.target.value)}
+                   className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white text-sm focus:outline-none focus:border-emerald-500 transition-colors"
+                 />
+               </div>
+
+               <div>
+                 <label className="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em] mb-3 block">Activity Briefing (Description)</label>
+                 <textarea 
+                   rows="3" 
+                   placeholder="Describe your progress..." 
+                   value={logDescription} 
+                   onChange={e => setLogDescription(e.target.value)}
+                   className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white text-sm focus:outline-none focus:border-emerald-500 transition-colors resize-none"
+                 />
+               </div>
+
+               <button onClick={handleLogTime} disabled={loggingTime}
+                 className="w-full py-5 bg-emerald-600 text-white rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] hover:bg-emerald-700 transition-all shadow-2xl shadow-emerald-600/30 disabled:opacity-50 disabled:cursor-not-allowed">
+                 {loggingTime ? 'Logging...' : 'Record Hours'}
+               </button>
+             </div>
+           </div>
+        </div>
+      )}
     </DashboardLayout>
   );
 };

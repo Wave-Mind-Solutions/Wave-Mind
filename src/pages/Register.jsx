@@ -56,17 +56,12 @@ const Register = () => {
         developerType: formData.role === 'developer' ? formData.developerType : '',
       };
       const res = await register(payload);
-      console.log('Registration Response:', res);
-      if (res?.success) {
-        toast.success('Registration successful! Check your email for OTP. 🎉');
-        
-        // Store email for verification page
-        localStorage.setItem('verify_email', formData.email);
-        console.log('Navigating to /verify-otp with email:', formData.email);
-        navigate('/verify-otp', { state: { email: formData.email } });
-      } else {
-        toast.error(res?.message || 'Registration failed.');
-      }
+      toast.success('Registration successful! Check your email for OTP. 🎉');
+      
+      // Store email for verification page
+      localStorage.setItem('verify_email', formData.email);
+      
+      navigate('/verify-otp', { state: { email: formData.email } });
     } catch (err) {
       const msg = err.response?.data?.message || 'Registration failed. Please try again.';
       toast.error(msg);
@@ -374,7 +369,7 @@ const Register = () => {
         </div>
       </div>
 
-      <style>{`
+      <style jsx>{`
         @keyframes blob {
           0%, 100% { transform: translate(0px, 0px) scale(1); }
           33% { transform: translate(30px, -50px) scale(1.1); }
