@@ -164,8 +164,14 @@ const Navbar = memo(() => {
               ) : (
                 <div className="hidden md:flex items-center gap-3">
                   <Link
-                    to="/contact"
-                    className="px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm font-black shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 hover:-translate-y-0.5 active:translate-y-0 transition-all"
+                    to="/login"
+                    className="px-5 py-2.5 rounded-xl text-sm font-bold text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100/50 dark:hover:bg-white/5 border border-transparent hover:border-gray-200/50 dark:hover:border-white/5 transition-all duration-300"
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    to="/register"
+                    className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm font-black shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 hover:-translate-y-0.5 active:translate-y-0 transition-all"
                   >
                     Get Started
                   </Link>
@@ -244,11 +250,18 @@ const Navbar = memo(() => {
                 </div>
 
                 {!user && (
-                  <div className="space-y-4 pt-8 border-t border-gray-100 dark:border-white/5">
+                  <div className="space-y-3 pt-8 border-t border-gray-100 dark:border-white/5">
                     <Link
-                      to="/contact"
+                      to="/login"
                       onClick={() => setIsOpen(false)}
-                      className="flex items-center justify-center w-full py-4 rounded-2xl text-lg font-bold text-white bg-gradient-to-r from-blue-600 to-purple-600 shadow-xl"
+                      className="flex items-center justify-center w-full py-3.5 rounded-2xl text-base font-bold text-gray-800 dark:text-white bg-gray-100 dark:bg-white/5 border border-gray-200/50 dark:border-white/10 hover:bg-gray-200/60 dark:hover:bg-white/10 transition-all"
+                    >
+                      Login
+                    </Link>
+                    <Link
+                      to="/register"
+                      onClick={() => setIsOpen(false)}
+                      className="flex items-center justify-center w-full py-3.5 rounded-2xl text-base font-bold text-white bg-gradient-to-r from-blue-600 to-purple-600 shadow-xl hover:shadow-blue-500/30 transition-all"
                     >
                       Get Started
                     </Link>
