@@ -294,7 +294,7 @@ const Home = () => {
               className="flex flex-col sm:flex-row gap-4 justify-center"
             >
               <Link
-                to="/contact"
+                to="/register"
                 className="group relative px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full text-white font-semibold text-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
               >
                 <span className="relative z-10">Get Started</span>
@@ -598,7 +598,7 @@ const Home = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
-                  to="/contact"
+                  to="/register"
                   className="group px-8 py-4 bg-white rounded-full text-gray-900 font-semibold text-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
                 >
                   Get Started
