@@ -43,6 +43,7 @@ const PageLoader = () => (
 
 // Lazy Loaded Public Pages
 const Home = lazy(() => import('./pages/Home'));
+const AgentAI = lazy(() => import('./pages/AgentAI'));
 const About = lazy(() => import('./pages/About'));
 const Services = lazy(() => import('./pages/Services'));
 const Leadership = lazy(() => import('./pages/Leadership'));
@@ -104,6 +105,9 @@ function App() {
             <Routes location={location} key={location.pathname}>
               {/* ── Public Routes ── */}
               <Route path="/" element={<Home />} />
+              <Route path="/agent-ai" element={<AgentAI />} />
+              <Route path="/assistant" element={<Navigate to="/agent-ai" replace />} />
+              <Route path="/chat" element={<Navigate to="/agent-ai" replace />} />
               <Route path="/about" element={<About />} />
               <Route path="/services" element={<Services />} />
               <Route path="/leadership" element={<Leadership />} />

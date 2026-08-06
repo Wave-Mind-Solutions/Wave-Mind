@@ -2,14 +2,33 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
+<<<<<<< V2
   Menu, X, LogOut, User, Sun, Moon, Sparkles,
   Home, Info, Briefcase, Mail, ChevronRight,
   Zap, Shield, Globe, Heart
+=======
+  Menu, X, LogOut, Sun, Moon,
+  Home, Info, Briefcase, Mail,
+  Zap, Sparkles, Bot
+>>>>>>> local
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 
+<<<<<<< V2
 const Navbar = () => {
+=======
+// Static — defined once outside component, never reallocated on re-renders
+const NAV_LINKS = [
+  { name: 'Home', path: '/', icon: Home },
+  { name: 'AI Assistant', path: '/agent-ai', icon: Sparkles, isAi: true },
+  { name: 'About', path: '/about', icon: Info },
+  { name: 'Services', path: '/services', icon: Briefcase },
+  { name: 'Contact', path: '/contact', icon: Mail },
+];
+
+const Navbar = memo(() => {
+>>>>>>> local
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
@@ -38,6 +57,9 @@ const Navbar = () => {
     { name: 'Services', path: '/services', icon: Briefcase },
     { name: 'Contact', path: '/contact', icon: Mail },
   ];
+
+  const isAiPage = location.pathname === '/agent-ai' || location.pathname === '/assistant';
+  const isHomePage = location.pathname === '/';
 
   return (
     <>
@@ -80,8 +102,16 @@ const Navbar = () => {
                   <Link
                     key={link.name}
                     to={link.path}
+<<<<<<< V2
                     className={`relative px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 flex items-center gap-2 group ${isActive
                         ? 'text-blue-600 dark:text-blue-400'
+=======
+                    className={`relative px-5 py-2 rounded-xl text-xs font-bold transition-all duration-300 flex items-center gap-2 group ${
+                      isActive
+                        ? link.isAi 
+                          ? 'text-purple-600 dark:text-purple-400' 
+                          : 'text-blue-600 dark:text-blue-400'
+>>>>>>> local
                         : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                       }`}
                   >
@@ -92,8 +122,13 @@ const Navbar = () => {
                         transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                       />
                     )}
-                    <link.icon size={16} className={`relative z-10 transition-transform duration-300 ${isActive ? 'scale-110' : 'group-hover:scale-110'}`} />
+                    <link.icon size={15} className={`relative z-10 transition-transform duration-300 ${isActive ? 'scale-110' : 'group-hover:scale-110'} ${link.isAi ? 'text-purple-500 dark:text-purple-400' : ''}`} />
                     <span className="relative z-10">{link.name}</span>
+                    {link.isAi && (
+                      <span className="relative z-10 px-1.5 py-0.5 text-[9px] font-black uppercase rounded-full bg-purple-500/20 text-purple-600 dark:text-purple-300 border border-purple-500/30">
+                        NEW
+                      </span>
+                    )}
                   </Link>
                 );
               })}
@@ -213,48 +248,68 @@ const Navbar = () => {
               className="fixed inset-y-0 right-0 w-[80%] max-w-xs bg-white dark:bg-[#0a0c14] shadow-2xl z-[70] border-l border-gray-200 dark:border-white/10 lg:hidden"
             >
               <div className="flex flex-col h-full p-8">
-                <div className="flex items-center justify-between mb-12">
+                <div className="flex items-center justify-between mb-8">
                   <span className="text-xl font-black italic bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">WM.</span>
                   <button onClick={() => setIsOpen(false)} className="p-2 rounded-xl bg-gray-100 dark:bg-white/5 text-gray-500">
                     <X size={20} />
                   </button>
                 </div>
 
+<<<<<<< V2
                 <div className="space-y-4 flex-1">
                   {links.map((link) => {
+=======
+                <div className="space-y-3 flex-1 overflow-y-auto">
+                  {NAV_LINKS.map((link) => {
+>>>>>>> local
                     const isActive = location.pathname === link.path;
                     return (
                       <Link
                         key={link.name}
                         to={link.path}
                         onClick={() => setIsOpen(false)}
+<<<<<<< V2
                         className={`flex items-center gap-4 p-4 rounded-2xl text-lg font-bold transition-all ${isActive
                             ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30'
+=======
+                        className={`flex items-center justify-between p-3.5 rounded-2xl text-base font-bold transition-all ${
+                          isActive
+                            ? link.isAi
+                              ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/30'
+                              : 'bg-blue-600 text-white shadow-lg shadow-blue-500/30'
+>>>>>>> local
                             : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5'
                           }`}
                       >
-                        <link.icon size={24} />
-                        {link.name}
+                        <div className="flex items-center gap-3">
+                          <link.icon size={20} />
+                          <span>{link.name}</span>
+                        </div>
+                        {link.isAi && (
+                          <span className="px-2 py-0.5 text-[9px] font-black uppercase rounded-full bg-purple-400/20 text-purple-200">
+                            AI
+                          </span>
+                        )}
                       </Link>
                     );
                   })}
                   
                   {user && (
-                    <div className="pt-4 space-y-4">
-                      <div className="h-px bg-gray-100 dark:bg-white/5 my-4" />
+                    <div className="pt-4 space-y-3">
+                      <div className="h-px bg-gray-100 dark:bg-white/5 my-2" />
                       <Link
                         to={user.role === 'developer' ? '/dashboard/dev' : `/dashboard/${user.role}`}
                         onClick={() => setIsOpen(false)}
-                        className="flex items-center gap-4 p-4 rounded-2xl text-lg font-bold text-blue-600 dark:text-blue-400 bg-blue-500/5 border border-blue-500/10"
+                        className="flex items-center gap-3 p-3.5 rounded-2xl text-base font-bold text-blue-600 dark:text-blue-400 bg-blue-500/5 border border-blue-500/10"
                       >
-                        <Zap size={24} />
+                        <Zap size={20} />
                         Portal Dashboard
                       </Link>
                       <button
                         onClick={handleLogout}
-                        className="flex items-center gap-4 w-full p-4 rounded-2xl text-lg font-bold text-red-500 hover:bg-red-500/5 transition-all"
+                        className="flex items-center gap-3 w-full p-3.5 rounded-2xl text-base font-bold text-red-500 hover:bg-red-500/5 transition-all"
                       >
-                        <LogOut size={24} />
+                        <LogOut size={20} />
                         Terminate Session
                       </button>
                     </div>
@@ -262,12 +317,20 @@ const Navbar = () => {
                 </div>
 
                 {!user && (
+<<<<<<< V2
                   <div className="space-y-4 pt-8 border-t border-gray-100 dark:border-white/5">
                     {/* 
                     <Link
                       to="/login"
                       onClick={() => setIsOpen(false)}
                       className="flex items-center justify-center w-full py-4 rounded-2xl text-lg font-bold text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-white/5"
+=======
+                  <div className="space-y-3 pt-6 border-t border-gray-100 dark:border-white/5">
+                    <Link
+                      to="/login"
+                      onClick={() => setIsOpen(false)}
+                      className="flex items-center justify-center w-full py-3 rounded-2xl text-sm font-bold text-gray-800 dark:text-white bg-gray-100 dark:bg-white/5 border border-gray-200/50 dark:border-white/10"
+>>>>>>> local
                     >
                       Login
                     </Link>
@@ -275,7 +338,11 @@ const Navbar = () => {
                     <Link
                       to="/contact"
                       onClick={() => setIsOpen(false)}
+<<<<<<< V2
                       className="flex items-center justify-center w-full py-4 rounded-2xl text-lg font-bold text-white bg-gradient-to-r from-blue-600 to-purple-600 shadow-xl"
+=======
+                      className="flex items-center justify-center w-full py-3 rounded-2xl text-sm font-bold text-white bg-gradient-to-r from-blue-600 to-purple-600 shadow-xl"
+>>>>>>> local
                     >
                       Get Started
                     </Link>

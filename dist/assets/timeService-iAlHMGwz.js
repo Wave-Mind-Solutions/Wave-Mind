@@ -1,0 +1,1 @@
+import{b as a}from"./index-bzA9vDF8.js";const t=async t=>(await a.post("/time/log",t)).data,s=async()=>(await a.get("/time/my")).data,i=async()=>(await a.get("/time/all")).data,e=async(t,s)=>(await a.patch(`/time/approve/${t}`,{status:s})).data;export{e as a,s as b,i as g,t as l};

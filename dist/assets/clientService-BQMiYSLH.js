@@ -1,0 +1,1 @@
+import{b as a}from"./index-bzA9vDF8.js";const t=async t=>(await a.post("/client/requirements",t)).data,e=async()=>(await a.get("/client/requirements")).data,s=async()=>(await a.get("/client/projects")).data,n=async()=>(await a.get("/client/payments")).data;export{e as a,n as b,s as g,t as s};
