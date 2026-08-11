@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
+import {
   Send, Cpu, IndianRupee, FileText, CheckCircle,
   AlertCircle, Zap, TrendingUp, Shield, Sparkles,
   Layers, Target, Clock, ArrowRight, Lightbulb,
   DollarSign, Code, Briefcase, Star, Award,
-  User, Mail, Phone, Edit3
+  User, Mail, Phone, Edit3, X, ShoppingCart, Layout, Gift, Tag, Check, RefreshCw
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import DashboardLayout from '../../../components/dashboard/DashboardLayout';
@@ -13,43 +13,196 @@ import ProfileEditModal from '../../../components/dashboard/ProfileEditModal';
 import { useAuth } from '../../../context/AuthContext';
 import { submitRequirement } from '../../../services/clientService';
 import { analyzeProjectWithGemini } from '../../../services/geminiService';
+import {
+  getPricingForCategory,
+  validateBudget,
+  getBudgetPresetOptions,
+  formatINR,
+  OFFICIAL_WEBSITE_PRICING
+} from '../../../config/pricingConfig';
 import toast from 'react-hot-toast';
+
+const PROJECT_TYPES = [
+  'Business Website',
+  'E-commerce',
+  'Portfolio',
+  'Blog',
+  'Education Website',
+  'Booking / Service Website',
+  'Custom Website / Web App'
+];
+
+const DEFAULT_FEATURES = [
+  'Payment Gateway',
+  'Cart & Wishlist',
+  'Admin Dashboard',
+  'AI Chatbot',
+  'User Login & Auth',
+  'Order Tracking',
+  'WhatsApp Integration',
+  'SEO Optimization',
+  'Push Notifications'
+];
+
+const DEFAULT_SERVICES = [
+  'SEO',
+  'Domain & Hosting',
+  'Website Maintenance',
+  'Digital Marketing',
+  'AI Integration',
+  'Payment Gateway Integration',
+  'WhatsApp API Integration'
+];
+
+const TIMELINE_OPTIONS = [
+  'ASAP',
+  'Within 1 month',
+  '1–3 months',
+  'Flexible'
+];
 
 const SubmitRequirement = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const [isFromAiChat, setIsFromAiChat] = useState(false);
+  const [aiBannerDismissed, setAiBannerDismissed] = useState(false);
+  const [submittedSuccess, setSubmittedSuccess] = useState(false);
+
   const [formData, setFormData] = useState({
     title: '',
-    description: '',
-    budget: '',
-    priority: 'Medium',
-    techStack: [],
+    name: '',
     email: '',
     phone: '',
-    // timeline: '',
-    deliverables: [],
+    projectType: 'E-commerce',
+    businessType: '',
+    requiredFeatures: [],
+    designRequirement: 'Custom Design',
+    budget: '',
+    timeline: 'Within 1 month',
+    additionalServices: [],
+    description: '',
+    priority: 'Medium',
+    techStack: [],
   });
+
+  const [featureInput, setFeatureInput] = useState('');
+  const [serviceInput, setServiceInput] = useState('');
   const [techInput, setTechInput] = useState('');
   const [aiAnalyzing, setAiAnalyzing] = useState(false);
-  const [aiSuggestions, setAiSuggestions] = useState(null);
-  const [activeSection, setActiveSection] = useState('details');
 
-  // Pre-fill email and phone from user profile
-  useState(() => {
+  // Pre-fill user profile and AI Chatbot extracted requirements on mount
+  useEffect(() => {
+    // 1. Account Info
     if (user) {
       setFormData(prev => ({
         ...prev,
-        email: user.email || '',
-        phone: user.phone || ''
+        name: prev.name || user.fullName || user.name || user.displayName || '',
+        email: prev.email || user.email || '',
+        phone: prev.phone || user.phone || ''
       }));
+    }
+
+    // 2. Extracted AI Chatbot Requirements
+    const pendingRaw = sessionStorage.getItem('wavemind_pending_project_request') || localStorage.getItem('wavemind_pending_project_request');
+    if (pendingRaw) {
+      try {
+        const parsed = JSON.parse(pendingRaw);
+        setIsFromAiChat(true);
+
+        const projectTypeVal = parsed.websiteType || parsed.projectType || 'Business Website';
+        const catPricing = getPricingForCategory(projectTypeVal);
+        const businessVal = parsed.businessIndustry || parsed.businessType || 'General Business';
+        const goalVal = parsed.projectGoal ? `\n• Goal / Purpose: ${parsed.projectGoal}` : '';
+        const featuresVal = Array.isArray(parsed.features) && parsed.features.length > 0
+          ? parsed.features
+          : ['Contact Form', 'Admin Dashboard', 'WhatsApp Integration', 'SEO'];
+        const designVal = parsed.designPreference || parsed.designRequirement || 'Custom Design';
+        const rawBudget = (parsed.budget || catPricing.min.toString()).toString().replace(/[^\d]/g, '');
+        const budgetVal = Number(rawBudget) >= catPricing.min ? rawBudget : catPricing.min.toString();
+        const timelineVal = parsed.timeline || 'Within 1 month';
+        const servicesVal = Array.isArray(parsed.additionalServices) && parsed.additionalServices.length > 0
+          ? parsed.additionalServices
+          : ['SEO'];
+
+        const autoTitle = `${projectTypeVal} - ${businessVal} Project`;
+        const autoDesc = `AI Chatbot Extracted Requirements:\n• Project Type: ${projectTypeVal}\n• Business / Industry: ${businessVal}${goalVal}\n• Features Needed: ${featuresVal.join(', ')}\n• Design Preference: ${designVal}\n• Target Budget: ₹${budgetVal}\n• Expected Timeline: ${timelineVal}\n• Additional Services: ${servicesVal.join(', ')}`;
+
+        setFormData(prev => ({
+          ...prev,
+          title: prev.title || autoTitle,
+          projectType: projectTypeVal,
+          businessType: businessVal,
+          requiredFeatures: featuresVal,
+          designRequirement: designVal,
+          budget: budgetVal,
+          timeline: timelineVal,
+          additionalServices: servicesVal,
+          description: prev.description || autoDesc,
+          email: user?.email || prev.email || '',
+          name: user?.fullName || user?.name || prev.name || '',
+          phone: user?.phone || parsed.phone || parsed.contact || prev.phone || ''
+        }));
+      } catch (e) {
+        console.error('Failed to parse pending AI project request:', e);
+      }
     }
   }, [user]);
 
+  const handleToggleFeature = (feat) => {
+    setFormData(prev => {
+      const exists = prev.requiredFeatures.includes(feat);
+      return {
+        ...prev,
+        requiredFeatures: exists
+          ? prev.requiredFeatures.filter(f => f !== feat)
+          : [...prev.requiredFeatures, feat]
+      };
+    });
+  };
+
+  const handleAddCustomFeature = (e) => {
+    if (e.key === 'Enter' && featureInput.trim()) {
+      e.preventDefault();
+      if (!formData.requiredFeatures.includes(featureInput.trim())) {
+        setFormData(prev => ({
+          ...prev,
+          requiredFeatures: [...prev.requiredFeatures, featureInput.trim()]
+        }));
+      }
+      setFeatureInput('');
+    }
+  };
+
+  const handleToggleService = (srv) => {
+    setFormData(prev => {
+      const exists = prev.additionalServices.includes(srv);
+      return {
+        ...prev,
+        additionalServices: exists
+          ? prev.additionalServices.filter(s => s !== srv)
+          : [...prev.additionalServices, srv]
+      };
+    });
+  };
+
+  const handleAddCustomService = (e) => {
+    if (e.key === 'Enter' && serviceInput.trim()) {
+      e.preventDefault();
+      if (!formData.additionalServices.includes(serviceInput.trim())) {
+        setFormData(prev => ({
+          ...prev,
+          additionalServices: [...prev.additionalServices, serviceInput.trim()]
+        }));
+      }
+      setServiceInput('');
+    }
+  };
+
   const handleAiAnalysis = async () => {
-    if (!formData.description) {
-      toast.error('Please describe your project first for AI analysis.');
+    if (!formData.description && !formData.title) {
+      toast.error('Please provide a project description or title for AI analysis.');
       return;
     }
     setAiAnalyzing(true);
@@ -59,10 +212,9 @@ const SubmitRequirement = () => {
         description: formData.description,
         budget: formData.budget,
         priority: formData.priority,
-        techStack: formData.techStack,
+        techStack: formData.requiredFeatures,
       });
-      setAiSuggestions(suggestions);
-      toast.success('AI analysis complete! Check the suggestions panel.');
+      toast.success('AI insights generated! Check your project plan below.');
     } catch (err) {
       toast.error(err.message || 'AI analysis failed. Please try again.');
     } finally {
@@ -70,639 +222,612 @@ const SubmitRequirement = () => {
     }
   };
 
-  const addTech = (e) => {
-    if (e.key === 'Enter' && techInput.trim()) {
-      e.preventDefault();
-      setFormData(prev => ({
-        ...prev,
-        techStack: [...prev.techStack, techInput.trim()]
-      }));
-      setTechInput('');
-    }
-  };
-
-  const removeTech = (t) => {
-    setFormData(prev => ({
-      ...prev,
-      techStack: prev.techStack.filter(x => x !== t)
-    }));
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.title || !formData.description || !formData.budget) {
-      toast.error('Please fill in all required fields.');
+
+    if (!formData.title || !formData.name || !formData.email || !formData.phone || !formData.budget) {
+      toast.error('Please complete all required fields (Title, Name, Email, Mobile Number, Budget).');
+      return;
+    }
+
+    const cleanPhoneDigits = formData.phone.toString().replace(/[^\d]/g, '');
+    if (cleanPhoneDigits.length < 10) {
+      toast.error('Please enter a valid mobile number (minimum 10 digits).');
+      return;
+    }
+
+    const currentCat = getPricingForCategory(formData.projectType);
+    const numericBudget = Number(formData.budget.toString().replace(/[^\d]/g, '')) || 0;
+    const checkVal = validateBudget(formData.projectType, numericBudget);
+
+    if (!checkVal.isValid) {
+      toast.error(`Minimum budget for ${currentCat.label} is ${formatINR(currentCat.min)}.`);
       return;
     }
 
     setLoading(true);
-    const loadingToast = toast.loading('Submitting your requirement...');
+    const loadingToast = toast.loading('Submitting project request...');
 
     try {
-      await submitRequirement({
+      // Build the payload — DO NOT send userId/clientId from frontend.
+      // Backend always extracts clientId from the verified JWT (req.user._id).
+      const payload = {
         title: formData.title,
-        description: formData.description,
-        budget: Number(formData.budget),
-        priority: formData.priority,
-        techStack: formData.techStack,
-        timeline: formData.timeline,
+        name: formData.name,
         email: formData.email,
         phone: formData.phone,
-      });
+        projectType: formData.projectType,
+        businessIndustry: formData.businessType || formData.businessIndustry || '',
+        projectGoal: formData.projectGoal || '',
+        requiredFeatures: formData.requiredFeatures,
+        designRequirement: formData.designRequirement,
+        budget: numericBudget,
+        timeline: formData.timeline,
+        additionalServices: formData.additionalServices,
+        description: formData.description,
+      };
+
+      // ── CRITICAL: API call is NOT wrapped in its own try/catch.
+      // If it fails (401, 400, 500, network error), the error propagates
+      // to the outer catch below and is shown to the user.
+      // The UI must NEVER show success if the DB save failed.
+      const result = await submitRequirement(payload);
+
+      // ── At this point, MongoDB has confirmed the save ─────────────────────
+      // Only NOW do we save to localStorage — as a reference/cache, NOT source of truth.
+      // The project ID from MongoDB is stored so we can reference it later.
+      const savedProject = result?.project || {};
+      const localRef = {
+        id: savedProject._id || savedProject.id || ('ref_' + Date.now()),
+        dbId: savedProject._id || savedProject.id || null,
+        title: formData.title,
+        projectType: formData.projectType,
+        budget: numericBudget,
+        status: savedProject.status || 'In Review',
+        submittedAt: new Date().toISOString(),
+        _savedToMongoDB: true, // Flag: this was successfully saved to DB
+      };
+
+      const existing = JSON.parse(localStorage.getItem('wavemind_submitted_requirements') || '[]');
+      existing.unshift(localRef);
+      localStorage.setItem('wavemind_submitted_requirements', JSON.stringify(existing.slice(0, 20))); // keep max 20
+
+      // Clear chatbot draft data (it's been submitted)
+      sessionStorage.removeItem('wavemind_pending_project_request');
+      localStorage.removeItem('wavemind_pending_project_request');
 
       toast.dismiss(loadingToast);
-      toast.success(
-        (t) => (
-          <div className="flex items-center gap-3">
-            <CheckCircle className="w-5 h-5 text-green-500" />
-            <div>
-              <p className="font-bold">Requirement Submitted! 🚀</p>
-              <p className="text-xs">Our team will review it within 24 hours.</p>
-            </div>
-          </div>
-        ),
-        { duration: 5000 }
-      );
+      toast.success('Project submitted successfully!');
+      setSubmittedSuccess(true);
 
-      navigate('/dashboard/client');
     } catch (err) {
       toast.dismiss(loadingToast);
-      toast.error(err.response?.data?.message || 'Submission failed. Please try again.');
+
+      // Show real, user-safe error messages based on HTTP status
+      const status = err?.response?.status;
+      const serverMsg = err?.response?.data?.message;
+
+      let userMessage;
+      if (status === 401) {
+        userMessage = 'Your session has expired. Please log in again.';
+      } else if (status === 400) {
+        userMessage = serverMsg || 'Please check your form details and try again.';
+      } else if (status === 403) {
+        userMessage = 'Access denied. Please ensure you are logged in as a client.';
+      } else if (status === 409) {
+        userMessage = 'A similar project was already submitted recently. Please wait a moment and try again.';
+      } else if (status >= 500) {
+        userMessage = 'Our server is temporarily unavailable. Please try again in a few minutes.';
+      } else if (!navigator.onLine) {
+        userMessage = 'You appear to be offline. Please check your internet connection.';
+      } else {
+        userMessage = serverMsg || 'Unable to submit your project request. Please try again.';
+      }
+
+      toast.error(userMessage);
+      console.error('[PROJECT SUBMIT ERROR]', { status, serverMsg, err });
     } finally {
       setLoading(false);
     }
   };
 
-  const priorities = [
-    { label: 'Low', color: 'bg-blue-500', icon: '😌' },
-    { label: 'Medium', color: 'bg-yellow-500', icon: '🤔' },
-    { label: 'High', color: 'bg-orange-500', icon: '⚡' },
-    { label: 'Extreme', color: 'bg-red-500', icon: '🔥' }
-  ];
-
-  const timelineOptions = ['1-2 weeks', '2-4 weeks', '1-2 months', '2-3 months', '3+ months'];
-
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { type: "spring", stiffness: 300, damping: 24 }
-    }
-  };
-
   return (
-    <DashboardLayout role="client" title="Submit Requirement">
-      <motion.div
-        initial="hidden"
-        animate="visible"
-        variants={containerVariants}
-        className="grid grid-cols-1 lg:grid-cols-3 gap-8"
-      >
-        {/* Main Form Section */}
-        <div className="lg:col-span-2 space-y-6">
-          <motion.div variants={itemVariants} className="relative">
-            {/* Progress Steps */}
-            <div className="mb-10 px-4">
-              <div className="flex items-center justify-between max-w-md mx-auto sm:mx-0">
-                {['details', 'technical', 'review'].map((step, idx) => (
-                  <div key={step} className="flex items-center">
-                    <div
-                      className={`w-12 h-12 rounded-2xl flex items-center justify-center text-sm font-bold transition-all duration-500 ${activeSection === step
-                        ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-[0_0_20px_-5px_rgba(37,99,235,0.5)] scale-110 rotate-3'
-                        : 'bg-white/5 dark:bg-white/5 text-gray-400 border border-white/10'
-                        }`}
-                    >
-                      {idx + 1}
-                    </div>
-                    {idx < 2 && (
-                      <div className={`w-12 sm:w-20 h-0.5 mx-2 rounded-full transition-all duration-700 ${idx < 1 ? 'bg-gradient-to-r from-blue-600 to-indigo-600' : 'bg-white/10'
-                        }`} />
-                    )}
-                  </div>
-                ))}
+    <DashboardLayout role="client" title="Submit Project Request">
+      <div className="max-w-4xl mx-auto py-4 px-2 sm:px-4">
+        {submittedSuccess ? (
+          /* Success Screen (Requirement 9) */
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="p-8 sm:p-12 rounded-3xl bg-white dark:bg-gray-900 border border-purple-500/30 shadow-2xl text-center font-sans space-y-6"
+          >
+            <div className="w-20 h-20 mx-auto rounded-3xl bg-gradient-to-br from-purple-600 to-pink-600 p-0.5 shadow-xl">
+              <div className="w-full h-full bg-white dark:bg-[#0b081c] rounded-[22px] flex items-center justify-center">
+                <CheckCircle className="w-10 h-10 text-emerald-500" />
               </div>
             </div>
 
-            <div className="premium-glass rounded-[2.5rem] p-8 md:p-10 shadow-2xl overflow-hidden relative">
-              {/* Decorative elements */}
-              <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/10 rounded-full blur-[80px] -mr-32 -mt-32" />
-              <div className="absolute bottom-0 left-0 w-48 h-48 bg-purple-600/10 rounded-full blur-[80px] -ml-24 -mb-24" />
+            <div className="space-y-3">
+              <h2 className="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white">
+                🎉 Your project request has been submitted successfully!
+              </h2>
+              <p className="text-base text-gray-600 dark:text-gray-300 max-w-lg mx-auto font-medium leading-relaxed">
+                Our development team will review your requirements and contact you shortly.
+              </p>
+            </div>
 
-              <div className="relative z-10">
-                <div className="mb-10">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center shadow-[0_8px_20px_-6px_rgba(37,99,235,0.5)]">
-                      <Sparkles className="w-7 h-7 text-white" />
+            <div className="p-6 rounded-2xl bg-purple-500/10 border border-purple-500/20 text-left max-w-md mx-auto space-y-2 text-xs">
+              <p className="font-bold text-purple-700 dark:text-purple-300 flex items-center gap-1.5">
+                <Zap className="w-4 h-4 text-purple-400" />
+                Submitted Request Details:
+              </p>
+              <p className="text-gray-700 dark:text-gray-200"><strong>Title:</strong> {formData.title}</p>
+              <p className="text-gray-700 dark:text-gray-200"><strong>Type:</strong> {formData.projectType}</p>
+              <p className="text-gray-700 dark:text-gray-200"><strong>Budget:</strong> ₹{formData.budget}</p>
+              <p className="text-gray-700 dark:text-gray-200"><strong>Email:</strong> {formData.email}</p>
+            </div>
+
+            <div className="pt-4 flex flex-wrap items-center justify-center gap-4">
+              <button
+                onClick={() => navigate('/dashboard/client/projects')}
+                className="px-6 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold text-sm shadow-lg hover:scale-105 transition-all cursor-pointer"
+              >
+                View My Projects
+              </button>
+
+              <button
+                onClick={() => navigate('/agent-ai')}
+                className="px-6 py-3 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 font-bold text-sm hover:bg-gray-200 dark:hover:bg-gray-700 transition-all cursor-pointer"
+              >
+                Return to AI Assistant
+              </button>
+            </div>
+          </motion.div>
+        ) : (
+          /* Main Project Requirement Form */
+          <div className="space-y-6">
+            {/* Confirmation Banner (Requirement 6) */}
+            {isFromAiChat && !aiBannerDismissed && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="p-5 rounded-2xl bg-gradient-to-r from-purple-900/60 via-indigo-900/60 to-pink-900/60 border border-purple-500/40 backdrop-blur-xl shadow-2xl text-white relative overflow-hidden"
+              >
+                <div className="flex items-start justify-between gap-4 relative z-10">
+                  <div className="flex items-start gap-3.5">
+                    <div className="w-10 h-10 rounded-xl bg-purple-500/30 border border-purple-400/40 flex items-center justify-center text-purple-200 shrink-0 mt-0.5 shadow-md">
+                      <Sparkles className="w-5 h-5 text-purple-300 animate-pulse" />
                     </div>
                     <div>
-                      <h2 className="text-2xl font-black text-gray-900 dark:text-white tracking-tight">
-                        Share Your <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">Vision</span>
-                      </h2>
-                      <p className="text-gray-500 dark:text-gray-400 mt-1 font-medium">Tell us about your project and we'll help bring it to life</p>
+                      <h4 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+                        Great! 🚀 We've filled your project request based on our conversation.
+                      </h4>
+                      <p className="text-xs sm:text-sm text-purple-200/90 mt-1 leading-relaxed">
+                        Please review the details below, make any changes if needed, and submit your request.
+                      </p>
                     </div>
                   </div>
+                  <button
+                    onClick={() => setAiBannerDismissed(true)}
+                    className="text-purple-300/80 hover:text-white transition-colors p-1"
+                    title="Dismiss banner"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
                 </div>
+              </motion.div>
+            )}
 
-                <form onSubmit={handleSubmit} className="space-y-8">
-                  {/* Project Title */}
-                  <motion.div variants={itemVariants} className="group">
-                    <label className="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 ml-1">
-                      <Briefcase className="w-4 h-4 text-blue-500" />
-                      Project Title *
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      className="w-full px-6 py-4 rounded-2xl premium-input dark:text-[#f8fafc] font-medium"
-                      placeholder="e.g., E-Commerce Mobile App with Admin Panel"
-                      value={formData.title}
-                      onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    />
-                  </motion.div>
+            {/* Form Container */}
+            <div className="p-6 sm:p-10 rounded-3xl bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl border border-gray-200 dark:border-purple-500/20 shadow-2xl space-y-8">
+              <div className="flex items-center gap-4 pb-6 border-b border-gray-200 dark:border-gray-800">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-600 to-pink-600 p-0.5 shadow-lg">
+                  <div className="w-full h-full bg-white dark:bg-[#0b081c] rounded-[14px] flex items-center justify-center">
+                    <Briefcase className="w-6 h-6 text-purple-600 dark:text-purple-300" />
+                  </div>
+                </div>
+                <div>
+                  <h2 className="text-2xl font-black text-gray-900 dark:text-white">
+                    Project Requirement Form
+                  </h2>
+                  <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 font-medium">
+                    Review and customize your project specifications before submitting to our engineering team.
+                  </p>
+                </div>
+              </div>
 
-                  {/* Contact Info */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <motion.div variants={itemVariants}>
-                      <label className="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 ml-1">
-                        <Mail className="w-4 h-4 text-blue-500" />
-                        Contact Email *
+              <form onSubmit={handleSubmit} className="space-y-8">
+                {/* 1. USER ACCOUNT INFO (Requirement 5) */}
+                <div className="space-y-4 pt-2">
+                  <h3 className="text-xs font-mono text-purple-600 dark:text-purple-400 uppercase tracking-wider font-bold flex items-center gap-2">
+                    <User className="w-4 h-4" />
+                    1. Account Information
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    <div>
+                      <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1.5">
+                        Client Name *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800/80 border border-gray-200 dark:border-gray-700 font-medium text-sm text-gray-900 dark:text-white focus:border-purple-500 focus:outline-none"
+                        placeholder="Your full name"
+                        value={formData.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1.5">
+                        Email Address *
                       </label>
                       <input
                         type="email"
                         required
-                        className="w-full px-6 py-4 rounded-2xl premium-input dark:text-[#f8fafc] font-medium"
+                        className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800/80 border border-gray-200 dark:border-gray-700 font-medium text-sm text-gray-900 dark:text-white focus:border-purple-500 focus:outline-none"
                         placeholder="your@email.com"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       />
-                    </motion.div>
+                    </div>
 
-                    <motion.div variants={itemVariants}>
-                      <label className="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 ml-1">
-                        <Phone className="w-4 h-4 text-blue-500" />
-                        Phone Number *
+                    <div>
+                      <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1.5">
+                        Mobile Number *
                       </label>
                       <input
                         type="tel"
                         required
-                        className="w-full px-6 py-4 rounded-2xl premium-input dark:text-[#f8fafc] font-medium"
-                        placeholder="+91 XXXXX XXXXX"
+                        className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800/80 border border-gray-200 dark:border-gray-700 font-medium text-sm text-gray-900 dark:text-white focus:border-purple-500 focus:outline-none"
+                        placeholder="+91 98765 43210 (Required)"
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       />
-                    </motion.div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 2. PROJECT CLASSIFICATION (Requirement 4) */}
+                <div className="space-y-4 pt-4 border-t border-gray-200 dark:border-gray-800">
+                  <h3 className="text-xs font-mono text-purple-600 dark:text-purple-400 uppercase tracking-wider font-bold flex items-center gap-2">
+                    <Layout className="w-4 h-4" />
+                    2. Project Category & Industry
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div>
+                      <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1.5">
+                        Project Title *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800/80 border border-gray-200 dark:border-gray-700 font-medium text-sm text-gray-900 dark:text-white focus:border-purple-500 focus:outline-none"
+                        placeholder="e.g., E-commerce Clothing Store"
+                        value={formData.title}
+                        onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1.5">
+                        Project Type *
+                      </label>
+                      <select
+                        required
+                        className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800/80 border border-gray-200 dark:border-gray-700 font-medium text-sm text-gray-900 dark:text-white focus:border-purple-500 focus:outline-none cursor-pointer"
+                        value={formData.projectType}
+                        onChange={(e) => setFormData({ ...formData, projectType: e.target.value })}
+                      >
+                        {PROJECT_TYPES.map(type => (
+                          <option key={type} value={type}>{type}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1.5">
+                        Business / Industry
+                      </label>
+                      <input
+                        type="text"
+                        className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800/80 border border-gray-200 dark:border-gray-700 font-medium text-sm text-gray-900 dark:text-white focus:border-purple-500 focus:outline-none"
+                        placeholder="e.g., Clothing, Healthcare, Real Estate, Education"
+                        value={formData.businessType}
+                        onChange={(e) => setFormData({ ...formData, businessType: e.target.value })}
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1.5">
+                        Design Requirement
+                      </label>
+                      <input
+                        type="text"
+                        className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800/80 border border-gray-200 dark:border-gray-700 font-medium text-sm text-gray-900 dark:text-white focus:border-purple-500 focus:outline-none"
+                        placeholder="e.g., Custom Design, Figma Reference, Minimalist"
+                        value={formData.designRequirement}
+                        onChange={(e) => setFormData({ ...formData, designRequirement: e.target.value })}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* 3. REQUIRED FEATURES & SERVICES */}
+                <div className="space-y-4 pt-4 border-t border-gray-200 dark:border-gray-800">
+                  <h3 className="text-xs font-mono text-purple-600 dark:text-purple-400 uppercase tracking-wider font-bold flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4" />
+                    3. Required Features & Services
+                  </h3>
+
+                  <div>
+                    <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-2">
+                      Select Required Features:
+                    </label>
+                    <div className="flex flex-wrap gap-2 mb-3">
+                      {DEFAULT_FEATURES.map(feat => {
+                        const isSelected = formData.requiredFeatures.includes(feat);
+                        return (
+                          <button
+                            key={feat}
+                            type="button"
+                            onClick={() => handleToggleFeature(feat)}
+                            className={`px-3.5 py-1.5 rounded-full text-xs font-bold border transition-all cursor-pointer flex items-center gap-1.5 ${isSelected
+                                ? 'bg-purple-600 text-white border-purple-600 shadow-md'
+                                : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-700 hover:border-purple-400'
+                              }`}
+                          >
+                            {isSelected && <Check className="w-3 h-3" />}
+                            <span>{feat}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    <input
+                      type="text"
+                      className="w-full px-4 py-2.5 rounded-xl bg-gray-50 dark:bg-gray-800/80 border border-gray-200 dark:border-gray-700 text-xs text-gray-900 dark:text-white"
+                      placeholder="Add custom feature and press Enter..."
+                      value={featureInput}
+                      onChange={(e) => setFeatureInput(e.target.value)}
+                      onKeyDown={handleAddCustomFeature}
+                    />
                   </div>
 
-                  {/* Description */}
-                  <motion.div variants={itemVariants} className="group">
-                    <label className="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 ml-1">
-                      <FileText className="w-4 h-4 text-blue-500" />
-                      Project Description *
+                  <div className="pt-2">
+                    <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-2">
+                      Additional Services:
                     </label>
-                    <div className="relative">
-                      <textarea
-                        rows="6"
-                        required
-                        className="w-full px-6 py-4 rounded-2xl premium-input dark:text-[#f8fafc] font-medium resize-none"
-                        placeholder="Describe your project goals, target audience, key features, and any specific requirements..."
-                        value={formData.description}
-                        onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                      />
-                        <button
-                        type="button"
-                        
-                        
-                        onClick={handleAiAnalysis}
-                        disabled={aiAnalyzing}
-                        className="absolute bottom-4 right-4 px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl shadow-lg hover:shadow-blue-500/30 transition-all flex items-center gap-2 text-xs font-bold"
+                    <div className="flex flex-wrap gap-2 mb-3">
+                      {DEFAULT_SERVICES.map(srv => {
+                        const isSelected = formData.additionalServices.includes(srv);
+                        return (
+                          <button
+                            key={srv}
+                            type="button"
+                            onClick={() => handleToggleService(srv)}
+                            className={`px-3.5 py-1.5 rounded-full text-xs font-bold border transition-all cursor-pointer flex items-center gap-1.5 ${isSelected
+                                ? 'bg-indigo-600 text-white border-indigo-600 shadow-md'
+                                : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-700 hover:border-indigo-400'
+                              }`}
+                          >
+                            {isSelected && <Check className="w-3 h-3" />}
+                            <span>{srv}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    <input
+                      type="text"
+                      className="w-full px-4 py-2.5 rounded-xl bg-gray-50 dark:bg-gray-800/80 border border-gray-200 dark:border-gray-700 text-xs text-gray-900 dark:text-white"
+                      placeholder="Add custom service and press Enter..."
+                      value={serviceInput}
+                      onChange={(e) => setServiceInput(e.target.value)}
+                      onKeyDown={handleAddCustomService}
+                    />
+                  </div>
+                </div>
+
+                {/* 4. BUDGET & TIMELINE */}
+                {(() => {
+                  const activeCategory = getPricingForCategory(formData.projectType);
+                  const currentBudgetNum = Number((formData.budget || '0').toString().replace(/[^\d]/g, '')) || 0;
+                  const budgetCheck = validateBudget(formData.projectType, currentBudgetNum);
+                  const presets = getBudgetPresetOptions(formData.projectType);
+                  const isBelowMin = currentBudgetNum > 0 && currentBudgetNum < activeCategory.min;
+
+                  // Percentage for progress slider
+                  const rangeSpan = Math.max(1, activeCategory.max - activeCategory.min);
+                  const progressPct = Math.min(100, Math.max(0, ((currentBudgetNum - activeCategory.min) / rangeSpan) * 100));
+
+                  return (
+                    <div className="space-y-6 pt-4 border-t border-gray-200 dark:border-gray-800">
+                      <div className="flex items-center justify-between">
+                        <h3 className="text-xs font-mono text-purple-600 dark:text-purple-400 uppercase tracking-wider font-bold flex items-center gap-2">
+                          <IndianRupee className="w-4 h-4" />
+                          4. Official Website Price Matrix & Budget Selection
+                        </h3>
+                        <span className="text-xs font-semibold px-3 py-1 rounded-full bg-purple-500/10 text-purple-600 dark:text-purple-300 border border-purple-500/30">
+                          {activeCategory.label} Baseline
+                        </span>
+                      </div>
+
+                      {/* Official Category Pricing Baseline Cards */}
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div className="p-4 rounded-2xl bg-gray-50 dark:bg-gray-800/60 border border-gray-200 dark:border-gray-700/80">
+                          <span className="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider block">Minimum Budget</span>
+                          <span className="text-lg font-black text-purple-600 dark:text-purple-400 mt-0.5 block">{formatINR(activeCategory.min)}</span>
+                          <span className="text-[11px] text-gray-500 dark:text-gray-400">Hard entry baseline</span>
+                        </div>
+
+                        <div className="p-4 rounded-2xl bg-purple-500/10 border border-purple-500/30">
+                          <span className="text-[10px] font-bold text-purple-600 dark:text-purple-300 uppercase tracking-wider block">Recommended Budget</span>
+                          <span className="text-lg font-black text-purple-700 dark:text-purple-200 mt-0.5 block">{formatINR(activeCategory.recommended)}</span>
+                          <span className="text-[11px] text-purple-600/80 dark:text-purple-300/80">Standard feature package</span>
+                        </div>
+
+                        <div className="p-4 rounded-2xl bg-gray-50 dark:bg-gray-800/60 border border-gray-200 dark:border-gray-700/80">
+                          <span className="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider block">Premium Projects</span>
+                          <span className="text-lg font-black text-gray-900 dark:text-white mt-0.5 block">Up to {formatINR(activeCategory.max)}</span>
+                          <span className="text-[11px] text-gray-500 dark:text-gray-400">Advanced custom scope</span>
+                        </div>
+                      </div>
+
+                      {/* Budget Selector Box */}
+                      <div className="p-6 rounded-2xl bg-gray-50/80 dark:bg-gray-800/40 border border-gray-200 dark:border-gray-700/60 space-y-5">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                          <div>
+                            <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1.5">
+                              Estimated Project Budget (₹ INR) *
+                            </label>
+                            <div className="relative">
+                              <span className="absolute left-4 top-1/2 -translate-y-1/2 font-bold text-gray-400 text-sm">₹</span>
+                              <input
+                                type="number"
+                                required
+                                min={activeCategory.min}
+                                className={`w-full pl-9 pr-4 py-3 rounded-xl bg-white dark:bg-gray-900 border font-bold text-base text-gray-900 dark:text-white focus:outline-none transition-all ${
+                                  isBelowMin
+                                    ? 'border-red-500 text-red-600 focus:border-red-600 ring-2 ring-red-500/20'
+                                    : 'border-gray-300 dark:border-gray-600 focus:border-purple-500'
+                                }`}
+                                placeholder={`Min: ${activeCategory.min}`}
+                                value={formData.budget}
+                                onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
+                              />
+                            </div>
+                            <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-1">
+                              Minimum budget for {activeCategory.label}: <strong className="text-purple-600 dark:text-purple-300">{formatINR(activeCategory.min)}</strong>
+                            </p>
+                          </div>
+
+                          <div>
+                            <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1.5">
+                              Expected Launch Timeline
+                            </label>
+                            <select
+                              className="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 font-medium text-sm text-gray-900 dark:text-white focus:border-purple-500 focus:outline-none cursor-pointer"
+                              value={formData.timeline}
+                              onChange={(e) => setFormData({ ...formData, timeline: e.target.value })}
+                            >
+                              {TIMELINE_OPTIONS.map(opt => (
+                                <option key={opt} value={opt}>{opt}</option>
+                              ))}
+                            </select>
+                          </div>
+                        </div>
+
+                        {/* Budget Preset Chips */}
+                        <div>
+                          <label className="block text-[11px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-2">
+                            Select Budget Preset:
+                          </label>
+                          <div className="flex flex-wrap gap-2">
+                            {presets.map(pVal => {
+                              const isSelected = currentBudgetNum === pVal;
+                              return (
+                                <button
+                                  key={pVal}
+                                  type="button"
+                                  onClick={() => setFormData({ ...formData, budget: pVal.toString() })}
+                                  className={`px-3.5 py-1.5 rounded-xl text-xs font-extrabold border transition-all cursor-pointer ${
+                                    isSelected
+                                      ? 'bg-purple-600 text-white border-purple-600 shadow-md scale-105'
+                                      : 'bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-200 border-gray-300 dark:border-gray-700 hover:border-purple-400'
+                                  }`}
+                                >
+                                  {formatINR(pVal)} {pVal === activeCategory.min && '(Min)'} {pVal === activeCategory.recommended && '(Rec)'}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+
+                        {/* Price Range Visual Progress Bar Indicator */}
+                        <div className="pt-2">
+                          <div className="flex items-center justify-between text-[11px] font-bold text-gray-500 dark:text-gray-400 mb-1.5">
+                            <span>{formatINR(activeCategory.min)} (Min)</span>
+                            <span className="text-purple-600 dark:text-purple-300 font-extrabold">{formatINR(activeCategory.recommended)} (Recommended)</span>
+                            <span>{formatINR(activeCategory.max)}+ (Premium)</span>
+                          </div>
+                          <div className="w-full h-2.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden relative">
+                            <div
+                              className="h-full bg-gradient-to-r from-purple-600 via-indigo-500 to-pink-500 transition-all duration-300 rounded-full"
+                              style={{ width: `${progressPct}%` }}
+                            />
+                          </div>
+                        </div>
+
+                        {/* Live Minimum Budget Warning Box */}
+                        {isBelowMin && (
+                          <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-700 dark:text-red-300 text-xs flex items-center gap-3">
+                            <AlertCircle className="w-5 h-5 text-red-500 shrink-0" />
+                            <div>
+                              <strong className="block font-bold">⚠️ Minimum budget threshold warning</strong>
+                              Minimum budget is {formatINR(activeCategory.min)} for {activeCategory.label}. Please adjust your budget before submitting.
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })()}
+
+                {/* 5. DESCRIPTION */}
+                <div className="space-y-4 pt-4 border-t border-gray-200 dark:border-gray-800">
+                  <h3 className="text-xs font-mono text-purple-600 dark:text-purple-400 uppercase tracking-wider font-bold flex items-center gap-2">
+                    <FileText className="w-4 h-4" />
+                    5. Full Project Details & Description
+                  </h3>
+                  <div>
+                    <textarea
+                      rows={5}
+                      className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800/80 border border-gray-200 dark:border-gray-700 font-mono text-xs text-gray-900 dark:text-white focus:border-purple-500 focus:outline-none"
+                      placeholder="Describe your project goals, target audience, reference sites, or special requests..."
+                      value={formData.description}
+                      onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                    />
+                  </div>
+                </div>
+
+                {/* SUBMIT BUTTON (Enforces budget validation) */}
+                <div className="pt-6 border-t border-gray-200 dark:border-gray-800 flex items-center justify-end gap-4">
+                  {(() => {
+                    const cat = getPricingForCategory(formData.projectType);
+                    const bNum = Number((formData.budget || '0').toString().replace(/[^\d]/g, '')) || 0;
+                    const isSubmitDisabled = loading || !formData.title || !formData.email || bNum < cat.min;
+
+                    return (
+                      <button
+                        type="submit"
+                        disabled={isSubmitDisabled}
+                        className={`w-full sm:w-auto px-8 py-4 rounded-2xl text-white font-black text-base shadow-xl transition-all flex items-center justify-center gap-3 ${
+                          isSubmitDisabled
+                            ? 'bg-gray-400 dark:bg-gray-700 opacity-60 cursor-not-allowed'
+                            : 'bg-gradient-to-r from-purple-600 via-indigo-600 to-pink-600 hover:scale-105 active:scale-95 cursor-pointer'
+                        }`}
                       >
-                        {aiAnalyzing ? (
+                        {loading ? (
                           <>
-                            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                            Processing...
+                            <RefreshCw className="w-5 h-5 animate-spin" />
+                            <span>Submitting Request...</span>
                           </>
                         ) : (
                           <>
-                            <Cpu className="w-4 h-4" />
-                            AI Insights
+                            <Send className="w-5 h-5" />
+                            <span>Submit Project Request</span>
                           </>
                         )}
                       </button>
-                    </div>
-                  </motion.div>
-
-                  {/* Budget and Priority */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <motion.div variants={itemVariants}>
-                      <label className="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 ml-1">
-                        <IndianRupee className="w-4 h-4 text-blue-500" />
-                        Budget (INR) *
-                      </label>
-                      <input
-                        type="number"
-                        required
-                        min="0"
-                        className="w-full px-6 py-4 rounded-2xl premium-input dark:text-[#f8fafc] font-medium"
-                        placeholder="e.g., 50000"
-                        value={formData.budget}
-                        onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-                      />
-                    </motion.div>
-
-                    {/* <div variants={itemVariants}>
-                      <label className="flex items-center gap-2 text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">
-                        <Clock className="w-4 h-4" />
-                        Expected Timeline
-                      </label>
-                      <select
-                        className="w-full px-6 py-4 rounded-xl bg-gray-50 border-2 border-transparent focus:border-primary-500 focus:bg-white outline-none transition-all text-gray-900 font-medium cursor-pointer"
-                        value={formData.timeline}
-                        onChange={(e) => setFormData({ ...formData, timeline: e.target.value })}
-                      >
-                        <option value="">Select timeline</option>
-                        {timelineOptions.map(opt => (
-                          <option key={opt} value={opt}>{opt}</option>
-                        ))}
-                      </select>
-                    </div> */}
-                  </div>
-
-                  {/* Priority Level */}
-                  <motion.div variants={itemVariants}>
-                    <label className="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 ml-1">
-                      <Target className="w-4 h-4 text-blue-500" />
-                      Priority Level
-                    </label>
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                      {priorities.map(p => (
-                        <button
-                          key={p.label}
-                          type="button"
-                          
-                          
-                          onClick={() => setFormData({ ...formData, priority: p.label })}
-                          className={`relative py-4 rounded-2xl text-sm font-bold transition-all duration-300 overflow-hidden border ${formData.priority === p.label
-                            ? 'border-transparent text-white shadow-xl shadow-blue-500/20'
-                            : 'bg-white/5 border-white/10 text-gray-500 hover:text-gray-700 dark:hover:text-gray-200'
-                            }`}
-                        >
-                          <div className={`absolute inset-0 ${formData.priority === p.label ? p.color : 'bg-transparent'} transition-opacity`} />
-                          <span className="relative z-10 flex items-center justify-center gap-2">
-                            <span className="text-lg">{p.icon}</span>
-                            {p.label}
-                          </span>
-                        </button>
-                      ))}
-                    </div>
-                  </motion.div>
-
-                  {/* Tech Stack */}
-                  <motion.div variants={itemVariants}>
-                    <label className="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 ml-1">
-                      <Code className="w-4 h-4 text-blue-500" />
-                      Tech Stack Preferences
-                    </label>
-                    <input
-                      type="text"
-                      className="w-full px-6 py-4 rounded-2xl premium-input dark:text-[#f8fafc] font-medium"
-                      placeholder="Type technology and press Enter (e.g., React, Python, AWS...)"
-                      value={techInput}
-                      onChange={(e) => setTechInput(e.target.value)}
-                      onKeyDown={addTech}
-                    />
-                    
-                      {formData.techStack.length > 0 && (
-                        <div
-                          
-                          
-                          
-                          className="flex flex-wrap gap-2 mt-4"
-                        >
-                          {formData.techStack.map(t => (
-                           <span
-                              key={t}
-                              
-                              
-                              
-                              className="group flex items-center gap-2 px-4 py-2 bg-blue-500/10 text-blue-600 dark:text-blue-400 rounded-xl text-xs font-bold border border-blue-500/20"
-                            >
-                              {t}
-                              <button
-                                type="button"
-                                onClick={() => removeTech(t)}
-                                className="hover:text-red-500 transition-colors ml-1"
-                              >
-                                ×
-                              </button>
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                    
-                  </motion.div>
-
-                  {/* Submit Button */}
-                  <motion.div
-                    variants={itemVariants}
-                    className="pt-6 border-t border-gray-100"
-                  >
-                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                      <div className="flex items-center gap-3 text-xs text-gray-400">
-                        <Shield className="w-4 h-4" />
-                        <span>Your information is secure and encrypted</span>
-                      </div>
-                      <button
-                        type="submit"
-                        disabled={loading}
-                        
-                        
-                        className="relative group px-10 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl font-bold text-sm shadow-xl hover:shadow-blue-500/30 transition-all disabled:opacity-60 disabled:cursor-not-allowed overflow-hidden"
-                      >
-                        <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity" />
-                        <span className="relative z-10 flex items-center gap-2">
-                          {loading ? (
-                            <>
-                              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                              Submitting...
-                            </>
-                          ) : (
-                            <>
-                              Submit Requirement
-                              <Send className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                            </>
-                          )}
-                        </span>
-                      </button>
-                    </div>
-                  </motion.div>
-                </form>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-
-        {/* Right Sidebar */}
-        <div className="space-y-6">
-          {/* AI Suggestions Panel */}
-          <motion.div variants={itemVariants} className="relative">
-            <div className="premium-glass rounded-[2.5rem] p-8 text-white shadow-2xl overflow-hidden relative border border-white/10">
-              <div className="absolute top-0 right-0 w-40 h-40 bg-blue-600/20 rounded-full blur-[60px]" />
-              <div className="absolute bottom-0 left-0 w-32 h-32 bg-purple-600/10 rounded-full blur-[60px]" />
-
-              <div className="relative z-10">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 flex items-center justify-center shadow-lg">
-                    <Zap className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="font-black text-lg tracking-tight text-white">AI Assistant</h3>
-                    <p className="text-[10px] font-bold text-blue-400 uppercase tracking-widest">Advanced Analysis</p>
-                  </div>
+                    );
+                  })()}
                 </div>
-
-                <AnimatePresence mode="wait">
-                  {aiSuggestions ? (
-                    <div
-                      key="suggestions"
-                      
-                      
-                      
-                      className="space-y-5"
-                    >
-                      <div>
-                        <div className="flex items-center gap-2 text-xs font-bold text-primary-400 uppercase tracking-wider mb-3">
-                          <Lightbulb className="w-3 h-3" />
-                          Recommended Stack
-                        </div>
-                        <div className="flex flex-wrap gap-2">
-                          {aiSuggestions.techStack.map(t => (
-                            <span key={t} className="px-3 py-1.5 bg-white/10 rounded-lg text-xs font-medium border border-white/5">
-                              {t}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div>
-                        <div className="flex items-center gap-2 text-xs font-bold text-primary-400 uppercase tracking-wider mb-2">
-                          <DollarSign className="w-3 h-3" />
-                          Budget Estimate
-                        </div>
-                        <p className="text-xl font-bold bg-gradient-to-r from-primary-400 to-indigo-300 bg-clip-text text-transparent">
-                          {aiSuggestions.suggestedBudgetRange}
-                        </p>
-                      </div>
-
-                      <div>
-                        <div className="flex items-center gap-2 text-xs font-bold text-primary-400 uppercase tracking-wider mb-2">
-                          <Clock className="w-3 h-3" />
-                          Time Estimate
-                        </div>
-                        <p className="text-sm font-semibold">{aiSuggestions.timeEstimate}</p>
-                      </div>
-
-                      <div>
-                        <div className="flex items-center gap-2 text-xs font-bold text-yellow-400 uppercase tracking-wider mb-2">
-                          <AlertCircle className="w-3 h-3" />
-                          Risk Factors
-                        </div>
-                        <ul className="text-xs text-gray-300 space-y-1">
-                          {aiSuggestions.riskFactors.map(risk => (
-                            <li key={risk} className="flex items-center gap-2">
-                              <span className="w-1 h-1 bg-yellow-400 rounded-full" />
-                              {risk}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      <button
-                        
-                        
-                        onClick={() => {
-                          const newTechStack = [...new Set([...formData.techStack, ...aiSuggestions.techStack])];
-                          setFormData(prev => ({ ...prev, techStack: newTechStack }));
-                          toast.success(`${aiSuggestions.techStack.length} technologies added to your stack!`);
-                        }}
-                        className="w-full mt-4 py-3 bg-white/10 backdrop-blur-sm rounded-xl text-sm font-bold hover:bg-white/20 transition-all flex items-center justify-center gap-2"
-                      >
-                        <CheckCircle className="w-4 h-4" />
-                        Apply All Suggestions
-                      </button>
-                    </div>
-                  ) : (
-                    <div
-                      key="placeholder"
-                      
-                      
-                      
-                      className="text-center py-8"
-                    >
-                      <div className="w-20 h-20 mx-auto mb-4 bg-white/5 rounded-full flex items-center justify-center">
-                        <Cpu className="w-10 h-10 text-gray-500" />
-                      </div>
-                      <p className="text-gray-400 text-sm mb-2">Ready for AI insights?</p>
-                      <p className="text-xs text-gray-500">
-                        Describe your project above and click "AI Analyze" for intelligent recommendations
-                      </p>
-                    </div>
-                  )}
-                </AnimatePresence>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Tips and Statistics */}
-          <motion.div variants={itemVariants} className="space-y-6">
-            <div className="premium-glass rounded-[2rem] p-6 border border-amber-500/20 relative overflow-hidden group">
-              <div className="absolute inset-0 bg-amber-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-              <div className="flex items-start gap-4 relative z-10">
-                <div className="w-12 h-12 rounded-2xl bg-amber-500/10 flex items-center justify-center flex-shrink-0 border border-amber-500/20 shadow-inner">
-                  <Star className="w-6 h-6 text-amber-500" />
-                </div>
-                <div>
-                  <h4 className="font-black text-gray-900 dark:text-white mb-1 uppercase tracking-wider text-xs">Pro Tip</h4>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed font-medium">
-                    The more detailed your requirements, the more accurate our quotes and faster our delivery.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="premium-glass rounded-[2rem] p-6 border border-white/10 shadow-xl relative overflow-hidden">
-              <div className="flex items-center gap-3 mb-6 relative z-10">
-                <div className="w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center border border-green-500/20">
-                  <TrendingUp className="w-5 h-5 text-green-500" />
-                </div>
-                <h4 className="font-black text-gray-900 dark:text-white uppercase tracking-widest text-xs">Success Metrics</h4>
-              </div>
-              <div className="space-y-5 relative z-10">
-                <div>
-                  <div className="flex justify-between text-xs font-bold mb-2 uppercase tracking-widest">
-                    <span className="text-gray-400">Quality Score</span>
-                    <span className="text-green-500">98%</span>
-                  </div>
-                  <div className="w-full bg-white/5 rounded-full h-1.5 overflow-hidden border border-white/5">
-                    <div
-                      
-                      
-                      
-                      className="h-full rounded-full bg-gradient-to-r from-green-500 to-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <div className="flex justify-between text-xs font-bold mb-2 uppercase tracking-widest">
-                    <span className="text-gray-400">On-Time Delivery</span>
-                    <span className="text-blue-500">94%</span>
-                  </div>
-                  <div className="w-full bg-white/5 rounded-full h-1.5 overflow-hidden border border-white/5">
-                    <div
-                      
-                      
-                      
-                      className="h-full rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="premium-glass rounded-[2rem] p-6 border border-purple-500/20 relative overflow-hidden group">
-              <div className="absolute inset-0 bg-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-              <div className="flex items-center gap-4 relative z-10">
-                <div className="w-14 h-14 rounded-2xl bg-purple-500/10 flex items-center justify-center border border-purple-500/20 shadow-inner">
-                  <Award className="w-8 h-8 text-purple-500" />
-                </div>
-                <div>
-                  <p className="text-[10px] text-purple-500 font-black uppercase tracking-[0.2em]">Trusted globally</p>
-                  <p className="text-xl font-black text-gray-900 dark:text-white tracking-tight">500+ Clients</p>
-                  <p className="text-[10px] font-bold text-gray-500 dark:text-gray-400 mt-0.5 uppercase tracking-widest">Across 25+ countries</p>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </motion.div>
-
-      {/* Profile Overview Card (Quick Edit) */}
-      <div 
-        
-        
-        
-        className="mt-12 premium-glass rounded-[3rem] p-8 md:p-10 shadow-2xl relative overflow-hidden group"
-      >
-        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600/5 rounded-full blur-[100px] -mr-48 -mt-48 transition-all group-hover:bg-blue-600/10" />
-        
-        <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-10">
-          <div className="flex items-center gap-8">
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-3xl blur-2xl opacity-40 group-hover:opacity-60 transition-opacity duration-500" />
-              <div className="relative w-24 h-24 rounded-3xl bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center text-white text-3xl font-black shadow-2xl border-2 border-white/20 rotate-3 transition-transform group-hover:rotate-6">
-                {user?.fullName?.split(' ').map(n => n[0]).join('').toUpperCase() || 'WM'}
-              </div>
-            </div>
-            <div>
-              <h4 className="text-2xl font-black text-gray-900 dark:text-white mb-2 tracking-tight">{user?.fullName || 'Client User'}</h4>
-              <div className="flex flex-wrap items-center gap-3">
-                <span className="px-4 py-1.5 bg-blue-500/10 text-blue-500 text-[10px] font-black uppercase tracking-[0.2em] rounded-xl border border-blue-500/20 shadow-sm">Premium Client</span>
-                <span className="px-4 py-1.5 bg-emerald-500/10 text-emerald-500 text-[10px] font-black uppercase tracking-[0.2em] rounded-xl border border-emerald-500/20 shadow-sm">Verified Account</span>
-              </div>
+              </form>
             </div>
           </div>
- 
-          <div className="flex flex-wrap items-center gap-10 lg:gap-16">
-            <div className="flex items-center gap-5">
-              <div className="w-14 h-14 rounded-2xl bg-white/5 dark:bg-white/5 flex items-center justify-center text-blue-500 border border-white/10 shadow-xl">
-                <Mail size={24} />
-              </div>
-              <div>
-                <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">Email Address</p>
-                <p className="text-base font-bold text-gray-700 dark:text-gray-200">{user?.email || '—'}</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-5">
-              <div className="w-14 h-14 rounded-2xl bg-white/5 dark:bg-white/5 flex items-center justify-center text-indigo-500 border border-white/10 shadow-xl">
-                <Phone size={24} />
-              </div>
-              <div>
-                <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">Phone Number</p>
-                <p className="text-base font-bold text-gray-700 dark:text-gray-200">{user?.phone || 'Not provided'}</p>
-              </div>
-            </div>
-          </div>
- 
-          <button
-            
-            
-            onClick={() => setIsProfileModalOpen(true)}
-            className="flex items-center gap-3 px-8 py-5 bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-white dark:to-gray-100 text-white dark:text-gray-900 rounded-[2rem] font-black text-sm transition-all shadow-2xl shadow-blue-600/20 dark:shadow-white/10 group/btn active:scale-95"
-          >
-            <Edit3 size={20} className="group-hover/btn:rotate-12 transition-transform" />
-            Edit Profile
-          </button>
-        </div>
+        )}
       </div>
-
-      {/* Profile Edit Modal */}
-      <ProfileEditModal 
-        isOpen={isProfileModalOpen} 
-        onClose={() => setIsProfileModalOpen(false)} 
-      />
     </DashboardLayout>
   );
 };

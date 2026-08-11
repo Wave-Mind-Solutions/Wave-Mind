@@ -18,6 +18,16 @@ const AdminOverview = () => {
   const [selectedRequirement, setSelectedRequirement] = useState(null);
   const [selectedProject, setSelectedProject] = useState(null);
 
+  const extractPhone = (entity) => {
+    if (!entity) return 'Not provided';
+    if (entity.phone && entity.phone.trim()) return entity.phone.trim();
+    if (entity.clientId?.phone && entity.clientId.phone.trim()) return entity.clientId.phone.trim();
+    const text = (entity.description || '') + ' ' + (entity.contact || '');
+    const phoneMatch = text.match(/(?:\+91[\s-]?)?[6-9]\d{9}/);
+    if (phoneMatch) return phoneMatch[0];
+    return 'Not provided';
+  };
+
   useEffect(() => {
     Promise.all([getAllRequirements(), getAllProjects(), getDevelopers()])
       .then(([reqRes, projRes, devRes]) => {
@@ -170,7 +180,7 @@ const AdminOverview = () => {
                           </span>
                         </div>
                         <div className="flex flex-wrap items-center gap-5 text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500">
-                          <span className="text-blue-600 dark:text-blue-400">{req.clientId?.fullName || 'Unknown Client'}</span>
+                          <span className="text-blue-600 dark:text-blue-400">{req.clientId?.fullName || 'Unknown Client'}{req.phone || req.clientId?.phone ? ` (📞 ${req.phone || req.clientId?.phone})` : ''}</span>
                           <span className="flex items-center gap-2 bg-gray-100 dark:bg-white/5 px-3 py-1 rounded-lg border border-gray-200 dark:border-white/5"><Layers size={12} className="text-indigo-500" /> {req.techStack?.slice(0, 2).join(', ') || 'Global Stack'}</span>
                           <span className="text-emerald-600 dark:text-emerald-400 px-3 py-1 bg-emerald-500/10 rounded-lg border border-emerald-500/20">₹{(req.budget || 0).toLocaleString()}</span>
                         </div>
@@ -239,7 +249,7 @@ const AdminOverview = () => {
                         <tr key={p._id} onClick={() => setSelectedProject(p)} className="hover:bg-gray-50 dark:hover:bg-white/5 transition-all cursor-pointer group">
                           <td className="px-8 py-4">
                             <p className="font-black text-gray-900 dark:text-white text-sm tracking-tight group-hover:text-blue-500 transition-colors">{p.title}</p>
-                            <span className="px-2 py-0.5 bg-gray-100 dark:bg-white/5 text-gray-400 dark:text-gray-500 rounded-md text-[8px] font-black uppercase tracking-widest mt-1 inline-block border border-gray-200 dark:border-white/5">{p.clientId?.fullName || 'External Client'}</span>
+                            <span className="px-2 py-0.5 bg-gray-100 dark:bg-white/5 text-gray-400 dark:text-gray-500 rounded-md text-[8px] font-black uppercase tracking-widest mt-1 inline-block border border-gray-200 dark:border-white/5">{p.clientId?.fullName || 'External Client'}{p.phone || p.clientId?.phone ? ` · 📞 ${p.phone || p.clientId?.phone}` : ''}</span>
                           </td>
                           <td className="px-8 py-4 min-w-[180px]">
                             <div className="flex items-center justify-between mb-1.5">
@@ -453,7 +463,7 @@ const AdminOverview = () => {
                       </div>
                       <div className="flex items-center gap-2 text-xs text-gray-500 font-bold">
                         <Phone size={12} className="text-blue-500" />
-                        {selectedRequirement.phone || selectedRequirement.clientId?.phone || 'Not provided'}
+                        {extractPhone(selectedRequirement)}
                       </div>
                     </div>
                   </div>
@@ -540,7 +550,7 @@ const AdminOverview = () => {
                     <div>
                       <p className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-1">Contact Details</p>
                       <p className="text-xs font-bold text-gray-700 dark:text-gray-300">{selectedProject.email || selectedProject.clientId?.email || '—'}</p>
-                      <p className="text-[10px] text-gray-500 font-medium">{selectedProject.phone || 'No phone'}</p>
+                      <p className="text-[10px] text-gray-500 font-medium">{extractPhone(selectedProject)}</p>
                     </div>
                   </div>
                   <div className="flex gap-4">

@@ -11,7 +11,7 @@ import Footer from './components/layout/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
 
 // Chatbot Widget
-const ChatbotWidget = lazy(() => import('./components/ChatbotWidget'));
+import ChatbotWidget from './components/ChatbotWidget';
 
 // Loading Fallback Component
 const PageLoader = () => (
@@ -43,6 +43,8 @@ const PageLoader = () => (
 
 // Lazy Loaded Public Pages
 const Home = lazy(() => import('./pages/Home'));
+const AgentAI = lazy(() => import('./pages/AgentAI'));
+const Projects = lazy(() => import('./pages/Projects'));
 const About = lazy(() => import('./pages/About'));
 const Services = lazy(() => import('./pages/Services'));
 const Leadership = lazy(() => import('./pages/Leadership'));
@@ -51,14 +53,6 @@ const Login = lazy(() => import('./pages/Login'));
 const Register = lazy(() => import('./pages/Register'));
 const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
 const VerifyOTP = lazy(() => import('./pages/VerifyOTP'));
-const ResetPassword = lazy(() => import('./pages/ResetPassword'));
-
-// Lazy Loaded Service Sub-Pages
-const WebDevelopment = lazy(() => import('./pages/services/WebDevelopment'));
-const SEOServices = lazy(() => import('./pages/services/SEOServices'));
-const CRMDevelopment = lazy(() => import('./pages/services/CRMDevelopment'));
-const ERPSolutions = lazy(() => import('./pages/services/ERPSolutions'));
-const Automation = lazy(() => import('./pages/services/Automation'));
 
 // Lazy Loaded Client Dashboard
 const ClientOverview = lazy(() => import('./pages/dashboard/client/ClientOverview'));
@@ -77,7 +71,6 @@ const AuditLog = lazy(() => import('./pages/dashboard/admin/AuditLog'));
 const DevOverview = lazy(() => import('./pages/dashboard/dev/DevOverview'));
 const DevSubPage = lazy(() => import('./pages/dashboard/dev/DevSubPage'));
 const DevChat = lazy(() => import('./pages/dashboard/dev/DevChat'));
-const DevClientRequests = lazy(() => import('./pages/dashboard/dev/DevClientRequests'));
 
 // Shared Dashboard Pages
 const NotificationSettings = lazy(() => import('./pages/dashboard/shared/NotificationSettings'));
@@ -113,6 +106,10 @@ function App() {
             <Routes location={location} key={location.pathname}>
               {/* ── Public Routes ── */}
               <Route path="/" element={<Home />} />
+              <Route path="/agent-ai" element={<AgentAI />} />
+              <Route path="/projects" element={<Projects />} />
+              <Route path="/assistant" element={<Navigate to="/agent-ai" replace />} />
+              <Route path="/chat" element={<Navigate to="/agent-ai" replace />} />
               <Route path="/about" element={<About />} />
               <Route path="/services" element={<Services />} />
               <Route path="/leadership" element={<Leadership />} />
@@ -121,14 +118,6 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/verify-otp" element={<VerifyOTP />} />
-              <Route path="/reset-password/:token" element={<ResetPassword />} />
-
-              {/* ── Service Sub-Pages (SEO Landing Pages) ── */}
-              <Route path="/web-development" element={<WebDevelopment />} />
-              <Route path="/seo-services" element={<SEOServices />} />
-              <Route path="/crm-development" element={<CRMDevelopment />} />
-              <Route path="/erp-solutions" element={<ERPSolutions />} />
-              <Route path="/automation" element={<Automation />} />
 
               <Route path="/dashboard" element={
                 <ProtectedRoute allowedRoles={['client', 'admin', 'developer']}>
@@ -199,9 +188,9 @@ function App() {
                   <AdminSubPage title="Project Assets & Repository" type="assets" />
                 </ProtectedRoute>
               } />
-              <Route path="/dashboard/admin/time" element={
+              <Route path="/dashboard/admin/pricing" element={
                 <ProtectedRoute allowedRoles={['admin']}>
-                  <AdminSubPage title="Time Sheets & Hour Approval" type="time" />
+                  <AdminSubPage title="Website Pricing Engine" type="pricing" />
                 </ProtectedRoute>
               } />
               <Route path="/dashboard/admin/chat" element={
@@ -231,11 +220,6 @@ function App() {
                   <DevSubPage title="Active Task Management" type="tasks" />
                 </ProtectedRoute>
               } />
-              <Route path="/dashboard/dev/time" element={
-                <ProtectedRoute allowedRoles={['developer']}>
-                  <DevSubPage title="Operational Hour Registry" type="time" />
-                </ProtectedRoute>
-              } />
               <Route path="/dashboard/dev/chat" element={
                 <ProtectedRoute allowedRoles={['developer']}>
                   <DevChat />
@@ -244,11 +228,6 @@ function App() {
               <Route path="/dashboard/dev/tools" element={
                 <ProtectedRoute allowedRoles={['developer']}>
                   <DevSubPage title="Developer Tools Repository" type="tools" />
-                </ProtectedRoute>
-              } />
-              <Route path="/dashboard/dev/client-requests" element={
-                <ProtectedRoute allowedRoles={['developer']}>
-                  <DevClientRequests />
                 </ProtectedRoute>
               } />
 
@@ -263,11 +242,7 @@ function App() {
         </AnimatePresence>
       </main>
       {!isDashboard && <Footer />}
-      {!isDashboard && (
-        <Suspense fallback={null}>
-          <ChatbotWidget />
-        </Suspense>
-      )}
+      {!isDashboard && <ChatbotWidget />}
     </div>
   );
 }

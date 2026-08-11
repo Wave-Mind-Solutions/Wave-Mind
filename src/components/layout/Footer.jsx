@@ -61,15 +61,22 @@ const Footer = () => {
             <h4 className="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-widest border-l-2 border-blue-500 pl-2">
               Platform
             </h4>
-            <ul className="space-y-3">
-              {['Home', 'About', 'Services', 'Contact'].map((item) => (
-                <li key={item}>
+            <ul className="space-y-2.5">
+              {[
+                { name: 'Home', path: '/' },
+                { name: 'AI Assistant', path: '/agent-ai' },
+                { name: 'Our Projects', path: '/projects' },
+                { name: 'About', path: '/about' },
+                { name: 'Services', path: '/services' },
+                { name: 'Contact', path: '/contact' },
+              ].map((item) => (
+                <li key={item.name}>
                   <Link
-                    to={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
+                    to={item.path}
                     className="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 text-sm font-bold flex items-center gap-2 group"
                   >
                     <span className="w-1 h-1 bg-gray-300 dark:bg-gray-700 rounded-full group-hover:w-3 group-hover:bg-blue-500 transition-all" />
-                    {item}
+                    {item.name}
                   </Link>
                 </li>
               ))}

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import {
-  User, Mail, Lock, UserPlus, ShieldCheck, Code, Sparkles, ArrowRight,
+  User, Mail, Phone, Lock, UserPlus, ShieldCheck, Code, Sparkles, ArrowRight,
   Rocket, Palette, Cpu, Smartphone, Globe, CheckCircle, Star,
   Zap, Heart, Coffee, Award, Box, Layers, Moon, Sun
 } from 'lucide-react';
@@ -25,6 +25,7 @@ const Register = () => {
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
+    phone: '',
     password: '',
     confirmPassword: '',
     role: 'client',
@@ -51,6 +52,7 @@ const Register = () => {
       const payload = {
         fullName: formData.fullName,
         email: formData.email,
+        phone: formData.phone,
         password: formData.password,
         role: formData.role,
         developerType: formData.role === 'developer' ? formData.developerType : '',
@@ -296,6 +298,23 @@ const Register = () => {
                             placeholder="john@example.com"
                             value={formData.email}
                             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="space-y-1.5 col-span-2">
+                        <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Mobile / Phone Number *</label>
+                        <div className="relative group">
+                          <Phone className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors duration-300 ${focusedField === 'phone' ? 'text-blue-500' : 'text-gray-400'}`} size={18} />
+                          <input
+                            type="tel"
+                            required
+                            onFocus={() => setFocusedField('phone')}
+                            onBlur={() => setFocusedField(null)}
+                            className="w-full pl-12 pr-4 py-4 rounded-2xl premium-input dark:text-[#f8fafc] placeholder:text-gray-500/70"
+                            placeholder="+91 9876543210"
+                            value={formData.phone}
+                            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                           />
                         </div>
                       </div>

@@ -27,6 +27,7 @@ import {
   FileText
 } from 'lucide-react';
 import DashboardLayout from '../../../components/dashboard/DashboardLayout';
+import PricingControl from '../../../components/dashboard/PricingControl';
 import { getAllRequirements, getAllProjects, getDevelopers, updateProject, assignTeam, getAllDeliverables, getLeads, exportLeadsExcel } from '../../../services/adminService';
 import { getAllTimeEntries, approveTimeEntry } from '../../../services/timeService';
 import toast from 'react-hot-toast';
@@ -267,14 +268,18 @@ const AdminSubPage = ({ title, type }) => {
           </div>
         )}
 
-        {/* Main Content Grid */}
-        {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-            {Array(6).fill(0).map((_, i) => (
-              <div key={i} className="h-72 bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-3xl animate-pulse" />
-            ))}
-          </div>
-        ) : filtered.length === 0 ? (
+        {/* Pricing Engine Admin Control Subpage */}
+        {type === 'pricing' ? (
+          <PricingControl />
+        ) : (
+          /* Main Content Grid */
+          loading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+              {Array(6).fill(0).map((_, i) => (
+                <div key={i} className="h-72 bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-3xl animate-pulse" />
+              ))}
+            </div>
+          ) : filtered.length === 0 ? (
           <div className="text-center py-24 premium-glass rounded-3xl border border-gray-100 dark:border-white/10 shadow-xl relative overflow-hidden">
              <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600/5 rounded-full blur-[100px] -mr-48 -mt-48" />
              <div className="relative z-10 max-w-md mx-auto">
@@ -314,7 +319,12 @@ const AdminSubPage = ({ title, type }) => {
 
                   <div className="relative z-10 flex-grow">
                     <h3 className="text-xl font-black text-gray-900 dark:text-white mb-2 tracking-tighter group-hover:text-blue-600 transition-colors line-clamp-1 leading-tight">{item.title}</h3>
-                    <p className="text-[10px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-[0.3em] mb-6">Origin: {item.clientId?.fullName || 'External Entity'}</p>
+                    <p className="text-[10px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-[0.3em] mb-2">Origin: {item.clientId?.fullName || 'External Entity'}</p>
+                    <p className="text-[10px] font-bold text-gray-500 dark:text-gray-400 mb-6 flex items-center gap-2">
+                      <span>📧 {item.email || item.clientId?.email || '—'}</span>
+                      <span>•</span>
+                      <span>📞 {item.phone || item.clientId?.phone || 'Not provided'}</span>
+                    </p>
                     <p className="text-[11px] text-gray-500 dark:text-gray-400 font-bold uppercase tracking-wider line-clamp-3 leading-relaxed mb-6 opacity-80">{item.description}</p>
                   </div>
 
@@ -628,6 +638,7 @@ const AdminSubPage = ({ title, type }) => {
               return null;
             })}
           </div>
+        )
         )}
 
         {/* Assignment Modal */}

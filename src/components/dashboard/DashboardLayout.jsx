@@ -27,7 +27,8 @@ import {
   Star,
   Activity,
   Clock,
-  Inbox
+  Inbox,
+  IndianRupee
 } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext';
 
@@ -48,6 +49,7 @@ const Sidebar = ({ role, isOpen, setIsOpen }) => {
 
   const adminLinks = [
     { name: 'Control Center', path: '/dashboard/admin', icon: BarChart, gradient: 'from-red-500 to-orange-500', description: 'Analytics & metrics' },
+    { name: 'Website Pricing Engine', path: '/dashboard/admin/pricing', icon: IndianRupee, gradient: 'from-purple-500 to-indigo-500', description: 'Centralized price matrix' },
     { name: 'Chatbot Leads', path: '/dashboard/admin/leads', icon: Users, gradient: 'from-blue-500 to-indigo-500', description: 'Chatbot submissions' },
     { name: 'Client Requirements', path: '/dashboard/admin/requirements', icon: List, gradient: 'from-amber-500 to-yellow-500', description: 'Review submissions' },
     { name: 'Active Monitoring', path: '/dashboard/admin/projects', icon: Briefcase, gradient: 'from-lime-500 to-green-500', description: 'Track progress' },

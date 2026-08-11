@@ -80,7 +80,12 @@ const VerifyOTP = () => {
         // Auto-login after verification
         setTimeout(() => {
           setAuthData(res.data.token, res.data.user);
-          navigate(ROLE_HOME[res.data.user.role] || '/dashboard/client');
+          const pendingReq = sessionStorage.getItem('wavemind_pending_project_request') || localStorage.getItem('wavemind_pending_project_request');
+          if (pendingReq) {
+            navigate('/dashboard/client/submit');
+          } else {
+            navigate(ROLE_HOME[res.data.user.role] || '/dashboard/client');
+          }
         }, 1500);
       }
     } catch (err) {

@@ -10,12 +10,12 @@ import { Link } from 'react-router-dom';
 import DashboardLayout from '../../../components/dashboard/DashboardLayout';
 import ProfileEditModal from '../../../components/dashboard/ProfileEditModal';
 import { useAuth } from '../../../context/AuthContext';
-import { getMyProjects, getMyRequirements } from '../../../services/clientService';
+import { getMyProjects, getProjectStats } from '../../../services/clientService';
 
 const ClientOverview = () => {
   const { user } = useAuth();
   const [projects, setProjects] = useState([]);
-  const [requirements, setRequirements] = useState([]);
+  const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [hoveredStat, setHoveredStat] = useState(null);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
@@ -23,9 +23,31 @@ const ClientOverview = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [projRes, reqRes] = await Promise.all([getMyProjects(), getMyRequirements()]);
-        setProjects(projRes.data || []);
-        setRequirements(reqRes.data || []);
+        // ── Source of Truth: MongoDB only — no localStorage mixing ──────────
+        const [projRes, statsRes] = await Promise.all([
+          getMyProjects().catch(() => ({ projects: [], data: [] })),
+          getProjectStats().catch(() => ({ stats: null }))
+        ]);
+
+        const apiProjs = projRes.projects || projRes.data || [];
+        setProjects(apiProjs);
+
+        // Use server-side stats if available; fall back to client-side from project list
+        if (statsRes?.stats) {
+          setStats(statsRes.stats);
+        } else {
+          // Fallback: compute from project list (no localStorage)
+          const s = {
+            totalProjects: apiProjs.length,
+            inReview: apiProjs.filter(p => p.status === 'In Review').length,
+            approved: apiProjs.filter(p => p.status === 'Approved').length,
+            inProgress: apiProjs.filter(p => p.status === 'In Progress').length,
+            completed: apiProjs.filter(p => p.status === 'Completed').length,
+            totalBudget: apiProjs.reduce((sum, p) => sum + (p.budget || 0), 0),
+            activeProjects: apiProjs.filter(p => !['Completed', 'Rejected'].includes(p.status)).length,
+          };
+          setStats(s);
+        }
       } catch (err) {
         console.error('Dashboard fetch error:', err);
       } finally {
@@ -35,45 +57,47 @@ const ClientOverview = () => {
     fetchData();
   }, []);
 
-  const activeProjects = projects.filter(p => p.status !== 'Completed').length;
-  const completedProjects = projects.filter(p => p.status === 'Completed').length;
-  const pendingRequirements = requirements.filter(r => r.status === 'Pending').length;
-
-  const totalBudget = requirements.reduce((sum, req) => sum + (req.budget || 0), 0);
-  const completionRate = projects.length > 0
-    ? Math.round((completedProjects / projects.length) * 100)
+  // Use server-side stats; fall back gracefully while loading
+  const activeProjects = stats?.activeProjects ?? projects.filter(p => !['Completed', 'Rejected'].includes(p.status)).length;
+  const completedProjects = stats?.completed ?? projects.filter(p => p.status === 'Completed').length;
+  const inProgressProjects = stats?.inProgress ?? projects.filter(p => p.status === 'In Progress').length;
+  const inReviewProjects = stats?.inReview ?? projects.filter(p => p.status === 'In Review').length;
+  const totalBudget = stats?.totalBudget ?? projects.reduce((sum, p) => sum + (p.budget || 0), 0);
+  const completionRate = stats?.totalProjects > 0
+    ? Math.round((completedProjects / stats.totalProjects) * 100)
     : 0;
 
-  const stats = [
+  const statCards = [
     {
       label: 'Mission Load',
-      value: activeProjects,
+      value: loading ? '—' : activeProjects,
       icon: Briefcase,
       gradient: 'from-blue-500 to-cyan-500',
       description: 'Active Operations'
     },
     {
       label: 'Runtime',
-      value: projects.filter(p => p.status === 'In Progress').length,
+      value: loading ? '—' : inProgressProjects,
       icon: Clock,
       gradient: 'from-purple-500 to-pink-500',
-      description: 'System Execution'
+      description: 'In Progress'
     },
     {
       label: 'Archive',
-      value: completedProjects,
+      value: loading ? '—' : completedProjects,
       icon: CheckCircle,
       gradient: 'from-emerald-500 to-teal-500',
       description: 'Delivered Assets'
     },
     {
-      label: 'Signals',
-      value: pendingRequirements,
+      label: 'Pending Review',
+      value: loading ? '—' : inReviewProjects,
       icon: MessageSquare,
       gradient: 'from-orange-500 to-amber-500',
-      description: 'Awaiting Uplink'
+      description: 'Awaiting Admin'
     },
   ];
+
 
   const getStatusColor = (status) => {
     const colors = {
@@ -181,7 +205,7 @@ const ClientOverview = () => {
 
         {/* Stats Grid */}
         <div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {stats.map((stat, idx) => (
+          {statCards.map((stat, idx) => (
             <div
               key={idx}
               variants={itemVariants}
@@ -330,10 +354,8 @@ const ClientOverview = () => {
                     Array(3).fill(0).map((_, i) => (
                       <div key={i} className="h-24 bg-gray-100 dark:bg-white/5 rounded-3xl animate-pulse border border-gray-200 dark:border-white/5" />
                     ))
-                  ) : requirements.length === 0 ? (
+                  ) : projects.length === 0 ? (
                     <div
-                      
-                      
                       className="text-center py-20 bg-gray-50 dark:bg-white/5 rounded-[3rem] border border-dashed border-gray-200 dark:border-white/10"
                     >
                       <div className="w-20 h-20 bg-indigo-500/5 rounded-3xl flex items-center justify-center mx-auto mb-6 border border-indigo-500/10">
@@ -348,48 +370,43 @@ const ClientOverview = () => {
                       </Link>
                     </div>
                   ) : (
-                    requirements.slice(0, 5).map((req, i) => (
+                    projects.slice(0, 5).map((project, i) => (
                       <div
-                        key={req._id || i}
-                        
-                        
-                        
-                        
+                        key={project._id || i}
                         className="group flex items-center justify-between p-6 rounded-[2rem] bg-white dark:bg-white/5 border border-gray-100 dark:border-white/5 hover:border-blue-500/20 transition-all cursor-pointer shadow-sm hover:shadow-xl"
                       >
                         <div className="flex items-center gap-6">
                           <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-2xl transition-transform group-hover:scale-110 ${
-                            req.status === 'Pending' ? 'bg-orange-500/20 text-orange-500' :
-                            req.status === 'In Review' ? 'bg-blue-500/20 text-blue-500' :
-                            req.status === 'Converted' ? 'bg-emerald-500/20 text-emerald-500' : 'bg-gray-100 dark:bg-gray-500/20 text-gray-500'
+                            project.status === 'Pending' || project.status === 'In Review' ? 'bg-orange-500/20 text-orange-500' :
+                            project.status === 'Approved' || project.status === 'In Progress' ? 'bg-blue-500/20 text-blue-500' :
+                            project.status === 'Completed' ? 'bg-emerald-500/20 text-emerald-500' : 'bg-gray-100 dark:bg-gray-500/20 text-gray-500'
                           }`}>
                             <FileText size={24} />
                           </div>
                           <div>
-                            <h4 className="font-black text-gray-900 dark:text-white text-base tracking-tight group-hover:text-indigo-600 transition-colors">{req.title}</h4>
+                            <h4 className="font-black text-gray-900 dark:text-white text-base tracking-tight group-hover:text-indigo-600 transition-colors">{project.title}</h4>
                             <div className="flex items-center gap-6 text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500 mt-1">
                               <span className="flex items-center gap-2">
                                 <Clock size={12} className="text-gray-400" />
-                                {new Date(req.createdAt).toLocaleDateString()}
+                                {new Date(project.createdAt || project.updatedAt || Date.now()).toLocaleDateString()}
                               </span>
-                              {req.budget && (
+                              {project.budget && (
                                 <span className="flex items-center gap-2 text-emerald-600 dark:text-emerald-500">
                                   <DollarSign size={12} />
-                                  ₹{req.budget.toLocaleString()}
+                                  ₹{project.budget.toLocaleString('en-IN')}
                                 </span>
                               )}
                             </div>
                           </div>
                         </div>
                         <span
-                          className={`px-5 py-2 rounded-2xl text-[9px] font-black uppercase tracking-[0.2em] shadow-xl ${getStatusColor(req.status)}`}
+                          className={`px-5 py-2 rounded-2xl text-[9px] font-black uppercase tracking-[0.2em] shadow-xl ${getStatusColor(project.status)}`}
                         >
-                          {req.status}
+                          {project.status}
                         </span>
                       </div>
                     ))
                   )}
-                
               </div>
             </div>
           </div>

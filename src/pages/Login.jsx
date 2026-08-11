@@ -49,7 +49,12 @@ const Login = () => {
         navigate('/verify-otp', { state: { email: response.email } });
       } else {
         toast.success('Welcome back! Redirecting...');
-        navigate(ROLE_HOME[response.user?.role] || '/dashboard/client');
+        const pendingReq = sessionStorage.getItem('wavemind_pending_project_request') || localStorage.getItem('wavemind_pending_project_request');
+        if (pendingReq) {
+          navigate('/dashboard/client/submit');
+        } else {
+          navigate(ROLE_HOME[response.user?.role] || '/dashboard/client');
+        }
       }
     } catch (err) {
       const msg = err.response?.data?.message || 'Login failed. Please try again.';

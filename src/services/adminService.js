@@ -1,5 +1,6 @@
 /**
  * Admin Service  –  /api/admin/*
+ * All functions propagate errors to callers — no silent swallowing.
  */
 import api from './api';
 
@@ -9,9 +10,28 @@ export const getAllRequirements = async (params = {}) => {
   return res.data;
 };
 
+/** GET /api/admin/projects/stats — real MongoDB aggregation */
+export const getAdminProjectStats = async () => {
+  try {
+    const res = await api.get('/admin/projects/stats');
+    return res.data;
+  } catch (err) {
+    if (err?.response?.status === 404) {
+      return { success: true, stats: null };
+    }
+    throw err;
+  }
+};
+
 /** GET /api/admin/projects */
 export const getAllProjects = async (params = {}) => {
   const res = await api.get('/admin/projects', { params });
+  return res.data;
+};
+
+/** GET /api/admin/projects/:id — full project detail with population */
+export const getAdminProjectById = async (id) => {
+  const res = await api.get(`/admin/projects/${id}`);
   return res.data;
 };
 
@@ -27,7 +47,7 @@ export const assignTeam = async (data) => {
   return res.data;
 };
 
-/** PATCH /api/admin/projects/:id */
+/** PATCH /api/admin/projects/:id — admin update (status, progress, notes, etc.) */
 export const updateProject = async (id, data) => {
   const res = await api.patch(`/admin/projects/${id}`, data);
   return res.data;
@@ -57,24 +77,20 @@ export const getClients = async () => {
   return res.data;
 };
 
-/** 
- * Leads (Chatbot) Services 
+/**
+ * Leads (Chatbot) Services
  */
 
-/** GET /api/lead - Fetch chatbot leads */
+/** GET /api/lead — Fetch chatbot leads */
 export const getLeads = async (params = {}) => {
   const res = await api.get('/lead', { params });
   return res.data;
 };
 
-/** GET /api/lead/export - Download Excel */
+/** GET /api/lead/export — Download Excel */
 export const exportLeadsExcel = async () => {
-  // We use the raw axios instance from our api service to handle blobs
-  const res = await api.get('/lead/export', {
-    responseType: 'blob'
-  });
-  
-  // Create a download link for the blob
+  const res = await api.get('/lead/export', { responseType: 'blob' });
+
   const url = window.URL.createObjectURL(new Blob([res.data]));
   const link = document.createElement('a');
   link.href = url;
@@ -83,6 +99,6 @@ export const exportLeadsExcel = async () => {
   link.click();
   link.remove();
   window.URL.revokeObjectURL(url);
-  
+
   return true;
 };

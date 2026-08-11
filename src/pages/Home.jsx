@@ -487,6 +487,92 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Featured Projects Showcase */}
+      <section className="py-20 bg-gray-50/50 dark:bg-[#0a0c14]/50 border-y border-gray-200/50 dark:border-white/5 relative">
+        <div className="container mx-auto px-6 max-w-7xl">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+            <div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                viewport={{ once: true }}
+                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/20 text-blue-600 dark:text-blue-400 text-xs font-bold uppercase tracking-wider mb-4"
+              >
+                <Sparkles className="w-4 h-4" />
+                Featured Systems
+              </motion.div>
+              <h2 className="text-3xl md:text-5xl font-black bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent tracking-tight">
+                Our Engineering Portfolio
+              </h2>
+              <p className="text-gray-600 dark:text-gray-400 text-base md:text-lg mt-3 max-w-2xl font-medium">
+                Discover active production platforms, AI engines, and enterprise solutions engineered by WaveMind.
+              </p>
+            </div>
+            <Link
+              to="/projects"
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold text-sm shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 hover:scale-105 transition-all self-start md:self-auto shrink-0"
+            >
+              Explore All Projects
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              className="group p-8 rounded-3xl bg-white dark:bg-[#0f121d] border border-gray-200/80 dark:border-white/10 shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between"
+            >
+              <div>
+                <span className="px-3 py-1 rounded-full text-xs font-bold bg-violet-100 dark:bg-violet-500/20 text-violet-600 dark:text-violet-400">AI / EdTech</span>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mt-4 mb-2 group-hover:text-blue-500 transition-colors">AI Career Pathfinder</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-3 font-medium mb-6">AI-powered career guidance platform with role-based dashboards and integrated LLM advisors.</p>
+              </div>
+              <Link to="/projects" className="text-xs font-bold text-blue-600 dark:text-blue-400 flex items-center gap-1 group-hover:gap-2 transition-all">
+                View Architecture <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              viewport={{ once: true }}
+              className="group p-8 rounded-3xl bg-white dark:bg-[#0f121d] border border-gray-200/80 dark:border-white/10 shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between"
+            >
+              <div>
+                <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400">E-Commerce</span>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mt-4 mb-2 group-hover:text-blue-500 transition-colors">Jay Bharat Surgical Works</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-3 font-medium mb-6">Full-stack sales & medical supply ordering platform with Flutter customer and admin portals.</p>
+              </div>
+              <Link to="/projects" className="text-xs font-bold text-blue-600 dark:text-blue-400 flex items-center gap-1 group-hover:gap-2 transition-all">
+                View Architecture <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="group p-8 rounded-3xl bg-white dark:bg-[#0f121d] border border-gray-200/80 dark:border-white/10 shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between"
+            >
+              <div>
+                <span className="px-3 py-1 rounded-full text-xs font-bold bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400">AI / RAG</span>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mt-4 mb-2 group-hover:text-blue-500 transition-colors">DocMind AI</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-3 font-medium mb-6">RAG conversational document analysis engine with sub-1.5s query response times over 10k pages.</p>
+              </div>
+              <Link to="/projects" className="text-xs font-bold text-blue-600 dark:text-blue-400 flex items-center gap-1 group-hover:gap-2 transition-all">
+                View Architecture <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* Testimonials */}
       <section className="py-16 bg-gradient-to-br from-blue-50/30 via-transparent to-purple-50/30 dark:from-blue-950/20 dark:via-transparent dark:to-purple-950/20 overflow-hidden">
         <div className="container mx-auto px-6">

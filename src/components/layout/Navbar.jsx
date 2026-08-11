@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Menu, X, LogOut, Sun, Moon,
   Home, Info, Briefcase, Mail,
-  Zap
+  Zap, Sparkles, FolderGit2
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
@@ -12,6 +12,8 @@ import { useTheme } from '../../context/ThemeContext';
 // Static — defined once outside component, never reallocated on re-renders
 const NAV_LINKS = [
   { name: 'Home', path: '/', icon: Home },
+  { name: 'Agentic AI', path: '/agent-ai', icon: Sparkles, badge: 'AI' },
+  { name: 'Projects', path: '/projects', icon: FolderGit2 },
   { name: 'About', path: '/about', icon: Info },
   { name: 'Services', path: '/services', icon: Briefcase },
   { name: 'Contact', path: '/contact', icon: Mail },
@@ -77,14 +79,14 @@ const Navbar = memo(() => {
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-2 p-1.5 bg-gray-100/50 dark:bg-white/5 backdrop-blur-md rounded-2xl border border-gray-200/50 dark:border-white/5">
+            <div className="hidden lg:flex items-center gap-1.5 p-1.5 bg-gray-100/50 dark:bg-white/5 backdrop-blur-md rounded-2xl border border-gray-200/50 dark:border-white/5">
               {NAV_LINKS.map((link) => {
                 const isActive = location.pathname === link.path;
                 return (
                   <Link
                     key={link.name}
                     to={link.path}
-                    className={`relative px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 flex items-center gap-2 group ${
+                    className={`relative px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 flex items-center gap-2 group ${
                       isActive
                         ? 'text-blue-600 dark:text-blue-400'
                         : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
@@ -97,8 +99,13 @@ const Navbar = memo(() => {
                         transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
                       />
                     )}
-                    <link.icon size={16} className={`relative z-10 transition-transform duration-300 ${isActive ? 'scale-110' : 'group-hover:scale-110'}`} />
+                    <link.icon size={16} className={`relative z-10 transition-transform duration-300 ${isActive ? 'scale-110' : 'group-hover:scale-110'} ${link.badge ? 'text-purple-500 dark:text-purple-400' : ''}`} />
                     <span className="relative z-10">{link.name}</span>
+                    {link.badge && (
+                      <span className="relative z-10 px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-md shadow-sm">
+                        {link.badge}
+                      </span>
+                    )}
                   </Link>
                 );
               })}
@@ -221,8 +228,13 @@ const Navbar = memo(() => {
                             : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5'
                         }`}
                       >
-                        <link.icon size={24} />
-                        {link.name}
+                        <link.icon size={24} className={link.badge ? 'text-purple-500 dark:text-purple-400' : ''} />
+                        <span className="flex-1">{link.name}</span>
+                        {link.badge && (
+                          <span className="px-2 py-0.5 text-xs font-black uppercase tracking-wider bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-md shadow-sm">
+                            {link.badge}
+                          </span>
+                        )}
                       </Link>
                     );
                   })}
