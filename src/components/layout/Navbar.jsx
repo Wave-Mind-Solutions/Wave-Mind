@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Menu, X, LogOut, Sun, Moon,
   Home, Info, Briefcase, Mail,
-  Zap, Sparkles, FolderGit2
+  Zap, Sparkles, FolderGit2, Users
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
@@ -14,6 +14,7 @@ const NAV_LINKS = [
   { name: 'Home', path: '/', icon: Home },
   { name: 'Agentic AI', path: '/agent-ai', icon: Sparkles, badge: 'AI' },
   { name: 'Projects', path: '/projects', icon: FolderGit2 },
+  { name: 'Our Team', path: '/team', icon: Users },
   { name: 'About', path: '/about', icon: Info },
   { name: 'Services', path: '/services', icon: Briefcase },
   { name: 'Contact', path: '/contact', icon: Mail },
@@ -79,14 +80,14 @@ const Navbar = memo(() => {
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-1.5 p-1.5 bg-gray-100/50 dark:bg-white/5 backdrop-blur-md rounded-2xl border border-gray-200/50 dark:border-white/5">
+            <div className="hidden lg:flex items-center gap-1 p-1.5 bg-gray-100/50 dark:bg-white/5 backdrop-blur-md rounded-2xl border border-gray-200/50 dark:border-white/5">
               {NAV_LINKS.map((link) => {
                 const isActive = location.pathname === link.path;
                 return (
                   <Link
                     key={link.name}
                     to={link.path}
-                    className={`relative px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 flex items-center gap-2 group ${
+                    className={`relative px-2.5 xl:px-4 py-2 rounded-xl text-xs xl:text-sm font-bold transition-all duration-300 flex items-center gap-1.5 group whitespace-nowrap ${
                       isActive
                         ? 'text-blue-600 dark:text-blue-400'
                         : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'

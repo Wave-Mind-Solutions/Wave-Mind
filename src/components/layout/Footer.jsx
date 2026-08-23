@@ -66,6 +66,7 @@ const Footer = () => {
                 { name: 'Home', path: '/' },
                 { name: 'AI Assistant', path: '/agent-ai' },
                 { name: 'Our Projects', path: '/projects' },
+                { name: 'Our Team', path: '/team' },
                 { name: 'About', path: '/about' },
                 { name: 'Services', path: '/services' },
                 { name: 'Contact', path: '/contact' },

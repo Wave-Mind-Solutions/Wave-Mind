@@ -45,6 +45,7 @@ const PageLoader = () => (
 const Home = lazy(() => import('./pages/Home'));
 const AgentAI = lazy(() => import('./pages/AgentAI'));
 const Projects = lazy(() => import('./pages/Projects'));
+const OurTeam = lazy(() => import('./pages/OurTeam'));
 const About = lazy(() => import('./pages/About'));
 const Services = lazy(() => import('./pages/Services'));
 const Leadership = lazy(() => import('./pages/Leadership'));
@@ -108,6 +109,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/agent-ai" element={<AgentAI />} />
               <Route path="/projects" element={<Projects />} />
+              <Route path="/team" element={<OurTeam />} />
               <Route path="/assistant" element={<Navigate to="/agent-ai" replace />} />
               <Route path="/chat" element={<Navigate to="/agent-ai" replace />} />
               <Route path="/about" element={<About />} />
