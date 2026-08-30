@@ -7,6 +7,16 @@ import { useTheme } from '../context/ThemeContext';
 
 const teamMembers = [
   {
+    id: 'ankita',
+    name: 'Ankita Banik',
+    role: 'Cofounder (Director of Ops & HR)',
+    github: '',
+    icon: Users,
+    gradient: 'from-amber-500 to-orange-500',
+    iconGradient: 'from-amber-600 to-orange-600',
+    description: 'Directing operations and people management strategies to ensure a thriving, efficient, and collaborative environment.',
+  },
+  {
     id: 'harshit',
     name: 'Harshit Tripathi',
     role: 'Web Developer (Team Leader)',
@@ -37,6 +47,61 @@ const teamMembers = [
     description: 'Designing and implementing intelligent AI models, integrating deep learning algorithms into production-ready software.',
   }
 ];
+
+function TeamMemberCard({ member, idx }) {
+  const IconComponent = member.icon;
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: idx * 0.1 }}
+      viewport={{ once: true }}
+      className="h-full"
+    >
+      <div className="group relative overflow-hidden rounded-[2.5rem] border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm p-8 transition-all duration-300 hover:border-blue-500/50 hover:shadow-xl hover:shadow-blue-500/10 flex flex-col h-full">
+        {/* Header */}
+        <div className="flex items-center gap-6 mb-6">
+          <div className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${member.iconGradient} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-500 shrink-0`}>
+            <IconComponent className="w-8 h-8 text-white" strokeWidth={1.5} />
+          </div>
+          <div>
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-white group-hover:text-blue-500 transition-colors">
+              {member.name}
+            </h3>
+            <span className="text-xs font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400 mt-1 block">
+              {member.role}
+            </span>
+          </div>
+        </div>
+
+        {/* Description */}
+        <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-8 flex-grow">
+          {member.description}
+        </p>
+
+        {/* Footer / Links */}
+        <div className="pt-6 border-t border-gray-100 dark:border-gray-700 mt-auto flex justify-between items-center">
+          <div className="flex items-center gap-2">
+             <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block animate-pulse" />
+             <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Available</span>
+          </div>
+          
+          {member.github && (
+            <a
+              href={member.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-100 dark:bg-gray-800/80 text-gray-900 dark:text-white text-sm font-bold shadow-sm hover:bg-gray-200 dark:hover:bg-gray-700 transition-all border border-gray-200 dark:border-gray-600 hover:scale-105"
+            >
+              <Github className="w-4 h-4" />
+              GitHub
+            </a>
+          )}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
 
 export default function OurTeam() {
   const { theme } = useTheme();
@@ -116,59 +181,18 @@ export default function OurTeam() {
       {/* Team Grid */}
       <div className="py-16 relative z-10">
         <div className="container mx-auto px-6 max-w-7xl">
+          {/* Co-founder - Centered at top */}
+          <div className="flex justify-center mb-12">
+            <div className="w-full max-w-md">
+              <TeamMemberCard member={teamMembers[0]} idx={0} />
+            </div>
+          </div>
+
+          {/* Remaining Team Members Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {teamMembers.map((member, idx) => {
-              const IconComponent = member.icon;
-              return (
-                <motion.div
-                  key={member.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: idx * 0.1 }}
-                  viewport={{ once: true }}
-                >
-                  <div className="group relative overflow-hidden rounded-[2.5rem] border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm p-8 transition-all duration-300 hover:border-blue-500/50 hover:shadow-xl hover:shadow-blue-500/10 flex flex-col h-full">
-                    {/* Header */}
-                    <div className="flex items-center gap-6 mb-6">
-                      <div className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${member.iconGradient} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-500 shrink-0`}>
-                        <IconComponent className="w-8 h-8 text-white" strokeWidth={1.5} />
-                      </div>
-                      <div>
-                        <h3 className="text-2xl font-bold text-gray-900 dark:text-white group-hover:text-blue-500 transition-colors">
-                          {member.name}
-                        </h3>
-                        <span className="text-xs font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400 mt-1 block">
-                          {member.role}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Description */}
-                    <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-8 flex-grow">
-                      {member.description}
-                    </p>
-
-                    {/* Footer / Links */}
-                    <div className="pt-6 border-t border-gray-100 dark:border-gray-700 mt-auto flex justify-between items-center">
-                      <div className="flex items-center gap-2">
-                         <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block animate-pulse" />
-                         <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Available</span>
-                      </div>
-                      
-                      <a
-                        href={member.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-100 dark:bg-gray-800/80 text-gray-900 dark:text-white text-sm font-bold shadow-sm hover:bg-gray-200 dark:hover:bg-gray-700 transition-all border border-gray-200 dark:border-gray-600 hover:scale-105"
-                      >
-                        <Github className="w-4 h-4" />
-                        GitHub
-                      </a>
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            })}
+            {teamMembers.slice(1).map((member, idx) => (
+              <TeamMemberCard key={member.id} member={member} idx={idx + 1} />
+            ))}
           </div>
         </div>
       </div>
