@@ -2,6 +2,7 @@ import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, lazy, Suspense } from 'react';
 import { useAuth } from './context/AuthContext';
+import { Analytics } from '@vercel/analytics/react';
 
 // Layout
 import Navbar from './components/layout/Navbar';
@@ -245,6 +246,7 @@ function App() {
       </main>
       {!isDashboard && <Footer />}
       {!isDashboard && <ChatbotWidget />}
+      <Analytics />
     </div>
   );
 }
