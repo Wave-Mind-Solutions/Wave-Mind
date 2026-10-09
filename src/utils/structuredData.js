@@ -331,3 +331,22 @@ export const createBreadcrumbSchema = (items) => ({
     "item": `${SITE_URL}${item.path}`
   }))
 });
+
+// Privacy Policy page schema
+export const privacyPolicyPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Privacy Policy | WaveMind Solutions",
+  "url": `${SITE_URL}/privacy-policy`,
+  "description": "Learn how WaveMind Solutions collects, uses, protects and manages your personal information.",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WaveMind Solutions",
+    "url": SITE_URL,
+    "logo": {
+      "@type": "ImageObject",
+      "url": `${SITE_URL}/logo.png`
+    }
+  }
+};
+

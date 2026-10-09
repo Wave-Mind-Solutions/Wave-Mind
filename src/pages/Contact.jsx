@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useCallback, useMemo, memo } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { useForm, ValidationError } from '@formspree/react';
 import {
@@ -511,9 +512,22 @@ const Contact = () => {
                         </span>
                       </button>
 
-                      <p className="text-center text-[10px] text-gray-500 dark:text-gray-500 mt-3">
-                        We'll never share your information. Promise.
-                      </p>
+                      <div className="mt-4 pt-3 border-t border-gray-100 dark:border-gray-800 text-center">
+                        <p className="text-[11px] text-gray-500 dark:text-gray-400 leading-relaxed">
+                          We use your name, phone number, email and business/project details to respond to your enquiry, prepare a quote and follow up about our services. Read our{' '}
+                          <Link to="/privacy-policy" className="text-blue-600 dark:text-blue-400 font-semibold hover:underline">
+                            Privacy Policy
+                          </Link>{' '}
+                          for details about sharing, retention and your choices. You can withdraw consent or request deletion at{' '}
+                          <a href="mailto:info@wavemindsolutions.in" className="text-blue-600 dark:text-blue-400 font-semibold hover:underline">
+                            info@wavemindsolutions.in
+                          </a>{' '}
+                          or WhatsApp{' '}
+                          <a href="https://wa.me/918282843434" target="_blank" rel="noopener noreferrer" className="text-emerald-600 dark:text-emerald-400 font-semibold hover:underline">
+                            +91 82828 43434
+                          </a>.
+                        </p>
+                      </div>
                     </motion.form>
                   )}
                 </AnimatePresence>

@@ -70,6 +70,7 @@ const Footer = () => {
                 { name: 'About', path: '/about' },
                 { name: 'Services', path: '/services' },
                 { name: 'Contact', path: '/contact' },
+                { name: 'Privacy Policy', path: '/privacy-policy' },
               ].map((item) => (
                 <li key={item.name}>
                   <Link
@@ -170,8 +171,15 @@ const Footer = () => {
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-gray-100 dark:border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest flex items-center gap-4">
+          <div className="text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest flex flex-wrap items-center gap-3 sm:gap-4 justify-center md:justify-start">
             <span>© {currentYear} WaveMind</span>
+            <span className="w-1 h-1 bg-gray-300 dark:bg-gray-700 rounded-full" />
+            <Link
+              to="/privacy-policy"
+              className="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            >
+              Privacy Policy
+            </Link>
             <span className="w-1 h-1 bg-gray-300 dark:bg-gray-700 rounded-full" />
             <span className="italic">Organic Digital Craftsmanship</span>
           </div>
