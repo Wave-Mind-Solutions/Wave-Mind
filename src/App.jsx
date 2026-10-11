@@ -11,8 +11,6 @@ import Footer from './components/layout/Footer';
 // Auth guard
 import ProtectedRoute from './components/ProtectedRoute';
 
-// Chatbot Widget
-import ChatbotWidget from './components/ChatbotWidget';
 
 // Loading Fallback Component
 const PageLoader = () => (
@@ -247,7 +245,6 @@ function App() {
         </AnimatePresence>
       </main>
       {!isDashboard && <Footer />}
-      {!isDashboard && <ChatbotWidget />}
       <Analytics />
     </div>
   );
