@@ -46,7 +46,7 @@ const Leadership = () => {
       <SEOHead
         title="Leadership Team – Meet Our Experts"
         description="Meet the leadership team at WaveMind Solutions. CEO Pinak Majumder and our directors drive innovation in software development, operations, and client success."
-        keywords="WaveMind leadership team, CEO Pinak Majumder, software company founders, IT company leadership India, tech startup team Kolkata"
+        keywords="WaveMind leadership team, CEO Pinak Majumder, software company founders, IT company leadership India"
         canonicalPath="/leadership"
         structuredData={[leadershipPageSchema, createBreadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Leadership', path: '/leadership' }])]}
       />
