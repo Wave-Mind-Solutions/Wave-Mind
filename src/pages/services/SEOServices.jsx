@@ -8,7 +8,7 @@ const seoServiceSchema = {
   "@context": "https://schema.org",
   "@type": "Service",
   "name": "SEO Services for Startups and MSMEs in India",
-  "provider": { "@type": "LocalBusiness", "name": "WaveMind Solutions", "address": { "@type": "PostalAddress", "addressLocality": "Kolkata", "addressRegion": "West Bengal", "addressCountry": "IN" } },
+  "provider": { "@type": "LocalBusiness", "name": "WaveMind Solutions", "areaServed": { "@type": "Country", "name": "India" } },
   "description": "Result-driven SEO services for Indian startups and MSMEs.",
   "areaServed": { "@type": "Country", "name": "India" }
 };
@@ -17,7 +17,7 @@ const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    { "@type": "Question", "name": "How long does SEO take to show results in India?", "acceptedAnswer": { "@type": "Answer", "text": "SEO typically takes 3–6 months to show meaningful results. Local SEO for Kolkata keywords can show traction in 4–8 weeks." } },
+    { "@type": "Question", "name": "How long does SEO take to show results in India?", "acceptedAnswer": { "@type": "Answer", "text": "SEO typically takes 3–6 months to show meaningful results." } },
     { "@type": "Question", "name": "How much do SEO services cost in India?", "acceptedAnswer": { "@type": "Answer", "text": "Plans range from ₹10,000–₹50,000/month depending on competition and scope." } }
   ]
 };
@@ -39,9 +39,9 @@ const SEOServices = () => (
     className="relative min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 overflow-x-hidden"
   >
     <SEOHead
-      title="SEO Services for Startups & MSMEs in India | Kolkata SEO Agency"
-      description="WaveMind Solutions provides result-driven SEO for Indian startups and MSMEs. Local SEO Kolkata, keyword research, technical SEO, and content marketing. Get a free SEO audit today."
-      keywords="SEO services India, SEO agency Kolkata, local SEO Kolkata, SEO for startups India, SEO for MSMEs, technical SEO India, affordable SEO services India"
+      title="SEO Services for Startups & MSMEs in India"
+      description="WaveMind Solutions provides result-driven SEO for Indian startups and MSMEs. keyword research, technical SEO, and content marketing. Get a free SEO audit today."
+      keywords="SEO services India, SEO for startups India, SEO for MSMEs, technical SEO India, affordable SEO services India"
       canonicalPath="/seo-services"
       structuredData={[seoServiceSchema, faqSchema, createBreadcrumbSchema([
         { name: 'Home', path: '/' },
@@ -89,7 +89,7 @@ const SEOServices = () => (
       <div className="container mx-auto px-6 max-w-4xl">
         <h2 className="text-3xl font-bold text-center mb-10 bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">Why MSMEs Trust WaveMind for SEO</h2>
         <div className="space-y-4">
-          {["No black-hat tactics — only white-hat, Google-approved SEO","Hyper-local focus — Kolkata + Pan-India city targeting","MSME-specific strategy — low-competition keyword targeting","Content creation included — blogs, landing pages, schema","Monthly reporting — traffic, rankings, and leads tracked","Affordable pricing — plans starting ₹10,000/month"].map((p, i) => (
+          {["No black-hat tactics — only white-hat, Google-approved SEO","India-wide targeting across cities","MSME-specific strategy — low-competition keyword targeting","Content creation included — blogs, landing pages, schema","Monthly reporting — traffic, rankings, and leads tracked","Affordable pricing — plans starting ₹10,000/month"].map((p, i) => (
             <div key={i} className="flex items-start gap-3 bg-white dark:bg-gray-800/50 rounded-xl p-4 border border-gray-100 dark:border-gray-700">
               <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
               <p className="text-gray-700 dark:text-gray-300">{p}</p>
@@ -104,7 +104,7 @@ const SEOServices = () => (
         <h2 className="text-3xl font-bold text-center mb-10 bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">SEO FAQ for Indian Businesses</h2>
         <div className="space-y-4">
           {[
-            { q: "How long does SEO take to show results in India?", a: "SEO typically takes 3–6 months. Local SEO for Kolkata keywords can show traction in 4–8 weeks with proper setup." },
+            { q: "How long does SEO take to show results in India?", a: "SEO typically takes 3–6 months." },
             { q: "How much do SEO services cost in India?", a: "Plans range from ₹10,000–₹50,000/month. We offer custom pricing based on your industry and goals." },
             { q: "Can SEO work for a brand new business?", a: "Absolutely. New businesses benefit most from long-tail keywords and local SEO to build authority quickly." },
           ].map((faq, i) => (
