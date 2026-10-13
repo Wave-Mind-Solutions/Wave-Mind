@@ -171,7 +171,7 @@ const Contact = () => {
       <SEOHead
         title="Contact Us – Get a Free Project Quote"
         description="Contact WaveMind Solutions for custom software development, mobile apps, AI solutions & cloud services. Get a free project quote. Call +91 82828 43434 or email us."
-        keywords="contact WaveMind Solutions, software development quote, hire developers India, IT services Kolkata, project consultation, free quote software development"
+        keywords="contact WaveMind Solutions, software development quote, hire developers India, project consultation, free quote software development"
         canonicalPath="/contact"
         structuredData={[contactPageSchema, createBreadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Contact', path: '/contact' }])]}
       />
