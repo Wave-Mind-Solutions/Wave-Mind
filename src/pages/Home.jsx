@@ -220,8 +220,8 @@ const Home = () => {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 transition-colors duration-700 overflow-x-hidden">
       <SEOHead
         title="Website & App Development Company in India"
-        description="WaveMind Solutions builds websites, mobile apps, AI chatbots and billing software for businesses across India, including Tripura and Northeast India. Get a free quote."
-        keywords="website development company India, app development company India, website and app builder, mobile app developer India, web development company Tripura, website developer Agartala, app developer Northeast India, web development company Kolkata, custom software development India, AI chatbot development India, billing software development, small business website India"
+        description="WaveMind Solutions builds websites, mobile apps, AI chatbots and billing software for businesses across India. Get a free quote."
+        keywords="website development company India, app development company India, website and app builder, mobile app developer India, custom software development India, AI chatbot development India, billing software development, small business website India, web design company India"
         canonicalPath="/"
         structuredData={[homePageSchema, faqSchema, websiteSchema]}
       />
