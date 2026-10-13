@@ -8,7 +8,7 @@ const crmSchema = {
   "@context": "https://schema.org",
   "@type": "Service",
   "name": "Custom CRM Development for MSMEs in India",
-  "provider": { "@type": "LocalBusiness", "name": "WaveMind Solutions", "address": { "@type": "PostalAddress", "addressLocality": "Kolkata", "addressRegion": "West Bengal", "addressCountry": "IN" } },
+  "provider": { "@type": "LocalBusiness", "name": "WaveMind Solutions", "areaServed": { "@type": "Country", "name": "India" } },
   "description": "Affordable custom CRM development for Indian startups and MSMEs. Manage leads, automate follow-ups, and grow sales with a CRM built for your business.",
   "areaServed": { "@type": "Country", "name": "India" }
 };
@@ -30,9 +30,9 @@ const CRMDevelopment = () => (
     className="relative min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 overflow-x-hidden"
   >
     <SEOHead
-      title="Custom CRM Development for MSMEs in India | CRM Software Kolkata"
+      title="Custom CRM Development for MSMEs in India"
       description="WaveMind Solutions builds affordable custom CRM software for Indian startups and MSMEs. Manage leads, automate follow-ups, and grow sales. Get a free CRM demo today."
-      keywords="CRM development India, custom CRM software MSME, CRM for small business India, CRM software Kolkata, affordable CRM India, sales automation India, lead management software India"
+      keywords="CRM development India, custom CRM software MSME, CRM for small business India, affordable CRM India, sales automation India, lead management software India"
       canonicalPath="/crm-development"
       structuredData={[crmSchema, createBreadcrumbSchema([
         { name: 'Home', path: '/' },
