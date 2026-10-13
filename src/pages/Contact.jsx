@@ -24,11 +24,8 @@ const services = [
 ];
 
 const trustBadges = [
-  { icon: Star, label: "5/5 Rating", count: "500+ Reviews" },
-  { icon: Users, label: "Happy Clients", count: "200+ Worldwide" },
-  { icon: Award, label: "Industry Awards", count: "12 Recognitions" },
   { icon: Zap, label: "Fast Response", count: "Within 24 Hours" },
-  { icon: Shield, label: "Data Protected", count: "GDPR Compliant" }
+  { icon: Star, label: "Free Quote", count: "No Obligation" }
 ];
 
 const socialLinks = [
