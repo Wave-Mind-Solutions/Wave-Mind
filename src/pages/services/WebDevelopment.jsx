@@ -7,16 +7,11 @@ import { createBreadcrumbSchema } from '../../utils/structuredData';
 const webDevSchema = {
   "@context": "https://schema.org",
   "@type": "Service",
-  "name": "Web Development Services in Kolkata, India",
+  "name": "Web Development Services in India",
   "provider": {
     "@type": "LocalBusiness",
     "name": "WaveMind Solutions",
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "Kolkata",
-      "addressRegion": "West Bengal",
-      "addressCountry": "IN"
-    }
+    "areaServed": { "@type": "Country", "name": "India" }
   },
   "description": "Custom web development for Indian startups and MSMEs. React, Next.js, Node.js applications built for performance and SEO.",
   "areaServed": { "@type": "Country", "name": "India" },
@@ -86,9 +81,9 @@ const WebDevelopment = () => (
     className="relative min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 overflow-x-hidden"
   >
     <SEOHead
-      title="Web Development Company in Kolkata India | Custom Websites for MSMEs"
-      description="WaveMind Solutions builds custom websites and web applications for Indian startups and MSMEs. React, Next.js, Node.js development in Kolkata. Get a free quote today."
-      keywords="web development company Kolkata, custom website development India, React developer India, Next.js development, affordable web development MSME, web application development Kolkata"
+      title="Web Development Company in India | Custom Websites for MSMEs"
+      description="WaveMind Solutions builds custom websites and web applications for Indian startups and MSMEs. React, Next.js, Node.js development. Get a free quote today."
+      keywords="custom website development India, React developer India, Next.js development, affordable web development MSME"
       canonicalPath="/web-development"
       structuredData={[webDevSchema, faqSchema, createBreadcrumbSchema([
         { name: 'Home', path: '/' },
@@ -117,7 +112,7 @@ const WebDevelopment = () => (
         >
           Web Development Company<br />
           <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            in Kolkata, India
+            in India
           </span>
         </motion.h1>
 
@@ -161,7 +156,7 @@ const WebDevelopment = () => (
             What's Included in Our Web Development
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            Every project delivered with performance, security, and SEO built-in from day one.
+            Every website we build comes with performance, security, and SEO built-in from day one.
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -194,10 +189,10 @@ const WebDevelopment = () => (
         <div className="space-y-4">
           {[
             "Affordable pricing — transparent quotes, no hidden costs",
-            "Fast delivery — most projects completed in 2–6 weeks",
+            "Fast delivery — typical websites take 2–6 weeks",
             "SEO-ready — built with Core Web Vitals and structured data",
             "Mobile-first design — 60%+ of Indian users browse on mobile",
-            "Local support — Kolkata-based team, responsive in your timezone",
+            "Responsive support — India-based team, in your timezone",
             "Post-launch maintenance — we don't disappear after delivery",
           ].map((point, i) => (
             <div key={i} className="flex items-start gap-3 bg-white dark:bg-gray-800/50 rounded-xl p-4 border border-gray-100 dark:border-gray-700">
@@ -241,7 +236,7 @@ const WebDevelopment = () => (
             Get Free Quote <ArrowRight className="w-4 h-4" />
           </Link>
           <p className="text-blue-200 text-sm mt-6">
-            📍 Kolkata, India &nbsp;|&nbsp; 🌐 Serving clients Pan-India &nbsp;|&nbsp; ⚡ 24-hr response
+            🌐 Serving businesses across India &nbsp;|&nbsp; ⚡ 24-hr response
           </p>
         </div>
       </div>
