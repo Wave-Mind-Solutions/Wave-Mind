@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ArrowUpRight, FileText, Check, Sparkles } from 'lucide-react';
+import { ArrowUpRight, Check, Sparkles } from 'lucide-react';
 
 const WAVEBILL_URL = 'https://wavebill.wavemindsolutions.in/';
 
@@ -37,8 +37,8 @@ export default function ProductsSection() {
           <div className="flex flex-col md:flex-row gap-8 md:items-center">
             <div className="flex-1">
               <div className="flex items-center gap-4 mb-5">
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center shadow-lg">
-                  <FileText className="w-7 h-7 text-white" strokeWidth={1.5} />
+                <div className="w-14 h-14 rounded-2xl bg-sky-50 dark:bg-sky-950/50 border border-sky-200 dark:border-sky-800 flex items-center justify-center shadow-sm">
+                  <img src="/wavebill-mark.png" alt="WaveBill logo" className="w-8 h-10 object-contain" />
                 </div>
                 <div>
                   <h3 className="text-2xl font-bold text-gray-900 dark:text-white">WaveBill</h3>
