@@ -29,10 +29,8 @@ import { useTheme } from '../context/ThemeContext';
 const filters = ["All", "AI", "E-Commerce", "FinTech", "Civic Tech"];
 
 const projectsStats = [
-  { value: "6+", label: "Production Repos", icon: Code },
-  { value: "98.2%", label: "AI Model Accuracy", icon: Star },
-  { value: "< 1.5s", label: "Query Latency", icon: Zap },
-  { value: "100%", label: "Benchmarked Code", icon: Shield }
+  { value: "7", label: "Demo Projects", icon: Code },
+  { value: "In-house", label: "Built by Our Developer", icon: Shield }
 ];
 
 const projects = [
@@ -55,16 +53,10 @@ const projects = [
       "Real-time AI advising chat module with LLM streaming",
       "Automated resume analysis and action-item generators",
     ],
-    impact: "98.2% career recommendation accuracy rating",
+    impact: "Demo project built in-house",
     chartTitle: "Monthly User Engagement Growth",
     chartType: "area",
-    chartsData: [
-      { label: "Jan", val1: 150, val2: 80 },
-      { label: "Feb", val1: 320, val2: 85 },
-      { label: "Mar", val1: 650, val2: 91 },
-      { label: "Apr", val1: 1200, val2: 95 },
-      { label: "May", val1: 2400, val2: 98 },
-    ],
+    chartsData: [],
     chartLegend: ["Active Users", "Accuracy (%)"],
     architecture:
       "Microservices backend on FastAPI communicating with OpenAI GPT API and storing data in MongoDB Atlas; frontend built in React with responsive Tailwind components.",
@@ -89,15 +81,10 @@ const projects = [
       "Dispatch routing calculations for disaster relief squads",
       "Emergency broadcast triggers with instant notification lag",
     ],
-    impact: "Under 5s notification lag to citizen alert lists",
+    impact: "Demo project built in-house",
     chartTitle: "System Emergency Message Delivery Latency (Sec)",
     chartType: "bar",
-    chartsData: [
-      { label: "SMS", val1: 12 },
-      { label: "Email", val1: 8 },
-      { label: "Push", val1: 3 },
-      { label: "FloodPulse", val1: 1.5 },
-    ],
+    chartsData: [],
     chartLegend: ["Latency (sec)"],
     architecture:
       "Node.js WebSocket gateway broadcasting real-time geographic sensor measurements to React Leaflet map clients.",
@@ -121,15 +108,10 @@ const projects = [
       "Dynamic visual expenditure charts per category",
       "Automatic scheduled transaction reminders",
     ],
-    impact: "Helps users save an average of 18% monthly",
+    impact: "Demo project built in-house",
     chartTitle: "Monthly User Savings Ratio Increase (%)",
     chartType: "area",
-    chartsData: [
-      { label: "Month 1", val1: 5 },
-      { label: "Month 2", val1: 8 },
-      { label: "Month 3", val1: 12 },
-      { label: "Month 4", val1: 18 },
-    ],
+    chartsData: [],
     chartLegend: ["Savings Rate (%)"],
     architecture:
       "Local Python application using Streamlit for UI and direct SQLite queries to store transactional data.",
@@ -155,10 +137,7 @@ const projects = [
     impact: "Zero-Knowledge cloud credential storage",
     chartTitle: "Encryption Overhead (ms)",
     chartType: "bar",
-    chartsData: [
-      { label: "Standard Auth", val1: 15 },
-      { label: "AES-256 Auth", val1: 45 }
-    ],
+    chartsData: [],
     chartLegend: ["Latency (ms)"],
     architecture: "React frontend utilizing CryptoJS for client-side E2E encryption before storing ciphertext in Firebase Cloud Firestore."
   },
@@ -183,12 +162,7 @@ const projects = [
     impact: "Accelerates campus innovation matchmaking",
     chartTitle: "Successful Team Formations",
     chartType: "area",
-    chartsData: [
-      { label: "Week 1", val1: 12, val2: 5 },
-      { label: "Week 2", val1: 28, val2: 12 },
-      { label: "Week 3", val1: 45, val2: 24 },
-      { label: "Week 4", val1: 68, val2: 38 }
-    ],
+    chartsData: [],
     chartLegend: ["Active Users", "Teams Formed"],
     architecture: "Vite + React frontend with TypeScript, styled using Tailwind CSS and Framer Motion, supported by a Firebase backend for real-time capabilities."
   },
@@ -213,10 +187,7 @@ const projects = [
     impact: "High-performance trading dashboard rendering",
     chartTitle: "Dashboard Render Time (ms)",
     chartType: "bar",
-    chartsData: [
-      { label: "Standard UI", val1: 850 },
-      { label: "TradeVista", val1: 120 }
-    ],
+    chartsData: [],
     chartLegend: ["Render Time (ms)"],
     architecture: "Full-stack application architecture focusing on financial/trading workflows, optimized for real-time dashboard rendering."
   },
@@ -241,12 +212,7 @@ const projects = [
     impact: "Streamlined property booking experience",
     chartTitle: "Booking Conversion Rate (%)",
     chartType: "area",
-    chartsData: [
-      { label: "Jan", val1: 2.5 },
-      { label: "Feb", val1: 3.8 },
-      { label: "Mar", val1: 5.2 },
-      { label: "Apr", val1: 7.1 }
-    ],
+    chartsData: [],
     chartLegend: ["Conversion Rate (%)"],
     architecture: "Full-stack web application designed for high-availability property listing searches and transactional booking workflows."
   }
@@ -419,8 +385,8 @@ export default function Projects() {
       className="relative min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 overflow-x-hidden transition-colors duration-700"
     >
       <SEOHead
-        title="Our Projects — Real Systems & Architectures"
-        description="Explore real products, platforms, and AI systems built by WaveMind Solutions engineers — from AI career engines to medical e-commerce platforms."
+        title="Our Demo Projects"
+        description="Demo projects built in-house by the WaveMind Solutions team: AI, e-commerce, fintech and civic-tech examples. These are our own demos, not client work."
         canonicalPath="/projects"
         structuredData={[createBreadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Projects', path: '/projects' }])]}
       />
@@ -449,7 +415,7 @@ export default function Projects() {
             >
               <Sparkles className="w-4 h-4 text-blue-500" />
               <span className="text-sm font-medium bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
-                Engineering Showcase
+                Our Demo Projects
               </span>
             </motion.div>
 
@@ -476,7 +442,7 @@ export default function Projects() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed"
             >
-              Explore the architectures, production codebases, and performance benchmarks of platforms built by WaveMind engineers — spanning LLM engines, FinTech predictive modeling, and medical supply platforms.
+              These are demo projects built in-house by the WaveMind team to show our skills. They are our own examples, not client work.
             </motion.p>
 
             {/* Feature Pills */}
@@ -488,15 +454,15 @@ export default function Projects() {
             >
               <div className="flex items-center gap-2 px-4 py-2 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-full border border-gray-200 dark:border-gray-700">
                 <Zap className="w-4 h-4 text-yellow-500" />
-                <span className="text-sm text-gray-600 dark:text-gray-300">Production Codebases</span>
+                <span className="text-sm text-gray-600 dark:text-gray-300">Our Own Demos</span>
               </div>
               <div className="flex items-center gap-2 px-4 py-2 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-full border border-gray-200 dark:border-gray-700">
                 <Shield className="w-4 h-4 text-green-500" />
-                <span className="text-sm text-gray-600 dark:text-gray-300">Enterprise Security</span>
+                <span className="text-sm text-gray-600 dark:text-gray-300">Built In-House</span>
               </div>
               <div className="flex items-center gap-2 px-4 py-2 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-full border border-gray-200 dark:border-gray-700">
                 <Globe className="w-4 h-4 text-blue-500" />
-                <span className="text-sm text-gray-600 dark:text-gray-300">Live Benchmarks</span>
+                <span className="text-sm text-gray-600 dark:text-gray-300">Not Client Work</span>
               </div>
             </motion.div>
           </div>
@@ -862,7 +828,7 @@ export default function Projects() {
                       rel="noopener noreferrer"
                       className="inline-flex w-full sm:w-1/2 items-center justify-center gap-2 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-6 py-3.5 text-sm font-bold shadow-lg shadow-emerald-500/20 hover:scale-105 transition-all cursor-pointer"
                     >
-                      Live Deployed
+                      View Demo
                       <ExternalLink className="h-4 w-4" />
                     </a>
                     <a
