@@ -87,10 +87,9 @@ const technologies = [
 ];
 
 const servicesStats = [
-  { value: "200+", label: "Projects Completed", icon: Code },
-  { value: "98%", label: "Client Satisfaction", icon: Star },
-  { value: "50+", label: "Expert Developers", icon: Users },
-  { value: "24/7", label: "Support Available", icon: Rocket }
+  { value: "1", label: "Live Product (WaveBill)", icon: Code },
+  { value: "Free", label: "WaveBill to Start", icon: Star },
+  { value: "2023", label: "Founded", icon: Rocket }
 ];
 
 const ServiceSpotlightCard = ({ children, className = "" }) => {
@@ -220,7 +219,7 @@ const Services = () => {
               </div>
               <div className="flex items-center gap-2 px-4 py-2 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-full border border-gray-200 dark:border-gray-700">
                 <Globe className="w-4 h-4 text-blue-500" />
-                <span className="text-sm text-gray-600 dark:text-gray-300">Global Scale</span>
+                <span className="text-sm text-gray-600 dark:text-gray-300">Serving All India</span>
               </div>
             </motion.div>
           </div>
@@ -445,10 +444,10 @@ const Services = () => {
                   Start a Project <ArrowRight className="w-4 h-4" />
                 </Link>
                 <Link
-                  to="/services"
+                  to="/projects"
                   className="px-8 py-3 bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white rounded-full font-semibold hover:bg-white/30 transition-all duration-300"
                 >
-                  View Case Studies
+                  See Our Products
                 </Link>
               </div>
               <p className="text-sm text-blue-200 mt-6">Free consultation • No obligation • Quick response</p>
