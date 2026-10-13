@@ -8,7 +8,7 @@ const erpSchema = {
   "@context": "https://schema.org",
   "@type": "Service",
   "name": "ERP Solutions for MSMEs in India",
-  "provider": { "@type": "LocalBusiness", "name": "WaveMind Solutions", "address": { "@type": "PostalAddress", "addressLocality": "Kolkata", "addressRegion": "West Bengal", "addressCountry": "IN" } },
+  "provider": { "@type": "LocalBusiness", "name": "WaveMind Solutions", "areaServed": { "@type": "Country", "name": "India" } },
   "description": "Cloud ERP solutions for Indian MSMEs and manufacturers. Inventory, accounting, HR, and production management in one unified platform.",
   "areaServed": { "@type": "Country", "name": "India" }
 };
@@ -30,9 +30,9 @@ const ERPSolutions = () => (
     className="relative min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 overflow-x-hidden"
   >
     <SEOHead
-      title="ERP Solutions for MSMEs in India | Cloud ERP Software Kolkata"
+      title="ERP Solutions for MSMEs in India"
       description="WaveMind Solutions delivers cloud ERP systems for Indian MSMEs and manufacturers. Inventory, accounting, HR, production management. GST-ready. Get a free ERP consultation."
-      keywords="ERP solutions India, ERP for MSME India, cloud ERP India, ERP software for manufacturing India, GST-ready ERP India, ERP Kolkata, affordable ERP small business India"
+      keywords="ERP solutions India, ERP for MSME India, cloud ERP India, ERP software for manufacturing India, GST-ready ERP India, affordable ERP small business India"
       canonicalPath="/erp-solutions"
       structuredData={[erpSchema, createBreadcrumbSchema([
         { name: 'Home', path: '/' },
