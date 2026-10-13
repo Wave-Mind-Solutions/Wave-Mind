@@ -89,7 +89,7 @@ const About = () => {
       <SEOHead
         title="About Us – Our Mission, Vision & Values"
         description="Learn about WaveMind Solutions — a premium software agency founded in 2023. Discover our mission, core values, and the expert team behind our work."
-        keywords="about WaveMind Solutions, software company India, IT agency Kolkata, our team, company values, tech startup India, software development agency"
+        keywords="about WaveMind Solutions, software company India, our team, company values, tech startup India, software development agency"
         canonicalPath="/about"
         structuredData={[aboutPageSchema, createBreadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'About', path: '/about' }])]}
       />
