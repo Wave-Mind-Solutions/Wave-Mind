@@ -38,7 +38,7 @@ export default function ProductsSection() {
             <div className="flex-1">
               <div className="flex items-center gap-4 mb-5">
                 <div className="w-14 h-14 rounded-2xl bg-sky-50 dark:bg-sky-950/50 border border-sky-200 dark:border-sky-800 flex items-center justify-center shadow-sm">
-                  <img src="/wavebill-mark.png" alt="WaveBill logo" className="w-8 h-10 object-contain" />
+                  <img src="/1-wavebill-mark.png" alt="WaveBill logo" className="w-8 h-10 object-contain" />
                 </div>
                 <div>
                   <h3 className="text-2xl font-bold text-gray-900 dark:text-white">WaveBill</h3>
