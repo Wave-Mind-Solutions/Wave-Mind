@@ -66,8 +66,6 @@ const SEOHead = ({
 
       {/* Additional SEO tags */}
       <meta name="author" content={SITE_NAME} />
-      <meta name="geo.region" content="IN-WB" />
-      <meta name="geo.placename" content="Kolkata" />
       <meta name="theme-color" content="#2563eb" />
 
       {/* JSON-LD Structured Data */}
