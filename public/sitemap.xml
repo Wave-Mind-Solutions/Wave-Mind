@@ -2,68 +2,72 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://wavemindsolutions.in/</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-10-14</lastmod>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://wavemindsolutions.in/about</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-10-14</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://wavemindsolutions.in/services</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-10-14</lastmod>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://wavemindsolutions.in/web-development</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-10-14</lastmod>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://wavemindsolutions.in/seo-services</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-10-14</lastmod>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://wavemindsolutions.in/crm-development</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-10-14</lastmod>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://wavemindsolutions.in/erp-solutions</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-10-14</lastmod>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://wavemindsolutions.in/automation</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-10-14</lastmod>
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://wavemindsolutions.in/agent-ai</loc>
+    <lastmod>2026-10-14</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://wavemindsolutions.in/projects</loc>
+    <lastmod>2026-10-14</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://wavemindsolutions.in/team</loc>
+    <lastmod>2026-10-14</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://wavemindsolutions.in/leadership</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-10-14</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://wavemindsolutions.in/contact</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-10-14</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://wavemindsolutions.in/privacy-policy</loc>
-    <lastmod>2026-10-09</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <lastmod>2026-10-14</lastmod>
+    <priority>0.3</priority>
   </url>
 </urlset>
