@@ -8,7 +8,7 @@ const automationSchema = {
   "@context": "https://schema.org",
   "@type": "Service",
   "name": "Business Automation Services for MSMEs in India",
-  "provider": { "@type": "LocalBusiness", "name": "WaveMind Solutions", "address": { "@type": "PostalAddress", "addressLocality": "Kolkata", "addressRegion": "West Bengal", "addressCountry": "IN" } },
+  "provider": { "@type": "LocalBusiness", "name": "WaveMind Solutions", "areaServed": { "@type": "Country", "name": "India" } },
   "description": "WhatsApp automation, email marketing automation, and business process automation for Indian startups and MSMEs.",
   "areaServed": { "@type": "Country", "name": "India" }
 };
@@ -32,7 +32,7 @@ const Automation = () => (
     <SEOHead
       title="Business Automation Services India | WhatsApp Automation for MSMEs"
       description="WaveMind Solutions automates your business operations with WhatsApp automation, email campaigns, and workflow automation. Save time, follow up faster, and close more deals."
-      keywords="business automation India, WhatsApp automation India, email marketing automation India, lead automation MSME, workflow automation India, sales automation Kolkata"
+      keywords="business automation India, WhatsApp automation India, email marketing automation India, lead automation MSME, workflow automation India"
       canonicalPath="/automation"
       structuredData={[automationSchema, createBreadcrumbSchema([
         { name: 'Home', path: '/' },
