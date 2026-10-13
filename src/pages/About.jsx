@@ -20,16 +20,13 @@ const values = [
 ];
 
 const stats = [
-  { value: 150, label: "Projects Delivered", icon: Code, suffix: "+" },
-  { value: 50, label: "Team Members", icon: Users, suffix: "+" },
-  { value: 98, label: "Client Satisfaction", icon: Star, suffix: "%" },
-  { value: 12, label: "Global Awards", icon: Award, suffix: "" }
+  { value: 2023, label: "Founded", icon: Award, suffix: "" },
+  { value: 1, label: "Live Product (WaveBill)", icon: Code, suffix: "" }
 ];
 
 const journeyMilestones = [
   { year: "2023", title: "Foundation", description: "WaveMind was born with a vision to transform digital experiences.", icon: Sparkles },
-  { year: "2024", title: "Global Expansion", description: "Expanded operations to serve clients worldwide.", icon: Globe },
-  { year: "2025", title: "Innovation Hub", description: "Launched AI innovation lab and research center.", icon: Zap },
+  { year: "2026", title: "WaveBill Launch", description: "Launched WaveBill, our free GST invoice generator for Indian businesses.", icon: Rocket },
 ];
 
 const missionVision = [
@@ -37,14 +34,14 @@ const missionVision = [
     icon: Target,
     title: "Our Mission",
     gradient: "from-blue-500 to-indigo-500",
-    description: "To innovate continuously and deliver excellence in every project we undertake. We strive to be the trusted technology partner that drives digital transformation for businesses worldwide.",
+    description: "To innovate continuously and deliver excellence in every project we undertake. We strive to be the trusted technology partner that helps businesses across India go digital.",
     color: "blue"
   },
   {
     icon: Eye,
     title: "Our Vision",
     gradient: "from-purple-500 to-pink-500",
-    description: "To be globally recognized as a premier IT solutions provider, fostering a culture where creativity meets technology to shape a better, connected future.",
+    description: "To grow into a trusted IT solutions provider for Indian businesses, fostering a culture where creativity meets technology to shape a better, connected future.",
     color: "purple"
   }
 ];
@@ -173,7 +170,7 @@ const About = () => {
               </div>
               <div className="flex items-center gap-2 px-4 py-2 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-full border border-gray-200 dark:border-gray-700">
                 <Globe className="w-4 h-4 text-purple-500" />
-                <span className="text-sm text-gray-600 dark:text-gray-300">Global Presence</span>
+                <span className="text-sm text-gray-600 dark:text-gray-300">Serving All India</span>
               </div>
               <div className="flex items-center gap-2 px-4 py-2 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-full border border-gray-200 dark:border-gray-700">
                 <Briefcase className="w-4 h-4 text-pink-500" />
