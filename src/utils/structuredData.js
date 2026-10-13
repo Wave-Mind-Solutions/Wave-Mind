@@ -72,19 +72,13 @@ export const homePageSchema = {
   "url": SITE_URL,
   "telephone": "",
   "email": "info@wavemindsolutions.in",
-  "description": "Kolkata's best web development company and premier software agency delivering SaaS platforms, mobile apps, AI integrations, and enterprise tools.",
+  "description": "Website and app development company serving businesses across India: websites, mobile apps, AI chatbots and billing software.",
   "priceRange": "₹₹₹",
   "address": {
     "@type": "PostalAddress",
     "addressLocality": "Kolkata",
     "addressRegion": "West Bengal",
     "addressCountry": "IN"
-  },
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "4.9",
-    "reviewCount": "150",
-    "bestRating": "5"
   },
   "hasOfferCatalog": {
     "@type": "OfferCatalog",
