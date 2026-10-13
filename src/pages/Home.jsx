@@ -7,6 +7,7 @@ import {
   Layers, Rocket, Heart, Coffee, GitBranch, Database, Zap as ZapIcon
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import ProductsSection from '../components/ProductsSection';
 import SEOHead from '../components/SEOHead';
 import { homePageSchema, faqSchema, websiteSchema } from '../utils/structuredData';
 
@@ -486,6 +487,9 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* Our Products */}
+      <ProductsSection />
 
       {/* Featured Projects Showcase */}
       <section className="py-20 bg-gray-50/50 dark:bg-[#0a0c14]/50 border-y border-gray-200/50 dark:border-white/5 relative">
