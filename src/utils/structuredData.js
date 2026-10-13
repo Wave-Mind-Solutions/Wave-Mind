@@ -13,7 +13,7 @@ export const organizationSchema = {
   "alternateName": "WaveMind",
   "url": SITE_URL,
   "logo": `${SITE_URL}/logo.png`,
-  "description": "WaveMind Solutions is a web development company in Kolkata, India, delivering scalable SaaS platforms, mobile apps, AI-powered solutions, and cloud-based software for startups and growing businesses.",
+  "description": "WaveMind Solutions is a web development company in India, delivering scalable SaaS platforms, mobile apps, AI-powered solutions, and cloud-based software for startups and growing businesses.",
   "foundingDate": "2023",
   "founders": [
     {
@@ -27,12 +27,7 @@ export const organizationSchema = {
       "jobTitle": "Co-Founder"
     }
   ],
-  "address": {
-    "@type": "PostalAddress",
-    "addressLocality": "Kolkata",
-    "addressRegion": "West Bengal",
-    "addressCountry": "IN"
-  },
+  "areaServed": { "@type": "Country", "name": "India" },
   "contactPoint": {
     "@type": "ContactPoint",
     "email": "info@wavemindsolutions.in",
@@ -74,12 +69,7 @@ export const homePageSchema = {
   "email": "info@wavemindsolutions.in",
   "description": "Website and app development company serving businesses across India: websites, mobile apps, AI chatbots and billing software.",
   "priceRange": "₹₹₹",
-  "address": {
-    "@type": "PostalAddress",
-    "addressLocality": "Kolkata",
-    "addressRegion": "West Bengal",
-    "addressCountry": "IN"
-  },
+  "areaServed": { "@type": "Country", "name": "India" },
   "hasOfferCatalog": {
     "@type": "OfferCatalog",
     "name": "Software Development Services",
