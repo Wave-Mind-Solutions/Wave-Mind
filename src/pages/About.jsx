@@ -87,8 +87,8 @@ const About = () => {
       className="relative min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 overflow-x-hidden transition-colors duration-700"
     >
       <SEOHead
-        title="About WaveMind Solutions | Websites, Apps and AI Services from Tripura"
-        description="WaveMind Solutions is a technology startup from Tripura, founded in 2023. We build websites, apps and WhatsApp AI chatbots for businesses across India. Makers of WaveBill."
+        title="About WaveMind Solutions | Websites, Apps and AI Services from Kolkata"
+        description="WaveMind Solutions is a technology startup from Kolkata, founded in 2023. We build websites, apps and WhatsApp AI chatbots for businesses across India. Makers of WaveBill."
         keywords="about WaveMind Solutions, software company India, our team, company values, tech startup India, software development agency"
         canonicalPath="/about"
         structuredData={[aboutPageSchema, createBreadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'About', path: '/about' }])]}
@@ -155,7 +155,7 @@ const About = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed"
             >
-              A technology startup from Tripura, founded in 2023. We build websites, apps and AI tools for businesses across India, and we make our own product, WaveBill. Founded by Pinak Majumder (Founder &amp; CEO) with co-founder Ankita Banik.
+              A technology startup from Kolkata, founded in 2023. We build websites, apps and AI tools for businesses across India, and we make our own product, WaveBill. Founded by Pinak Majumder (Founder &amp; CEO) with co-founder Ankita Banik.
             </motion.p>
 
             <motion.div
