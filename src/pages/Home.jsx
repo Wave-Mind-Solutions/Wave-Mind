@@ -80,76 +80,6 @@ const CountUpItem = ({ end, suffix = "", prefix = "", duration = 2, decimals = 0
   );
 };
 
-const testimonials = [
-  {
-    text: "WaveMind Solutions transformed our idea into a scalable SaaS platform with exceptional speed and precision. Their team truly understands modern product development.",
-    image: "https://randomuser.me/api/portraits/men/32.jpg",
-    name: "Arjun Mehta",
-    role: "Founder, NexaTech",
-    rating: 5,
-  },
-  {
-    text: "From UI/UX to backend architecture, WaveMind delivered a complete solution that exceeded our expectations. Highly professional and reliable team.",
-    image: "https://randomuser.me/api/portraits/women/44.jpg",
-    name: "Priya Sharma",
-    role: "Product Manager, InnovateX",
-    rating: 5,
-  },
-  {
-    text: "Their AI-driven approach helped us unlock insights we never thought possible. WaveMind is not just a service provider, they are a true tech partner.",
-    image: "https://randomuser.me/api/portraits/men/51.jpg",
-    name: "Rahul Verma",
-    role: "CTO, DataBridge",
-    rating: 5,
-  },
-  {
-    text: "The team at WaveMind built our cloud infrastructure from scratch and ensured seamless scalability. We've seen a major improvement in performance.",
-    image: "https://randomuser.me/api/portraits/women/65.jpg",
-    name: "Ananya Iyer",
-    role: "Head of Engineering, CloudSphere",
-    rating: 5,
-  },
-  {
-    text: "Working with WaveMind felt like having an in-house development team. Their communication and execution were top-notch.",
-    image: "https://randomuser.me/api/portraits/men/73.jpg",
-    name: "Karan Malhotra",
-    role: "CEO, ScaleUp Labs",
-    rating: 5,
-  },
-  {
-    text: "They delivered a high-quality mobile application with flawless user experience. Our customer engagement increased significantly.",
-    image: "https://randomuser.me/api/portraits/women/22.jpg",
-    name: "Neha Kapoor",
-    role: "Co-Founder, AppVibe",
-    rating: 5,
-  },
-  {
-    text: "WaveMind's expertise in full-stack development helped us launch faster than expected. Their attention to detail is impressive.",
-    image: "https://randomuser.me/api/portraits/men/85.jpg",
-    name: "Amit Kulkarni",
-    role: "Tech Lead, DevCore",
-    rating: 5,
-  },
-  {
-    text: "Their design team created a modern, intuitive interface that perfectly represents our brand. The results were beyond our expectations.",
-    image: "https://randomuser.me/api/portraits/women/30.jpg",
-    name: "Sneha Reddy",
-    role: "Brand Manager, Elevate Digital",
-    rating: 5,
-  },
-  {
-    text: "WaveMind helped us digitize our operations with a custom software solution. The impact on efficiency has been tremendous.",
-    image: "https://randomuser.me/api/portraits/men/60.jpg",
-    name: "Imran Khan",
-    role: "Operations Head, SmartWorks",
-    rating: 5,
-  },
-];
-
-const firstColumn = testimonials.slice(0, 3);
-const secondColumn = testimonials.slice(3, 6);
-const thirdColumn = testimonials.slice(6, 9);
-
 // Memoised so it never re-renders when parent state (openFaq) changes
 const SpotlightCard = memo(({ children, className = '' }) => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -178,38 +108,6 @@ const SpotlightCard = memo(({ children, className = '' }) => {
     </div>
   );
 });
-
-// Memoised — only re-renders if testimonials array reference changes (it never does)
-const TestimonialsColumn = memo(({ testimonials, duration = 30, className = '' }) => (
-  <div className={`flex flex-col gap-6 ${className}`}>
-    <motion.div
-      animate={{ y: ['0%', '-50%'] }}
-      transition={{ duration, repeat: Infinity, ease: 'linear' }}
-      className="flex flex-col gap-6 will-change-transform transform-gpu"
-    >
-      {[...testimonials, ...testimonials].map((testimonial, idx) => (
-        <div
-          key={idx}
-          className="bg-white/80 dark:bg-gray-800/40 backdrop-blur-md p-6 rounded-2xl shadow-lg border border-gray-100/50 dark:border-white/5 hover:border-blue-500/30 transition-all duration-500"
-        >
-          <div className="flex gap-1 mb-4">
-            {[...Array(5)].map((_, i) => (
-              <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-            ))}
-          </div>
-          <p className="text-gray-700 dark:text-gray-300 mb-4 leading-relaxed">"{testimonial.text}"</p>
-          <div className="flex items-center gap-3">
-            <img src={testimonial.image} alt={testimonial.name} width={40} height={40} className="w-10 h-10 rounded-full object-cover" loading="lazy" decoding="async" />
-            <div>
-              <p className="font-semibold text-gray-900 dark:text-white">{testimonial.name}</p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">{testimonial.role}</p>
-            </div>
-          </div>
-        </div>
-      ))}
-    </motion.div>
-  </div>
-));
 
 const Home = () => {
   const [openFaq, setOpenFaq] = useState(null);
