@@ -73,6 +73,27 @@ export default function ProductsSection() {
               ))}
             </ul>
           </div>
+        <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+          <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Simple plans for every business</h4>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="rounded-2xl border bg-white/60 dark:bg-gray-800/40 p-4 border-emerald-500/30">
+              <div className="text-sm font-bold uppercase tracking-wide text-emerald-600 dark:text-emerald-400">Free</div>
+              <div className="text-3xl font-extrabold text-gray-900 dark:text-white">₹0</div>
+              <p className="mt-2 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">50 invoices, any mix of proforma & tax. 15 days limit.</p>
+            </div>
+            <div className="rounded-2xl border bg-white/60 dark:bg-gray-800/40 p-4 border-blue-500/30">
+              <div className="text-sm font-bold uppercase tracking-wide text-blue-600 dark:text-sky-400">Starter</div>
+              <div className="text-3xl font-extrabold text-gray-900 dark:text-white">₹499<span className="text-sm font-medium text-gray-500 dark:text-gray-400">/year</span></div>
+              <p className="mt-2 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">750 proforma + 750 tax invoices per year, ledger, purchase orders, CA exports.</p>
+            </div>
+            <div className="rounded-2xl border bg-white/60 dark:bg-gray-800/40 p-4 border-orange-500/30">
+              <div className="text-sm font-bold uppercase tracking-wide text-orange-600 dark:text-orange-400">Pro</div>
+              <div className="text-3xl font-extrabold text-gray-900 dark:text-white">₹999<span className="text-sm font-medium text-gray-500 dark:text-gray-400">/year</span></div>
+              <p className="mt-2 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">Unlimited invoices, email invoices from the app, all AI features, priority support.</p>
+            </div>
+          </div>
+          <p className="mt-3 text-xs text-gray-500 dark:text-gray-400">Plans run 1 year from activation. Single user per account.</p>
+        </div>
         </motion.div>
       </div>
     </section>
