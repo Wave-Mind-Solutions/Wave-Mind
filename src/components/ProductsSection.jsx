@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ArrowUpRight, Check, Sparkles } from 'lucide-react';
+import { ArrowUpRight, Check, Download, Sparkles } from 'lucide-react';
 
 const WAVEBILL_URL = 'https://wavebill.wavemindsolutions.in/';
 
@@ -57,15 +57,26 @@ export default function ProductsSection() {
                 A GST invoice generator for Indian businesses. Create proforma and tax invoices,
                 download PDFs, track payments and send reminders from one place.
               </p>
-              <a
-                href={WAVEBILL_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white px-7 py-3 text-sm font-bold shadow-lg shadow-blue-500/20 hover:scale-105 transition-all"
-              >
-                Open WaveBill
-                <ArrowUpRight className="h-4 w-4" />
-              </a>
+              <div className="flex flex-wrap items-center gap-3">
+                <a
+                  href={WAVEBILL_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white px-7 py-3 text-sm font-bold shadow-lg shadow-blue-500/20 hover:scale-105 transition-all"
+                >
+                  Open WaveBill
+                  <ArrowUpRight className="h-4 w-4" />
+                </a>
+                <a
+                  href="/WaveBill-Brochure.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full border-2 border-blue-600 text-blue-700 dark:text-sky-300 dark:border-sky-400 px-6 py-2.5 text-sm font-bold hover:bg-blue-50 dark:hover:bg-gray-800 transition-all"
+                >
+                  <Download className="h-4 w-4" />
+                  Download the WaveBill brochure (PDF)
+                </a>
+              </div>
             </div>
             <ul className="flex-1 space-y-3">
               {wavebillFeatures.map((f) => (
