@@ -155,7 +155,7 @@ const About = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed"
             >
-              A technology startup from Tripura, founded in 2023. We build websites, apps and AI tools for businesses across India, and we make our own product, WaveBill. Our co-founders are Pinak Majumder and Ankita.
+              A technology startup from Tripura, founded in 2023. We build websites, apps and AI tools for businesses across India, and we make our own product, WaveBill. Founded by Pinak Majumder (Founder &amp; CEO) with co-founder Ankita Banik.
             </motion.p>
 
             <motion.div
