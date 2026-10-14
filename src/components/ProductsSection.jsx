@@ -73,26 +73,51 @@ export default function ProductsSection() {
               ))}
             </ul>
           </div>
-        <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
-          <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Simple plans for every business</h4>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="rounded-2xl border bg-white/60 dark:bg-gray-800/40 p-4 border-emerald-500/30">
+        <div className="mt-10 pt-8 border-t border-gray-200 dark:border-gray-700">
+          <h4 className="text-2xl md:text-3xl font-extrabold text-gray-900 dark:text-white text-center">Simple plans for every business</h4>
+          <p className="mt-2 mb-8 text-center text-gray-600 dark:text-gray-300">Start free. Upgrade when you grow.</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <div className="rounded-2xl border border-emerald-500/30 bg-white/60 dark:bg-gray-800/40 p-6 flex flex-col">
               <div className="text-sm font-bold uppercase tracking-wide text-emerald-600 dark:text-emerald-400">Free</div>
-              <div className="text-3xl font-extrabold text-gray-900 dark:text-white">₹0</div>
-              <p className="mt-2 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">50 invoices, any mix of proforma & tax. 15 days limit.</p>
+              <div className="mt-1 text-4xl font-extrabold text-gray-900 dark:text-white">₹0</div>
+              <p className="mt-1 mb-4 text-sm text-gray-500 dark:text-gray-400">Try it with real invoices</p>
+              <ul className="space-y-2.5 text-sm text-gray-700 dark:text-gray-300 font-medium">
+                <li className="flex items-start gap-2.5"><Check className="h-4 w-4 text-emerald-500 mt-0.5 shrink-0 stroke-[3]" /><span>50 invoices - any mix of proforma & tax</span></li>
+                <li className="flex items-start gap-2.5"><Check className="h-4 w-4 text-emerald-500 mt-0.5 shrink-0 stroke-[3]" /><span>15 days limit</span></li>
+                <li className="flex items-start gap-2.5"><Check className="h-4 w-4 text-emerald-500 mt-0.5 shrink-0 stroke-[3]" /><span>Customers & items</span></li>
+                <li className="flex items-start gap-2.5"><Check className="h-4 w-4 text-emerald-500 mt-0.5 shrink-0 stroke-[3]" /><span>PDF download with your logo</span></li>
+              </ul>
             </div>
-            <div className="rounded-2xl border bg-white/60 dark:bg-gray-800/40 p-4 border-blue-500/30">
+            <div className="rounded-2xl border border-blue-500/30 bg-white/60 dark:bg-gray-800/40 p-6 flex flex-col">
               <div className="text-sm font-bold uppercase tracking-wide text-blue-600 dark:text-sky-400">Starter</div>
-              <div className="text-3xl font-extrabold text-gray-900 dark:text-white">₹499<span className="text-sm font-medium text-gray-500 dark:text-gray-400">/year</span></div>
-              <p className="mt-2 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">750 proforma + 750 tax invoices per year, ledger, purchase orders, CA exports.</p>
+              <div className="mt-1 text-4xl font-extrabold text-gray-900 dark:text-white">₹499<span className="text-base font-medium text-gray-500 dark:text-gray-400">/year</span></div>
+              <p className="mt-1 mb-4 text-sm text-gray-500 dark:text-gray-400">For growing businesses</p>
+              <ul className="space-y-2.5 text-sm text-gray-700 dark:text-gray-300 font-medium">
+                <li className="flex items-start gap-2.5"><Check className="h-4 w-4 text-blue-500 mt-0.5 shrink-0 stroke-[3]" /><span>750 proforma + 750 tax invoices per year</span></li>
+                <li className="flex items-start gap-2.5"><Check className="h-4 w-4 text-blue-500 mt-0.5 shrink-0 stroke-[3]" /><span>Payment tracking & customer ledger</span></li>
+                <li className="flex items-start gap-2.5"><Check className="h-4 w-4 text-blue-500 mt-0.5 shrink-0 stroke-[3]" /><span>Purchase orders</span></li>
+                <li className="flex items-start gap-2.5"><Check className="h-4 w-4 text-blue-500 mt-0.5 shrink-0 stroke-[3]" /><span>Credit & debit notes</span></li>
+                <li className="flex items-start gap-2.5"><Check className="h-4 w-4 text-blue-500 mt-0.5 shrink-0 stroke-[3]" /><span>Stock management</span></li>
+                <li className="flex items-start gap-2.5"><Check className="h-4 w-4 text-blue-500 mt-0.5 shrink-0 stroke-[3]" /><span>Accountant exports (CSV, ZIP, backup)</span></li>
+                <li className="flex items-start gap-2.5"><Check className="h-4 w-4 text-blue-500 mt-0.5 shrink-0 stroke-[3]" /><span>Signature on PDF invoices</span></li>
+                <li className="flex items-start gap-2.5"><Check className="h-4 w-4 text-blue-500 mt-0.5 shrink-0 stroke-[3]" /><span>AI payment reminders (daily limit)</span></li>
+              </ul>
             </div>
-            <div className="rounded-2xl border bg-white/60 dark:bg-gray-800/40 p-4 border-orange-500/30">
+            <div className="rounded-2xl border border-orange-500/30 bg-white/60 dark:bg-gray-800/40 p-6 flex flex-col">
               <div className="text-sm font-bold uppercase tracking-wide text-orange-600 dark:text-orange-400">Pro</div>
-              <div className="text-3xl font-extrabold text-gray-900 dark:text-white">₹999<span className="text-sm font-medium text-gray-500 dark:text-gray-400">/year</span></div>
-              <p className="mt-2 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">Unlimited invoices, email invoices from the app, all AI features, priority support.</p>
+              <div className="mt-1 text-4xl font-extrabold text-gray-900 dark:text-white">₹999<span className="text-base font-medium text-gray-500 dark:text-gray-400">/year</span></div>
+              <p className="mt-1 mb-4 text-sm text-gray-500 dark:text-gray-400">Everything, with AI</p>
+              <ul className="space-y-2.5 text-sm text-gray-700 dark:text-gray-300 font-medium">
+                <li className="flex items-start gap-2.5"><Check className="h-4 w-4 text-orange-500 mt-0.5 shrink-0 stroke-[3]" /><span>Unlimited invoices</span></li>
+                <li className="flex items-start gap-2.5"><Check className="h-4 w-4 text-orange-500 mt-0.5 shrink-0 stroke-[3]" /><span>Everything in Starter</span></li>
+                <li className="flex items-start gap-2.5"><Check className="h-4 w-4 text-orange-500 mt-0.5 shrink-0 stroke-[3]" /><span>Email invoices to customers from the app</span></li>
+                <li className="flex items-start gap-2.5"><Check className="h-4 w-4 text-orange-500 mt-0.5 shrink-0 stroke-[3]" /><span>All AI features (reminders + AI help)</span></li>
+                <li className="flex items-start gap-2.5"><Check className="h-4 w-4 text-orange-500 mt-0.5 shrink-0 stroke-[3]" /><span>Priority support</span></li>
+              </ul>
             </div>
           </div>
-          <p className="mt-3 text-xs text-gray-500 dark:text-gray-400">Plans run 1 year from activation. Single user per account.</p>
+          <p className="mt-5 text-center text-sm text-gray-500 dark:text-gray-400">Plans run 1 year from activation. Single user per account.</p>
+          <p className="mt-2 text-center text-sm font-semibold text-blue-600 dark:text-sky-400">Chhote Business ka Bada Hisab</p>
         </div>
         </motion.div>
       </div>
