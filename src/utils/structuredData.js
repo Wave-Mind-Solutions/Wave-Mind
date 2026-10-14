@@ -47,7 +47,7 @@ export const websiteSchema = {
   "@type": "WebSite",
   "name": "WaveMind Solutions",
   "url": SITE_URL,
-  "description": "Premium software development, mobile apps, AI solutions, and cloud infrastructure services from India.",
+  "description": "Technology startup from Tripura building websites, apps and AI tools for businesses across India.",
   "publisher": {
     "@type": "Organization",
     "name": "WaveMind Solutions",
@@ -186,7 +186,7 @@ export const aboutPageSchema = {
   "@context": "https://schema.org",
   "@type": "AboutPage",
   "name": "About WaveMind Solutions",
-  "description": "Learn about WaveMind Solutions — our mission, values, and the team driving innovation in software development since 2023.",
+  "description": "Learn about WaveMind Solutions — our mission, values, and the team behind our websites, apps and AI services, founded in 2023.",
   "url": `${SITE_URL}/about`,
   "mainEntity": {
     "@type": "Organization",
@@ -333,4 +333,3 @@ export const privacyPolicyPageSchema = {
     }
   }
 };
-
