@@ -90,7 +90,7 @@ export default function ProductsSection() {
             </div>
             <div className="rounded-2xl border border-blue-500/30 bg-white/60 dark:bg-gray-800/40 p-6 flex flex-col">
               <div className="text-sm font-bold uppercase tracking-wide text-blue-600 dark:text-sky-400">Starter</div>
-              <div className="mt-1 text-4xl font-extrabold text-gray-900 dark:text-white">₹499<span className="text-base font-medium text-gray-500 dark:text-gray-400">/year + GST</span></div>
+              <div className="mt-1 text-4xl font-extrabold text-gray-900 dark:text-white">₹499<span className="text-base font-medium text-gray-500 dark:text-gray-400">/year + 18% GST</span></div>
               <p className="mt-1 mb-4 text-sm text-gray-500 dark:text-gray-400">For growing businesses</p>
               <ul className="space-y-2.5 text-sm text-gray-700 dark:text-gray-300 font-medium">
                 <li className="flex items-start gap-2.5"><Check className="h-4 w-4 text-blue-500 mt-0.5 shrink-0 stroke-[3]" /><span>750 proforma + 750 tax invoices per year</span></li>
@@ -105,7 +105,7 @@ export default function ProductsSection() {
             </div>
             <div className="rounded-2xl border border-orange-500/30 bg-white/60 dark:bg-gray-800/40 p-6 flex flex-col">
               <div className="text-sm font-bold uppercase tracking-wide text-orange-600 dark:text-orange-400">Pro</div>
-              <div className="mt-1 text-4xl font-extrabold text-gray-900 dark:text-white">₹999<span className="text-base font-medium text-gray-500 dark:text-gray-400">/year + GST</span></div>
+              <div className="mt-1 text-4xl font-extrabold text-gray-900 dark:text-white">₹999<span className="text-base font-medium text-gray-500 dark:text-gray-400">/year + 18% GST</span></div>
               <p className="mt-1 mb-4 text-sm text-gray-500 dark:text-gray-400">Everything, with AI</p>
               <ul className="space-y-2.5 text-sm text-gray-700 dark:text-gray-300 font-medium">
                 <li className="flex items-start gap-2.5"><Check className="h-4 w-4 text-orange-500 mt-0.5 shrink-0 stroke-[3]" /><span>Unlimited invoices</span></li>
