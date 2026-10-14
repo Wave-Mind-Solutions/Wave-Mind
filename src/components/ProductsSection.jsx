@@ -4,10 +4,13 @@ import { ArrowUpRight, Check, Sparkles } from 'lucide-react';
 const WAVEBILL_URL = 'https://wavebill.wavemindsolutions.in/';
 
 const wavebillFeatures = [
-  'GST proforma and tax invoices with PDF download',
+  'Proforma invoice with UPI QR, tax invoice, purchase order and Bill (no GST)',
+  'Clean one-page classic PDF for every document',
+  '21 how-to videos in English, Hindi and Bangla, inside the app',
+  'Free plan to start: 50 invoices or 15 days, then upgrade',
+  'Welcome email when you sign up',
   'Invoice register and payment reminders',
   'AI invoice assistant with SAC code helper and voice entry',
-  'UPI QR on proforma, share by email or WhatsApp',
 ];
 
 export default function ProductsSection() {
