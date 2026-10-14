@@ -47,6 +47,9 @@ export default function ProductsSection() {
                   </span>
                 </div>
               </div>
+              <p className="text-xl md:text-2xl font-extrabold text-blue-600 dark:text-sky-400 mb-3">
+                Chhote Business ka Bada Hisab
+              </p>
               <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
                 A GST invoice generator for Indian businesses. Create proforma and tax invoices,
                 download PDFs, track payments and send reminders from one place.
