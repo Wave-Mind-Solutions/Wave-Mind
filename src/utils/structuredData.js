@@ -47,7 +47,7 @@ export const websiteSchema = {
   "@type": "WebSite",
   "name": "WaveMind Solutions",
   "url": SITE_URL,
-  "description": "Technology startup from Tripura building websites, apps and AI tools for businesses across India.",
+  "description": "Technology startup from Kolkata building websites, apps and AI tools for businesses across India.",
   "publisher": {
     "@type": "Organization",
     "name": "WaveMind Solutions",
