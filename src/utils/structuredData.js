@@ -164,7 +164,7 @@ export const servicesPageSchema = {
       "item": {
         "@type": "Service",
         "name": "UI/UX Design",
-        "description": "Premium user interface and experience design for web and mobile platforms.",
+        "description": "User interface and experience design for web and mobile platforms.",
         "provider": { "@type": "Organization", "name": "WaveMind Solutions" }
       }
     },
