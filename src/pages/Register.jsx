@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   User, Mail, Phone, Lock, UserPlus, ShieldCheck, Code, Sparkles, ArrowRight,
-  Rocket, Palette, Cpu, Smartphone, Globe, CheckCircle, Star,
+  Rocket, Palette, Cpu, Smartphone, Globe, CheckCircle,
   Zap, Heart, Coffee, Award, Box, Layers, Moon, Sun
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
@@ -139,7 +139,7 @@ const Register = () => {
                 Join the <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">Future</span> of Product Building
               </h2>
               <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
-                WaveMind bridges the gap between vision and reality. Start building with the world's most advanced agency platform.
+                WaveMind bridges the gap between vision and reality. Start building with WaveMind's client platform.
               </p>
             </div>
 
@@ -159,28 +159,6 @@ const Register = () => {
                 </motion.div>
               ))}
             </div>
-
-            {/* Testimonial Snippet */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6 }}
-              className="p-6 rounded-3xl bg-gradient-to-br from-blue-600/10 to-purple-600/10 border border-blue-500/20 backdrop-blur-sm"
-            >
-              <div className="flex gap-1 mb-3">
-                {[1, 2, 3, 4, 5].map(s => <Star key={s} size={14} className="fill-blue-500 text-blue-500" />)}
-              </div>
-              <p className="text-gray-600 dark:text-gray-300 italic mb-4">
-                "WaveMind isn't just a tool, it's the partner we needed to scale our infrastructure globally."
-              </p>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500" />
-                <div>
-                  <p className="text-sm font-bold dark:text-white">Alex Rivera</p>
-                  <p className="text-xs text-gray-500">CEO, CloudPulse</p>
-                </div>
-              </div>
-            </motion.div>
           </motion.div>
 
           {/* Right Side - Registration Form */}
