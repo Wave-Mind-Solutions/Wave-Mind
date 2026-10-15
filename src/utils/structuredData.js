@@ -18,13 +18,8 @@ export const organizationSchema = {
   "founders": [
     {
       "@type": "Person",
-      "name": "Pinak Majumder",
-      "jobTitle": "Founder & CEO"
-    },
-    {
-      "@type": "Person",
       "name": "Ankita Banik",
-      "jobTitle": "Co-founder"
+      "jobTitle": "Founding Team Member"
     }
   ],
   "areaServed": { "@type": "Country", "name": "India" },
@@ -232,14 +227,8 @@ export const leadershipPageSchema = {
     "member": [
       {
         "@type": "Person",
-        "name": "Pinak Majumder",
-        "jobTitle": "Founder & CEO",
-        "worksFor": { "@type": "Organization", "name": "WaveMind Solutions" }
-      },
-      {
-        "@type": "Person",
         "name": "Ankita Banik",
-        "jobTitle": "Co-founder",
+        "jobTitle": "Founding Team Member",
         "worksFor": { "@type": "Organization", "name": "WaveMind Solutions" }
       }
     ]
