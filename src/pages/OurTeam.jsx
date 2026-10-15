@@ -1,50 +1,30 @@
 import { useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Github, Users, Sparkles, Code, Cpu, Award } from 'lucide-react';
+import { Github, Users, Sparkles, Award } from 'lucide-react';
 import SEOHead from '../components/SEOHead';
 import { createBreadcrumbSchema } from '../utils/structuredData';
 import { useTheme } from '../context/ThemeContext';
 
 const teamMembers = [
   {
+    id: 'pinak',
+    name: 'Pinak Majumder',
+    role: 'Founder & CEO',
+    github: '',
+    icon: Award,
+    gradient: 'from-blue-500 to-indigo-500',
+    iconGradient: 'from-blue-600 to-indigo-600',
+    description: 'Founded WaveMind in 2023 and leads strategy, product development, finance and sales.',
+  },
+  {
     id: 'ankita',
     name: 'Ankita Banik',
-    role: 'Cofounder (Director of Ops & HR)',
+    role: 'Co-founder',
     github: '',
     icon: Users,
     gradient: 'from-amber-500 to-orange-500',
     iconGradient: 'from-amber-600 to-orange-600',
-    description: 'Directing operations and people management strategies to ensure a thriving, efficient, and collaborative environment.',
-  },
-  {
-    id: 'harshit',
-    name: 'Harshit Tripathi',
-    role: 'Web Developer (Team Leader)',
-    github: 'https://github.com/harshit-tripathi1001',
-    icon: Award,
-    gradient: 'from-blue-500 to-indigo-500',
-    iconGradient: 'from-blue-600 to-indigo-600',
-    description: 'Leading the technical vision and full-stack development, ensuring robust architectures and seamless user experiences.',
-  },
-  {
-    id: 'savit',
-    name: 'Savit Singh',
-    role: 'Web Developer (Team Member)',
-    github: 'https://github.com/savit3810',
-    icon: Code,
-    gradient: 'from-emerald-500 to-teal-500',
-    iconGradient: 'from-emerald-600 to-teal-600',
-    description: 'Crafting responsive interfaces and scalable backend solutions with a focus on modern web standards and performance.',
-  },
-  {
-    id: 'pratyush',
-    name: 'Pratyush Pandey',
-    role: 'AI/ML Engineer (Team Member)',
-    github: 'https://github.com/PratyushPandey31',
-    icon: Cpu,
-    gradient: 'from-purple-500 to-pink-500',
-    iconGradient: 'from-purple-600 to-pink-600',
-    description: 'Designing and implementing intelligent AI models, integrating deep learning algorithms into production-ready software.',
+    description: 'Leads operations, HR, compliance and people at WaveMind.',
   }
 ];
 
@@ -117,7 +97,7 @@ export default function OurTeam() {
     >
       <SEOHead
         title="Our Team — WaveMind Solutions"
-        description="Meet the core engineering team behind WaveMind Solutions."
+        description="Meet the founders of WaveMind Solutions, a technology startup from Kolkata."
         canonicalPath="/team"
         structuredData={[createBreadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Our Team', path: '/team' }])]}
       />
@@ -145,7 +125,7 @@ export default function OurTeam() {
             >
               <Sparkles className="w-4 h-4 text-blue-500" />
               <span className="text-sm font-medium bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
-                The Engineering Core
+                The Founders
               </span>
             </motion.div>
 
@@ -172,7 +152,7 @@ export default function OurTeam() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed"
             >
-              We are a group of passionate developers and AI engineers dedicated to building intelligent, scalable, and high-performance digital solutions.
+              WaveMind Solutions is a technology startup from Kolkata, founded in 2023 by Pinak Majumder and Ankita Banik.
             </motion.p>
           </div>
         </div>
@@ -181,17 +161,9 @@ export default function OurTeam() {
       {/* Team Grid */}
       <div className="py-16 relative z-10">
         <div className="container mx-auto px-6 max-w-7xl">
-          {/* Co-founder - Centered at top */}
-          <div className="flex justify-center mb-12">
-            <div className="w-full max-w-md">
-              <TeamMemberCard member={teamMembers[0]} idx={0} />
-            </div>
-          </div>
-
-          {/* Remaining Team Members Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {teamMembers.slice(1).map((member, idx) => (
-              <TeamMemberCard key={member.id} member={member} idx={idx + 1} />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {teamMembers.map((member, idx) => (
+              <TeamMemberCard key={member.id} member={member} idx={idx} />
             ))}
           </div>
         </div>
