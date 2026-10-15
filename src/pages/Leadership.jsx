@@ -7,32 +7,14 @@ const Leadership = () => {
     {
       name: "Pinak Majumder",
       initials: "PM",
-      role: "Chief Executive Officer",
-      bio: "Visionary leader driving WaveMind's mission to transform businesses through innovative technology solutions."
+      role: "Founder & CEO",
+      bio: "Founded WaveMind in 2023 and leads strategy, product development, finance and sales."
     },
     {
-      name: "Abhishek Dutta Roy",
-      initials: "AD",
-      role: "Co-Founder",
-      bio: "Strategic thinker and technology enthusiast, co-architecting WaveMind's growth and technical excellence."
-    },
-    {
-      name: "Tanny Banerjee",
-      initials: "TB",
-      role: "Director of Management",
-      bio: "Orchestrating operations and team dynamics to ensure seamless project delivery and organizational growth."
-    },
-    {
-      name: "Debalina Saha",
-      initials: "DS",
-      role: "Director of Operations",
-      bio: "Streamlining processes and optimizing workflows to deliver consistent, high-quality results for every client."
-    },
-    {
-      name: "Ankita",
-      initials: "A",
-      role: "Director of Client Success",
-      bio: "Championing client relationships and ensuring every engagement exceeds expectations and drives lasting value."
+      name: "Ankita Banik",
+      initials: "AB",
+      role: "Co-founder",
+      bio: "Leads operations, HR, compliance and people at WaveMind."
     }
   ];
 
@@ -44,9 +26,9 @@ const Leadership = () => {
       className="relative pt-32 pb-24 overflow-hidden"
     >
       <SEOHead
-        title="Leadership Team – Meet Our Experts"
-        description="Meet the leadership team at WaveMind Solutions. CEO Pinak Majumder and our directors drive innovation in software development, operations, and client success."
-        keywords="WaveMind leadership team, CEO Pinak Majumder, software company founders, IT company leadership India"
+        title="Leadership – Founders of WaveMind Solutions"
+        description="WaveMind Solutions is a technology startup from Kolkata, founded in 2023 by Pinak Majumder (Founder & CEO) and Ankita Banik (Co-founder)."
+        keywords="WaveMind founders, Pinak Majumder, Ankita Banik, WaveMind Solutions Kolkata"
         canonicalPath="/leadership"
         structuredData={[leadershipPageSchema, createBreadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Leadership', path: '/leadership' }])]}
       />
@@ -77,11 +59,11 @@ const Leadership = () => {
             transition={{ delay: 0.1 }}
             className="text-lg text-gray-500 font-medium italic"
           >
-            Meet the minds driving WaveMind Solutions with expertise and vision.
+            The founders of WaveMind Solutions.
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-4xl mx-auto">
           {team.map((member, idx) => (
             <motion.div
               key={idx}
