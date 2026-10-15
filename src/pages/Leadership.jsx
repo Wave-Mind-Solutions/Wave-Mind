@@ -5,15 +5,9 @@ import { leadershipPageSchema, createBreadcrumbSchema } from '../utils/structure
 const Leadership = () => {
   const team = [
     {
-      name: "Pinak Majumder",
-      initials: "PM",
-      role: "Founder & CEO",
-      bio: "Founded WaveMind in 2023 and leads strategy, product development, finance and sales."
-    },
-    {
       name: "Ankita Banik",
       initials: "AB",
-      role: "Co-founder",
+      role: "Founding Team Member",
       bio: "Leads operations, HR, compliance and people at WaveMind."
     }
   ];
@@ -26,9 +20,9 @@ const Leadership = () => {
       className="relative pt-32 pb-24 overflow-hidden"
     >
       <SEOHead
-        title="Leadership – Founders of WaveMind Solutions"
-        description="WaveMind Solutions is a technology startup from Kolkata, founded in 2023 by Pinak Majumder (Founder & CEO) and Ankita Banik (Co-founder)."
-        keywords="WaveMind founders, Pinak Majumder, Ankita Banik, WaveMind Solutions Kolkata"
+        title="Leadership – Founding Team of WaveMind Solutions"
+        description="The founding team of WaveMind Solutions, a technology startup from Kolkata founded in 2023."
+        keywords="WaveMind founding team, Ankita Banik, WaveMind Solutions Kolkata"
         canonicalPath="/leadership"
         structuredData={[leadershipPageSchema, createBreadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Leadership', path: '/leadership' }])]}
       />
@@ -49,7 +43,7 @@ const Leadership = () => {
           <motion.h1 
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            className="text-4xl md:text-5xl font-bold mb-6 text-gray-900 tracking-tight"
+            className="text-4xl md:text-5xl font-bold mb-6 text-gray-900 dark:text-white tracking-tight"
           >
             Our <span className="text-gradient">Leadership</span>
           </motion.h1>
@@ -57,13 +51,13 @@ const Leadership = () => {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.1 }}
-            className="text-lg text-gray-500 font-medium italic"
+            className="text-lg text-gray-500 dark:text-gray-300 font-medium italic"
           >
-            The founders of WaveMind Solutions.
+            The founding team of WaveMind Solutions.
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 gap-10 max-w-md mx-auto">
           {team.map((member, idx) => (
             <motion.div
               key={idx}
@@ -71,14 +65,14 @@ const Leadership = () => {
               whileInView={{ y: 0, opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.1 }}
-              className="bg-white rounded-[2rem] p-10 shadow-xl shadow-gray-100 hover:shadow-2xl hover:shadow-primary-500/5 transition-all duration-300 flex flex-col items-center text-center group border border-gray-50"
+              className="bg-white dark:bg-gray-800 rounded-[2rem] p-10 shadow-xl shadow-gray-100 dark:shadow-none hover:shadow-2xl hover:shadow-primary-500/5 transition-all duration-300 flex flex-col items-center text-center group border border-gray-50 dark:border-gray-700"
             >
               <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white text-3xl font-bold mb-8 shadow-lg shadow-blue-500/20 group-hover:scale-105 transition-transform duration-500 uppercase">
                 {member.initials}
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">{member.name}</h3>
-              <p className="text-primary-600 font-bold text-[13px] mb-6 uppercase tracking-wider">{member.role}</p>
-              <p className="text-gray-500 text-sm leading-relaxed max-w-sm">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">{member.name}</h3>
+              <p className="text-primary-600 dark:text-blue-400 font-bold text-[13px] mb-6 uppercase tracking-wider">{member.role}</p>
+              <p className="text-gray-500 dark:text-gray-300 text-sm leading-relaxed max-w-sm">
                 {member.bio}
               </p>
             </motion.div>
