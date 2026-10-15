@@ -19,12 +19,12 @@ export const organizationSchema = {
     {
       "@type": "Person",
       "name": "Pinak Majumder",
-      "jobTitle": "Chief Executive Officer"
+      "jobTitle": "Founder & CEO"
     },
     {
       "@type": "Person",
-      "name": "Abhishek Dutta Roy",
-      "jobTitle": "Co-Founder"
+      "name": "Ankita Banik",
+      "jobTitle": "Co-founder"
     }
   ],
   "areaServed": { "@type": "Country", "name": "India" },
@@ -233,31 +233,13 @@ export const leadershipPageSchema = {
       {
         "@type": "Person",
         "name": "Pinak Majumder",
-        "jobTitle": "Chief Executive Officer",
+        "jobTitle": "Founder & CEO",
         "worksFor": { "@type": "Organization", "name": "WaveMind Solutions" }
       },
       {
         "@type": "Person",
-        "name": "Abhishek Dutta Roy",
-        "jobTitle": "Co-Founder",
-        "worksFor": { "@type": "Organization", "name": "WaveMind Solutions" }
-      },
-      {
-        "@type": "Person",
-        "name": "Tanny Banerjee",
-        "jobTitle": "Director of Management",
-        "worksFor": { "@type": "Organization", "name": "WaveMind Solutions" }
-      },
-      {
-        "@type": "Person",
-        "name": "Debalina Saha",
-        "jobTitle": "Director of Operations",
-        "worksFor": { "@type": "Organization", "name": "WaveMind Solutions" }
-      },
-      {
-        "@type": "Person",
-        "name": "Ankita",
-        "jobTitle": "Director of Client Success",
+        "name": "Ankita Banik",
+        "jobTitle": "Co-founder",
         "worksFor": { "@type": "Organization", "name": "WaveMind Solutions" }
       }
     ]
