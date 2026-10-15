@@ -84,11 +84,11 @@ const DIRECT_API_PROVIDER = 'gemini';
 
 const SYSTEM_API_KEY = DIRECT_API_KEY.trim() ||
   (typeof process !== 'undefined' && process.env && process.env.REACT_APP_GEMINI_API_KEY) ||
-  (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_GEMINI_API_KEY) ||
+  import.meta.env.VITE_GEMINI_API_KEY ||
   '';
 
 const SYSTEM_API_PROVIDER = DIRECT_API_KEY.trim() ? DIRECT_API_PROVIDER :
-  ((typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_OPENAI_API_KEY) ? 'openai' : 'gemini');
+  (import.meta.env.VITE_OPENAI_API_KEY ? 'openai' : 'gemini');
 
 // ============================================================
 // CATEGORY-SPECIFIC FLOW CONFIGURATION
