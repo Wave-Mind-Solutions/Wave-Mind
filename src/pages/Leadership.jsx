@@ -62,8 +62,7 @@ const Leadership = () => {
             <motion.div
               key={idx}
               initial={{ y: 20, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              viewport={{ once: true }}
+              animate={{ y: 0, opacity: 1 }}
               transition={{ delay: idx * 0.1 }}
               className="bg-white dark:bg-gray-800 rounded-[2rem] p-10 shadow-xl shadow-gray-100 dark:shadow-none hover:shadow-2xl hover:shadow-primary-500/5 transition-all duration-300 flex flex-col items-center text-center group border border-gray-50 dark:border-gray-700"
             >
