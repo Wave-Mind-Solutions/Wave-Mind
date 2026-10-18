@@ -86,7 +86,7 @@ export default function ProductsSection() {
             </ul>
           </div>
         <div className="mt-10 pt-8 border-t border-gray-200 dark:border-gray-700">
-          <h4 className="text-2xl md:text-3xl font-extrabold text-gray-900 dark:text-white text-center">Simple plans for every business</h4>
+          <h3 className="text-2xl md:text-3xl font-extrabold text-gray-900 dark:text-white text-center">Simple plans for every business</h3>
           <p className="mt-2 mb-8 text-center text-gray-600 dark:text-gray-300">Start free. Upgrade when you grow.</p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             <div className="rounded-2xl border border-emerald-500/30 bg-white/60 dark:bg-gray-800/40 p-6 flex flex-col">

@@ -218,9 +218,9 @@ const Home = () => {
                   <div className="flex justify-center mb-3">
                     <stat.icon className="w-8 h-8 text-blue-500" />
                   </div>
-                  <h3 className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400 bg-clip-text text-transparent">
+                  <h2 className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400 bg-clip-text text-transparent">
                     <CountUpItem end={stat.end} suffix={stat.suffix} decimals={stat.decimals} />
-                  </h3>
+                  </h2>
                   <p className="text-gray-500 dark:text-gray-400 text-xs font-medium mt-2">{stat.label}</p>
                 </div>
               ))}

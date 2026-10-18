@@ -36,9 +36,9 @@ const Footer = () => {
             {/* Social Links */}
             <div className="flex gap-3">
               {[
-                { icon: Linkedin, link: "https://www.linkedin.com/company/wavemind-solutions/posts/?feedView=all" },
-                { icon: Instagram, link: "https://www.instagram.com/wavemindsolutions" },
-                { icon: Facebook, link: "https://www.facebook.com/wavemindsolutions?rdid=oXzeaoVzthKwCqFQ&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1BmFYbaUbs%2F#" }
+                { icon: Linkedin, name: 'WaveMind Solutions on LinkedIn', link: "https://www.linkedin.com/company/wavemind-solutions/posts/?feedView=all" },
+                { icon: Instagram, name: 'WaveMind Solutions on Instagram', link: "https://www.instagram.com/wavemindsolutions" },
+                { icon: Facebook, name: 'WaveMind Solutions on Facebook', link: "https://www.facebook.com/wavemindsolutions?rdid=oXzeaoVzthKwCqFQ&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1BmFYbaUbs%2F#" }
               ].map((item, i) => {
                 const Icon = item.icon;
                 return (
@@ -47,6 +47,7 @@ const Footer = () => {
                     href={item.link}
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label={item.name}
                     className="w-10 h-10 flex items-center justify-center bg-gray-50 dark:bg-white/5 rounded-xl text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 hover:bg-white dark:hover:bg-white/10 transition-all border dark:border-white/10 shadow-sm group"
                   >
                     <Icon size={18} className="group-hover:scale-110 transition-transform" />
@@ -58,9 +59,9 @@ const Footer = () => {
 
           {/* Platform Links */}
           <div className="md:col-span-2 space-y-6">
-            <h4 className="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-widest border-l-2 border-blue-500 pl-2">
+            <h3 className="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-widest border-l-2 border-blue-500 pl-2">
               Platform
-            </h4>
+            </h3>
             <ul className="space-y-2.5">
               {[
                 { name: 'Home', path: '/' },
@@ -98,9 +99,9 @@ const Footer = () => {
 
           {/* Services */}
           <div className="md:col-span-2 space-y-6">
-            <h4 className="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-widest border-l-2 border-purple-500 pl-2">
+            <h3 className="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-widest border-l-2 border-purple-500 pl-2">
               Capabilities
-            </h4>
+            </h3>
             <ul className="space-y-3">
               {['Web Development', 'Mobile Apps', 'Cloud & DevOps', 'AI Solutions'].map((item) => (
                 <li key={item}>
@@ -118,9 +119,9 @@ const Footer = () => {
 
           {/* Careers Section */}
           <div className="md:col-span-2 space-y-6">
-            <h4 className="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-widest border-l-2 border-indigo-500 pl-2">
+            <h3 className="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-widest border-l-2 border-indigo-500 pl-2">
               Careers
-            </h4>
+            </h3>
             <div className="space-y-4">
               <p className="text-[11px] text-gray-500 dark:text-gray-400 leading-relaxed font-bold uppercase tracking-widest">
                 Join our mission to craft the future.
@@ -139,9 +140,9 @@ const Footer = () => {
 
           {/* Trust Section */}
           <div className="md:col-span-3 space-y-6">
-            <h4 className="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-widest border-l-2 border-pink-500 pl-2">
+            <h3 className="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-widest border-l-2 border-pink-500 pl-2">
               Infrastructure
-            </h4>
+            </h3>
 
             <div className="grid grid-cols-2 gap-2">
               {[
