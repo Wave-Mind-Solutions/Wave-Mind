@@ -464,8 +464,7 @@ const Home = () => {
                 Ready to scale your vision?
               </h2>
               <p className="text-lg text-blue-100 mb-10 max-w-2xl mx-auto">
-                Join visionary companies that use WaveMind to build, collaborate,
-                and ship high-end digital products faster.
+                Start your digital journey with WaveMind
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
@@ -481,7 +480,7 @@ const Home = () => {
                   Talk to Sales
                 </Link>
               </div>
-              <p className="text-sm text-blue-200 mt-8">No credit card required. Cancel anytime.</p>
+              <p className="text-sm text-blue-200 mt-8">No credit card required.</p>
             </div>
           </motion.div>
         </div>

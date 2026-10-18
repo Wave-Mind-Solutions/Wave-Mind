@@ -10,7 +10,7 @@ const wavebillFeatures = [
   'Free plan to start: 50 invoices or 15 days, then upgrade',
   'Welcome email when you sign up',
   'Invoice register and payment reminders',
-  'AI invoice assistant with SAC code helper and voice entry',
+  'AI invoice assistant with SAC code helper',
 ];
 
 export default function ProductsSection() {
