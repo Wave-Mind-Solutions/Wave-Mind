@@ -5,7 +5,9 @@
  */
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { loginUser, registerUser, getProfile } from '../services/authService';
-import { connectSocket, disconnectSocket } from '../services/SocketService';
+// Socket.io is heavy (~50KB min); load it on demand so it stays out of the initial bundle.
+const connectSocket = (userId) => import('../services/SocketService').then(m => m.connectSocket(userId));
+const disconnectSocket = () => import('../services/SocketService').then(m => m.disconnectSocket());
 import toast from 'react-hot-toast';
 
 const AuthContext = createContext(null);
