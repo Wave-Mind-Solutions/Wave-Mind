@@ -13,7 +13,10 @@ import ProtectedRoute from './components/ProtectedRoute';
 
 
 // Loading Fallback Component
-const PageLoader = () => (
+const PageLoader = () => (<>
+  {/* Layout spacer: keeps the page ~100vh tall while the lazy page chunk loads, so the
+      footer never sits inside the viewport and gets pushed down when the page renders (CLS fix). */}
+  <div className="min-h-screen" aria-hidden="true" />
   <div className="fixed inset-0 flex items-center justify-center bg-[#050505] z-[9999]">
     <div className="relative">
       <motion.div
@@ -38,7 +41,7 @@ const PageLoader = () => (
       </motion.div>
     </div>
   </div>
-);
+</>);
 
 // Lazy Loaded Public Pages
 const Home = lazy(() => import('./pages/Home'));

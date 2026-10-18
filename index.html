@@ -55,14 +55,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
   <!--
-    Non-blocking font load: media="print" loads the CSS without blocking render.
-    onload switches it to media="all" so it applies once downloaded.
-    Trimmed to only weights that Inter actually uses in this project (400, 500, 600, 700).
-    Poppins removed — it was loaded but never used by Tailwind classes in the codebase.
-    Estimated saving: ~60KB blocking CSS removed from critical path.
+    Inter latin subset is one variable woff2 (~all weights in a single file): preload it so the
+    first paint already uses Inter. Loading the css2 file as a normal stylesheet (not the
+    preload/onload trick) keeps @font-face available before first paint, which removes the
+    late font-swap layout shift (CLS 0.93) across the page. css2 URL still trimmed to 400-700.
   -->
-  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style"
-    onload="this.onload=null;this.rel='stylesheet'" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
   <noscript>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
   </noscript>
@@ -180,7 +180,18 @@
       <p>Please enable JavaScript to use the full website.</p>
     </div>
   </noscript>
-  <div id="root"></div>
+  <div id="root">
+    <!-- Pre-hydration hero: static copy of the Home hero so first paint and LCP do not wait for JS. React replaces this on mount. Keep in sync with src/pages/Home.jsx hero. -->
+    <div style="background:#0a0a12;color:#f9fafb;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,-apple-system,sans-serif;padding:5rem 1.5rem 3rem;box-sizing:border-box">
+      <span style="display:inline-block;padding:.5rem 1rem;border-radius:9999px;border:1px solid rgba(59,130,246,.3);background:rgba(59,130,246,.08);font-size:.875rem;font-weight:500;color:#93c5fd;margin-bottom:2rem">WaveMind 2.0 is here</span>
+      <h1 style="font-size:2.25rem;font-weight:700;line-height:2.5rem;margin:0 0 1.5rem;max-width:60rem">Build software that<br /><span style="background:linear-gradient(90deg,#2563eb,#9333ea,#db2777);-webkit-background-clip:text;background-clip:text;color:transparent">redefines your industry</span></h1>
+      <p style="color:#d1d5db;font-size:1.125rem;max-width:42rem;margin:0 0 2.5rem;line-height:1.75rem">We blend artistic vision with technical precision to build SaaS platforms, mobile apps, and enterprise tools that scale effortlessly.</p>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;justify-content:center">
+        <span style="display:inline-block;padding:1rem 2rem;border-radius:9999px;background:linear-gradient(90deg,#2563eb,#9333ea);color:#fff;font-weight:600">Get Started</span>
+        <span style="display:inline-block;padding:1rem 2rem;border-radius:9999px;border:1px solid rgba(255,255,255,.25);color:#f9fafb;font-weight:600">Explore services</span>
+      </div>
+    </div>
+  </div>
   <script type="module" src="/src/main.jsx"></script>
   <script defer src="https://wavemind-whatsapp.wavemind.workers.dev/widget.js"></script>
 
