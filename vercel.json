@@ -28,5 +28,32 @@
       "source": "/((?!api/|sitemap\\.xml|robots\\.txt|assets/|logo\\.png|wave-bg\\.svg|hero-illustration\\.png|WaveBill-Brochure\\.pdf|_headers).*)",
       "destination": "/index.html"
     }
+  ],
+  "redirects": [
+    {
+      "source": "/web-development",
+      "destination": "/services",
+      "permanent": true
+    },
+    {
+      "source": "/seo-services",
+      "destination": "/services",
+      "permanent": true
+    },
+    {
+      "source": "/crm-development",
+      "destination": "/services",
+      "permanent": true
+    },
+    {
+      "source": "/erp-solutions",
+      "destination": "/services",
+      "permanent": true
+    },
+    {
+      "source": "/automation",
+      "destination": "/services",
+      "permanent": true
+    }
   ]
 }

@@ -16,7 +16,7 @@ import { Helmet } from 'react-helmet-async';
 
 const SITE_URL = 'https://wavemindsolutions.in';
 const SITE_NAME = 'WaveMind Solutions';
-const DEFAULT_OG_IMAGE = `${SITE_URL}/logo.png`;
+const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.png`;
 
 const SEOHead = ({
   title,
